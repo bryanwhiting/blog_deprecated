@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My take on data</title>
+    <link>/</link>
+    <description>Recent content on My take on data</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 24 Mar 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Product development and predictions</title>
+      <link>/2017/03/product-development-and-predictions/</link>
+      <pubDate>Fri, 24 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/03/product-development-and-predictions/</guid>
+      <description>What do products have in common with prediction models? They both solve problems, depend heavily on the samples in which they’re trained, and should adapt as samples grow.
+In modeling: Bias: the mean difference between your estimate and the average of the truth. Variance: the average squared difference from the truth.
+In product development: Bias: the distance between how your product solves a problem and how the “ideal” solution would look like Variance: How each person’s experience is with the product, and how well it solves the problem for them.</description>
+    </item>
+    
+    <item>
+      <title>The band and startups</title>
+      <link>/2017/03/the-band-and-startups/</link>
+      <pubDate>Thu, 23 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/03/the-band-and-startups/</guid>
+      <description>Similarities between starting a band and starting a company: Startup | Band Finding a co-founder | finding a bassist, singer Picking a CEO | picking a singer Getting funding | record label Key partnerships | touring with bigger bands Nailing a niche | Finding the songs that people like Beta testers | Early fanbase, hometown
+Things to watch out for, if your’e a start up * Don’t be a one-hit-wonder - Palm pilot - AOL - Yahoo search * Evolve your music with the times - Coldplay - Rolling Stones - red hot chili peppers - Your product needs to change with the times, as the company that stays in power is the one that keeps solving the problems of tomorrow.</description>
+    </item>
+    
+    <item>
+      <title>The DataViz battle: Plotly vs. ggplot2</title>
+      <link>/2017/02/the-dataviz-battle-plotly-vs.-ggplot2/</link>
+      <pubDate>Fri, 10 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/02/the-dataviz-battle-plotly-vs.-ggplot2/</guid>
+      <description>R users fall in love with ggplot2, the growing standard for data visualization in R. The ability to quickly vizualize trends, and customize just about anything you’d want, make it a powerful tool. Yet this week, I made a discvoery that may reduce how much I used ggplot2. Enter plot_ly().
+For this post, I assume that you have a working knowledge of the dplyr (or magrittr) and ggplot2 packages.</description>
+    </item>
+    
+    <item>
+      <title>The Shell and its Many Languages</title>
+      <link>/2017/01/the-shell-and-its-many-languages/</link>
+      <pubDate>Sat, 14 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/01/the-shell-and-its-many-languages/</guid>
+      <description>If you don&amp;rsquo;t know how to use the shell/terminal/command line, you should. Why? Here&amp;rsquo;s a sampling of I&amp;rsquo;ve done in the last month:
+ I used R to generate 30,000 plots using ggplot(). I used the shell and ffmpeg to animate those plots as a movie. I&amp;rsquo;ve used the shell from VBA to send an Excel column of data into Stata, execute a summary statistic command, and then import the results back into Excel.</description>
+    </item>
+    
+    <item>
+      <title>Starting with Jekyll</title>
+      <link>/2016/11/starting-with-jekyll/</link>
+      <pubDate>Mon, 07 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/2016/11/starting-with-jekyll/</guid>
+      <description>Hello world.
+I wanted to start a blog. I wanted to set it up for free, use a custom URL (and not something.bloggingplatform.com), and be able to both blog and create tutorials. I didn&amp;rsquo;t mind it possibly being technical1. Enter Jekyll.
+If you want to get your blog in 10 minutes, skip to below.
+Why Blog with Jekyll? Here&amp;rsquo;s why you can and should blog with Jekyll (if you&amp;rsquo;re a data scientist):</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/about/</guid>
+      <description>Why I write I want to share. And I believe that writing is a process where scrambled thoughts can be converted into shareable information.
+In math, processes are called functions. In writing, my thoughts are the inputs, writing is the function, and this post is my output. In statistics, the truth is unattainable, only estimable. Writing is the function that uses my thoughts to estimate truth. And bias is the distance from the truth.</description>
+    </item>
+    
+  </channel>
+</rss>
