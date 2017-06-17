@@ -2,7 +2,6 @@
 title: "The band and startups"
 author: "Bryan Whiting"
 date: 2017-03-23
-output: html_document
 ---
 
 # Similarities between starting a band and starting a company:
