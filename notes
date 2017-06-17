@@ -1,0 +1,10 @@
+Notes:
+ - To get the cover image, I had to make static/images folder. The static/img folder didn't work. I tappears that blogdown copies over the static folder into the public folder, so it has to be organized hte way that trankquil recognizes.
+ - This is also where you put the profile picture
+ 
+ I can't figure out how to add an about page, but whatever.
+ If i add an about/ folder in content, it creates the link. But the link becomes blank when clicked on. There's no page. 
+ If i add the about/ folder in the toml it creates the functional link.
+ But it's not displaying the post. Perhaps the index file is not doing what I think it's doing. 
+ 
+ The content/ folder is being copied over into the public folder. Post and about2 are being copied over. The about file is automatically being created. It's just not rendering the 

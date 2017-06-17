@@ -64,15 +64,5 @@ If you want to get your blog in 10 minutes, skip to below.
 Why Blog with Jekyll? Here&amp;rsquo;s why you can and should blog with Jekyll (if you&amp;rsquo;re a data scientist):</description>
     </item>
     
-    <item>
-      <title>About</title>
-      <link>/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/about/</guid>
-      <description>Why I write I want to share. And I believe that writing is a process where scrambled thoughts can be converted into shareable information.
-In math, processes are called functions. In writing, my thoughts are the inputs, writing is the function, and this post is my output. In statistics, the truth is unattainable, only estimable. Writing is the function that uses my thoughts to estimate truth. And bias is the distance from the truth.</description>
-    </item>
-    
   </channel>
 </rss>

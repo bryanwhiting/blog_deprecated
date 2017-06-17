@@ -4,9 +4,6 @@ title: About
 permalink: /about/
 ---
 
-<img src="{{ site.baseurl }}/assets/profile-bw.jpg" title="Bryan Whiting" class="profile">
-
-
 # Why I write
 
 I want to share. And I believe that writing is a process where scrambled thoughts can be converted into shareable information.
@@ -22,10 +19,6 @@ I received a BS and MS in Statistics from Brigham Young University. During my pr
 Previously, I've spent two years as a missionary for The Church of Jesus Christ of Latter-day Saints in and around Tegucigalpa, Honduras. In my spare time, I enjoy writing songs on the piano or guitar and volunteering at my church. If I had snow nearby, I would ski it. But living in Washington, DC has its perks, such as being able to ride home past the Washington monument every day. My wife Veronica and I enjoy long walks through the park, and if we had a beach nearby, we'd probably enjoy long walks there too.
 
 [^1]: And by milk I mean webscrape. (I needed an "m" for the alliteration.)
-[Bates White]:http://www.bateswhite.com/ 
+[Bates White]:http://www.bateswhite.com/
 [vi]:https://en.wikipedia.org/wiki/Vi
 [RShiny]:http://shiny.rstudio.com/
-
-<hr>
-
-*Thanks to [Ben Centra](https://github.com/bencentra/centrarium) for the Jekyll theme supporting this site.*
