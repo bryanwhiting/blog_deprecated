@@ -3,78 +3,89 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/2017/03/product-development-and-predictions/</loc>
-    <lastmod>2017-03-24T00:00:00+00:00</lastmod>
+    <loc>https://www.bryanwhiting.com/2017/06/blogdown-and-trankquilpeak-theme-hosted-on-netlify/</loc>
+    <lastmod>2017-06-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2017/03/the-band-and-startups/</loc>
-    <lastmod>2017-03-23T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2017/02/the-dataviz-battle-plotly-vs.-ggplot2/</loc>
+    <loc>https://www.bryanwhiting.com/2017/02/the-dataviz-battle-plotly-vs.-ggplot2/</loc>
     <lastmod>2017-02-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2017/01/the-shell-and-its-many-languages/</loc>
+    <loc>https://www.bryanwhiting.com/2017/01/the-shell-and-its-many-languages/</loc>
     <lastmod>2017-01-14T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/11/starting-with-jekyll/</loc>
+    <loc>https://www.bryanwhiting.com/2016/11/starting-with-jekyll/</loc>
     <lastmod>2016-11-07T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/11/why-i-write/</loc>
+    <loc>https://www.bryanwhiting.com/2016/11/why-i-write/</loc>
     <lastmod>2016-11-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/archives/</loc>
+    <loc>https://www.bryanwhiting.com/1/01/</loc>
+  </url>
+  
+  <url>
+    <loc>https://www.bryanwhiting.com/archives/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/categories/</loc>
+    <loc>https://www.bryanwhiting.com/tags/blogdown/</loc>
+    <lastmod>2017-06-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/code/</loc>
+    <loc>https://www.bryanwhiting.com/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.bryanwhiting.com/tags/code/</loc>
     <lastmod>2017-01-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/dataviz/</loc>
+    <loc>https://www.bryanwhiting.com/tags/dataviz/</loc>
     <lastmod>2017-02-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/</loc>
-    <lastmod>2017-03-24T00:00:00+00:00</lastmod>
+    <loc>https://www.bryanwhiting.com/</loc>
+    <lastmod>2017-06-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/post/</loc>
-    <lastmod>2017-03-24T00:00:00+00:00</lastmod>
+    <loc>https://www.bryanwhiting.com/post/</loc>
+    <lastmod>2017-06-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/productivity/</loc>
+    <loc>https://www.bryanwhiting.com/tags/productivity/</loc>
     <lastmod>2017-01-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/</loc>
-    <lastmod>2017-01-14T00:00:00+00:00</lastmod>
+    <loc>https://www.bryanwhiting.com/tags/</loc>
+    <lastmod>2017-06-20T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.bryanwhiting.com/tags/tutorials/</loc>
+    <lastmod>2017-06-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

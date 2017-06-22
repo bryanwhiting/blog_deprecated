@@ -2,6 +2,7 @@
 title: "Product development and predictions"
 author: "Bryan Whiting"
 date: 2017-03-24
+draft: yes
 ---
 
 

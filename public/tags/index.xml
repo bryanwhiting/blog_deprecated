@@ -2,39 +2,57 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on My take on data</title>
-    <link>/tags/</link>
+    <link>https://www.bryanwhiting.com/tags/</link>
     <description>Recent content in Tags on My take on data</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 14 Jan 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 20 Jun 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.bryanwhiting.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Blogdown</title>
+      <link>https://www.bryanwhiting.com/tags/blogdown/</link>
+      <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.bryanwhiting.com/tags/blogdown/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Code</title>
-      <link>/tags/code/</link>
+      <link>https://www.bryanwhiting.com/tags/code/</link>
       <pubDate>Sat, 14 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>/tags/code/</guid>
+      <guid>https://www.bryanwhiting.com/tags/code/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Dataviz</title>
-      <link>/tags/dataviz/</link>
+      <link>https://www.bryanwhiting.com/tags/dataviz/</link>
       <pubDate>Fri, 10 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>/tags/dataviz/</guid>
+      <guid>https://www.bryanwhiting.com/tags/dataviz/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Productivity</title>
-      <link>/tags/productivity/</link>
+      <link>https://www.bryanwhiting.com/tags/productivity/</link>
       <pubDate>Sat, 14 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>/tags/productivity/</guid>
+      <guid>https://www.bryanwhiting.com/tags/productivity/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tutorials</title>
+      <link>https://www.bryanwhiting.com/tags/tutorials/</link>
+      <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.bryanwhiting.com/tags/tutorials/</guid>
       <description></description>
     </item>
     

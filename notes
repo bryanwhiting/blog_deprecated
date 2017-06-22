@@ -8,3 +8,9 @@ Notes:
  But it's not displaying the post. Perhaps the index file is not doing what I think it's doing. 
  
  The content/ folder is being copied over into the public folder. Post and about2 are being copied over. The about file is automatically being created. It's just not rendering the 
+
+Get disqus working: 
+ | 1. create an account
+| 2. Add a "site"
+| 3. Update url to the netlify-provided url
+| 4. Update your baseurl in .toml to be https://customurl
