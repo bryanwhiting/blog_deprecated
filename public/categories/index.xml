@@ -2,20 +2,29 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on My take on data</title>
-    <link>/categories/</link>
+    <link>https://www.bryanwhiting.com/categories/</link>
     <description>Recent content in Categories on My take on data</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.bryanwhiting.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Productivity</title>
+      <link>https://www.bryanwhiting.com/categories/productivity/</link>
+      <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.bryanwhiting.com/categories/productivity/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Tutorials</title>
-      <link>/categories/tutorials/</link>
+      <link>https://www.bryanwhiting.com/categories/tutorials/</link>
       <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>/categories/tutorials/</guid>
+      <guid>https://www.bryanwhiting.com/categories/tutorials/</guid>
       <description></description>
     </item>
     

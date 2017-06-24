@@ -2,7 +2,6 @@
 title: "Projects"
 author: "Bryan Whiting"
 date: 2017-06-23
-showthedate: false
 ---
 
 Some projects I've worked on. Some are complete, some are in progress. If it's research, I say whether it's complete or not. If it's a product, I say that it's either "In development" or in "beta".

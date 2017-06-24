@@ -1,9 +1,8 @@
 ---
 title: Yet Another Weekly Planner
 date: '2017-06-23'
-categories: 'productivity'
+categories: ['productivity']
 tags: ['r', 'bash', 'projects', 'innovations', 'agile']
-draft: no
 ---
 
 I believe that each creation has four phases: dreaming, planning, acting, and reflecting. Think about it - is there anything you've ever made that didn't first enter into your mind, you came up with some game plan, you carried it out, and then when you were done you could see what went well and where you improved? Isn't this what [scrums](https://en.wikipedia.org/wiki/Scrum_(software_development)) are really about?

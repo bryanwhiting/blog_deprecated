@@ -128,7 +128,7 @@ There's probably a [better way to do this](https://bookdown.org/yihui/blogdown/t
 
 ### Categories and tags
 
-I could use the following YAML to tag this post. Since `"blog"` is the second category, it's considered a subcategory of tutorials. Each blog should fit into only one category, but have multiple tags.
+I could use the following YAML to tag this post. Since `"blog"` is the second category, it's considered a subcategory of tutorials. Each blog should fit into only one category, but have multiple tags. 
 
 ```
 title: 'Blogdown and Trankquilpeak Theme Hosted on Netlify'
@@ -137,6 +137,8 @@ author: 'Bryan Whiting'
 categories: ["tutorials", "blog"]
 tags: ["blogdown", "r", "hugo"]
 ```
+
+> Debugging tip: I think you need to have the brackets `[]` for the categories and tags, even if you only have one element. I was getting the error "Error while rendering "page": template: ... <.>: range can't iterate over ...<tagname>" when I lacked the brackets
 
 ## Takeaways and next steps
 
