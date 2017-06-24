@@ -23,7 +23,8 @@ paginate = 7
 canonifyurls = true
 
 [permalinks]
-  post = "/:year/:month/:slug/"
+  post = "/post/:year/:month/:slug/"
+  #tutorial = "/tutorial/:year/:month/:slug/"
 
 [taxonomies]
   tag = "tags"
@@ -34,13 +35,13 @@ canonifyurls = true
   name = "Bryan Whiting"
   bio = "Hacker, innovator, data scientist, father"
   job = "Data Scientist"
-  location = "DC"
+  location = "Washington, D.C."
   # Your Gravatar email. Overwrite `author.picture` everywhere in the blog
-  # gravatarEmail = "thibaud.lepretre@gmail.com"
+  gravatarEmail = "bryan.g.whiting@gmail.com"
   # Your profile picture
   # Overwritten by your gravatar image if `author.gravatarEmail` is filled
   # picture = "https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png"
-  picture = "durango.jpg"
+  picture = "jefferson.jpg"
   # Your Twitter username without the @. E.g : thibaudlepretre
   twitter = "bryanwhiting"
   # Your google plus profile id. E.g : +ThibaudLepretre or 114625208755123718311
@@ -48,42 +49,50 @@ canonifyurls = true
 
 # Menu Configuration
 [[menu.main]]
-  weight = 0
+  weight = 1
   identifier = "home"
   name = "Home"
   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-home\"></i>"
   url = "/"
 [[menu.main]]
-  weight = 1
+  weight = 2
+  identifier = "about"
+  name = "About"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-question\"></i>"
+  #url = "/#about"
+  url = "/about/index.html"
+[[menu.main]]
+  weight = 3
+  identifier = "projects"
+  name = "Projects"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-briefcase\"></i>"
+  url = "/projects/index.html"
+  
+[[menu.main]]
+  weight = 8
   identifier = "categories"
   name = "Categories"
   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-bookmark\"></i>"
   url = "/categories"
 [[menu.main]]
-  weight = 2
+  weight = 10
   identifier = "tags"
   name = "Tags"
   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-tags\"></i>"
   url = "/tags"
 [[menu.main]]
-  weight = 3
+  weight = 12
   identifier = "archives"
   name = "Archives"
   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-archive\"></i>"
   url = "/archives"
-#[[menu.main]]
-#  weight = 4
-#  identifier = "about"
-#  name = "About"
-#  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-question\"></i>"
-#  url = "/#about"
-#[[menu.main]]
-#  weight = 4
-#  identifier = "about2"
-#  name = "About2"
-#  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-question\"></i>"
-#  url = "/about2/" 
 
+#[[menu.main]]
+#  weight = 5
+#  identifier = "tutorial"
+#  name = "tutorial"
+#  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-question\"></i>"
+#  url = "/tutorial"
   
 [[menu.links]]
   weight = 0
@@ -103,6 +112,7 @@ canonifyurls = true
   name = "Stack Overflow"
   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-stack-overflow\"></i>"
   url = "https://stackoverflow.com/users/2138773/bryan"
+
 
 [[menu.misc]]
   weight = 0
@@ -152,7 +162,7 @@ canonifyurls = true
   # Otherwise put your image in folder `static/_images/` (development)  or in `source/assets/images/` if you can't or don't want to build the theme,
   # and use relative url : `your-image.png`
   # coverImage = "cover.jpg"
-  coverImage = "durango-road.JPG"
+  coverImage = "durango-road-trimmed.JPG"
 
   # Display an image gallery at the end of a post which have photos variables (false: disabled, true: enabled)
   imageGallery = true

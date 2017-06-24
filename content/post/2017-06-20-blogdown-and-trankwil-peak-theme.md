@@ -1,8 +1,9 @@
 ---
-title: Blogdown and Trankquilpeak Theme Hosted on Netlify
+title: 'Blogdown and Trankquilpeak Hosted on Netlify: a Deep Dive'
 date: '2017-06-20'
 author: 'Bryan Whiting'
-tags: ["tutorials", "blogdown"]
+categories: ["tutorials"]
+tags: ["blogdown", "r", "hugo"]
 draft: no
 ---
 
@@ -106,6 +107,37 @@ This took me a minute to figure out, but I learned something about Hugo, so I'll
 
 You'll notice in the `public` folder, the `static` folder doesn't exist, but `images` does (after you `build_site()`).
 
+### Adding a static About page
+
+I love the Trankquilpeak about popup page, but I wanted to have more than just a 10-word description. Here's how you add one to the sidebar menu. The [blogdown docs](https://bookdown.org/yihui/blogdown/configuration.html) explain this.
+
+1. Add a file in `content/about.md`.
+1. Add the following menu link in `config.toml`. Note the default URL connects to `#about`, which is defined in `theme/hugo-tranquilpeak-theme/scr/js/about.js` and yields the cool pop-up. When you create `content/about.md` and run `serve_site()`, the file `public/about/index.html` is created. 
+
+```
+[[menu.main]]
+  weight = 4
+  identifier = "about"
+  name = "About"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-question\"></i>"
+  #url = "/#about"
+  url = "/about/index.html"
+```
+
+There's probably a [better way to do this](https://bookdown.org/yihui/blogdown/templates.html#how-to), but that's beyond my current understanding.
+
+### Categories and tags
+
+I could use the following YAML to tag this post. Since `"blog"` is the second category, it's considered a subcategory of tutorials. Each blog should fit into only one category, but have multiple tags.
+
+```
+title: 'Blogdown and Trankquilpeak Theme Hosted on Netlify'
+date: '2017-06-20'
+author: 'Bryan Whiting'
+categories: ["tutorials", "blog"]
+tags: ["blogdown", "r", "hugo"]
+```
+
 ## Takeaways and next steps
 
-You've got a great blog ready to go! There are things I'd like to add to my Trankquilpeak site, such as a project page and a resume page. Perhaps if I get some time to read the Hugo docs I can figure out how to add static pages to the sidebar.
+You've got a great blog ready to go! There are things I'd like to add to my Trankquilpeak site, such as a project page (similar to having a second post page). The key to learning how to do that may be [documented here](https://bookdown.org/yihui/blogdown/templates.html#how-to).
