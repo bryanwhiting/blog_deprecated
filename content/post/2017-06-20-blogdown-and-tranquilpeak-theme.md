@@ -1,5 +1,5 @@
 ---
-title: 'Blogdown and Trankquilpeak Hosted on Netlify: a Deep Dive'
+title: 'Blogdown and Tranquilpeak Hosted on Netlify: a Deep Dive'
 date: '2017-06-20'
 author: 'Bryan Whiting'
 categories: ["tutorials"]
@@ -7,7 +7,7 @@ tags: ["blogdown", "r", "hugo"]
 draft: no
 ---
 
-This blog will outline what I see as differences between Hugo and Jekyll, some benefits and drawbacks of using Netlify vs. GitHub pages to host, and how to launch the Hugo Trankquilpeak theme from scratch.
+This blog will outline what I see as differences between Hugo and Jekyll, some benefits and drawbacks of using Netlify vs. GitHub pages to host, and how to launch the Hugo Tranquilpeak theme from scratch.
 
 ## Why Hugo?
 
@@ -37,7 +37,7 @@ A few things about blogdown and Hugo I've learned:
 - `serve_site()` lets you edit your posts and view the changes simultaneously with every save
 - `build_site()` prepares the site for production
 
-## blogdown for Trankquilpeak theme
+## blogdown for Tranquilpeak theme
 
 Every Hugo site is different, and each has a different config file. So I'll go step by step on how I launched my blog. 
 
@@ -109,7 +109,7 @@ You'll notice in the `public` folder, the `static` folder doesn't exist, but `im
 
 ### Adding a static About page
 
-I love the Trankquilpeak about popup page, but I wanted to have more than just a 10-word description. Here's how you add one to the sidebar menu. The [blogdown docs](https://bookdown.org/yihui/blogdown/configuration.html) explain this.
+I love the Tranquilpeak about popup page, but I wanted to have more than just a 10-word description. Here's how you add one to the sidebar menu. The [blogdown docs](https://bookdown.org/yihui/blogdown/configuration.html) explain this.
 
 1. Add a file in `content/about.md`.
 1. Add the following menu link in `config.toml`. Note the default URL connects to `#about`, which is defined in `theme/hugo-tranquilpeak-theme/scr/js/about.js` and yields the cool pop-up. When you create `content/about.md` and run `serve_site()`, the file `public/about/index.html` is created. 
@@ -131,7 +131,7 @@ There's probably a [better way to do this](https://bookdown.org/yihui/blogdown/t
 I could use the following YAML to tag this post. Since `"blog"` is the second category, it's considered a subcategory of tutorials. Each blog should fit into only one category, but have multiple tags. 
 
 ```
-title: 'Blogdown and Trankquilpeak Theme Hosted on Netlify'
+title: 'Blogdown and Tranquilpeak Theme Hosted on Netlify'
 date: '2017-06-20'
 author: 'Bryan Whiting'
 categories: ["tutorials", "blog"]
@@ -142,4 +142,4 @@ tags: ["blogdown", "r", "hugo"]
 
 ## Takeaways and next steps
 
-You've got a great blog ready to go! There are things I'd like to add to my Trankquilpeak site, such as a project page (similar to having a second post page). The key to learning how to do that may be [documented here](https://bookdown.org/yihui/blogdown/templates.html#how-to).
+You've got a great blog ready to go! There are things I'd like to add to my Tranquilpeak site, such as a project page (similar to having a second post page). The key to learning how to do that may be [documented here](https://bookdown.org/yihui/blogdown/templates.html#how-to).
