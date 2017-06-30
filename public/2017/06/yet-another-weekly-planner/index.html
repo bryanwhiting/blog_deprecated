@@ -23,7 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.23">
     <meta name="theme" content="Tranquilpeak 0.3.1-BETA">
-    <title>Blogdown and Tranquilpeak Hosted on Netlify: a Deep Dive</title>
+    <title>Yet Another Weekly Planner</title>
     <meta name="author" content="Bryan Whiting">
     <meta name="keywords" content="">
 
@@ -31,18 +31,18 @@
     
 
     
-    <meta name="description" content="This blog will outline what I see as differences between Hugo and Jekyll, some benefits and drawbacks of using Netlify vs. GitHub pages to host, and how to launch the Hugo Tranquilpeak theme from scratch.
-Why Hugo? One of my first posts was about blogging with Jekyll hosted on GitHub. About six months after writing that post, I hit a few bugs trying to debug it and got frustrated because I had already forgotten all of what I binge-learned earlier.">
-    <meta property="og:description" content="This blog will outline what I see as differences between Hugo and Jekyll, some benefits and drawbacks of using Netlify vs. GitHub pages to host, and how to launch the Hugo Tranquilpeak theme from scratch.
-Why Hugo? One of my first posts was about blogging with Jekyll hosted on GitHub. About six months after writing that post, I hit a few bugs trying to debug it and got frustrated because I had already forgotten all of what I binge-learned earlier.">
+    <meta name="description" content="I believe that each creation has four phases: dreaming, planning, acting, and reflecting. Think about it - is there anything you&rsquo;ve ever made that didn&rsquo;t first enter into your mind, you came up with some game plan, you carried it out, and then when you were done you could see what went well and where you improved? Isn&rsquo;t this what scrums are really about?
+I wanted a scrum for my personal life, but I didn&rsquo;t find it practical to use the many online resources available.">
+    <meta property="og:description" content="I believe that each creation has four phases: dreaming, planning, acting, and reflecting. Think about it - is there anything you&rsquo;ve ever made that didn&rsquo;t first enter into your mind, you came up with some game plan, you carried it out, and then when you were done you could see what went well and where you improved? Isn&rsquo;t this what scrums are really about?
+I wanted a scrum for my personal life, but I didn&rsquo;t find it practical to use the many online resources available.">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="Blogdown and Tranquilpeak Hosted on Netlify: a Deep Dive">
-    <meta property="og:url" content="/post/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/">
+    <meta property="og:title" content="Yet Another Weekly Planner">
+    <meta property="og:url" content="/2017/06/yet-another-weekly-planner/">
     <meta property="og:site_name" content="My take on data">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="My take on data">
-    <meta name="twitter:description" content="This blog will outline what I see as differences between Hugo and Jekyll, some benefits and drawbacks of using Netlify vs. GitHub pages to host, and how to launch the Hugo Tranquilpeak theme from scratch.
-Why Hugo? One of my first posts was about blogging with Jekyll hosted on GitHub. About six months after writing that post, I hit a few bugs trying to debug it and got frustrated because I had already forgotten all of what I binge-learned earlier.">
+    <meta name="twitter:description" content="I believe that each creation has four phases: dreaming, planning, acting, and reflecting. Think about it - is there anything you&rsquo;ve ever made that didn&rsquo;t first enter into your mind, you came up with some game plan, you carried it out, and then when you were done you could see what went well and where you improved? Isn&rsquo;t this what scrums are really about?
+I wanted a scrum for my personal life, but I didn&rsquo;t find it practical to use the many online resources available.">
     
       <meta name="twitter:creator" content="@bryanwhiting">
     
@@ -246,14 +246,14 @@ ga('send', 'pageview');
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      Blogdown and Tranquilpeak Hosted on Netlify: a Deep Dive
+      Yet Another Weekly Planner
     </h1>
   
   <div class="postShorten-meta post-meta">
   
-    <time itemprop="datePublished" datetime="2017-06-20T00:00:00Z">
+    <time itemprop="datePublished" datetime="2017-06-23T00:00:00Z">
       
-  June 20, 2017
+  June 23, 2017
 
     </time>
   
@@ -262,7 +262,7 @@ ga('send', 'pageview');
   
     <span>in</span>
     
-      <a class="category-link" href="https://www.bryanwhiting.com/categories/tutorials">tutorials</a>
+      <a class="category-link" href="https://www.bryanwhiting.com/categories/productivity">productivity</a>
     
   
 
@@ -273,170 +273,15 @@ ga('send', 'pageview');
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              
+              <p>I believe that each creation has four phases: dreaming, planning, acting, and reflecting. Think about it - is there anything you&rsquo;ve ever made that didn&rsquo;t first enter into your mind, you came up with some game plan, you carried it out, and then when you were done you could see what went well and where you improved? Isn&rsquo;t this what <a href="https://en.wikipedia.org/wiki/Scrum_(software_development)">scrums</a> are really about?</p>
 
-<p>This blog will outline what I see as differences between Hugo and Jekyll, some benefits and drawbacks of using Netlify vs. GitHub pages to host, and how to launch the Hugo Tranquilpeak theme from scratch.</p>
+<p>I wanted a scrum for my personal life, but I didn&rsquo;t find it practical to use the many online resources available. I investigated many, such as <a href="https://craft.io/">craft.io</a>, and <a href="https://taiga.io/">Taiga</a>. While these are great for product development, I still didn&rsquo;t think they met my needs as someone who wants to include both a trip to the grocery store as well as writing a blog post in my backlog. My life isn&rsquo;t quite a product, but I&rsquo;d like to get things done in a similar way - dream, plan, execute, and reflect.</p>
 
-<h2 id="why-hugo">Why Hugo?</h2>
+<p>This is exactly why I created <code>the garden</code>. It&rsquo;s a full-circle planning and reporting tool designed to make you not only get stuff done, but become a better person. It combines journaling and planning, so you don&rsquo;t just write down meaningless task lists and chores. Yes, you could be going to get the oil changed, but isn&rsquo;t it better if you were focusing this week on taking better care of your car? And to do that, your goal is to get the oil changed? A small, but powerful change in perspective.</p>
 
-<p>One of my first posts was about blogging with Jekyll hosted on GitHub. About six months after writing that post, I hit a few bugs trying to debug it and got frustrated because I had already forgotten all of what I binge-learned earlier. I was tired of re-updating my Jekyll code, and ultimately gave up since I didn&rsquo;t use it often enough. And so I switched to Hugo and blogdown. Here are the reasons why I&rsquo;ve already switched from Jekyll to Hugo:</p>
+<p><code>the garden</code> is a combination between planning and journaling. I use R and bash to do the planning, and <a href="http://jrnl.sh/">jrnl</a> to do the journaling. Take a look below to see if this is a useful tool. If it is, shoot me a note.</p>
 
-<ul>
-<li>Jekyll requires you to download and manage the software which caused me a lot of headaches and debugging. Blogdown manages all of the Hugo installations for you.</li>
-<li>I wanted to be able to use R Markdown in my blogs and Jekyll doesn&rsquo;t have a native integration. <a href="http://brooksandrew.github.io/simpleblog/articles/blogging-with-r-markdown-and-jekyll-using-knitr/">Andrew Brooks has a solution</a> that allows you to use R Markdown and Jekyll, though I had trouble using it<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>.</li>
-<li>Netlify allows HTTPS for custom URLs, whereas GitHub only allows HTTPS for <code>username.github.io</code> pages (not custom URLs). Here&rsquo;s a discussion on <a href="https://bookdown.org/yihui/blogdown/github-pages.html">GitHub pages v. Netlify</a>.</li>
-<li>Configuring a custom URL on Netlify is extremely easy compared to GitHub pages. (If you don&rsquo;t use a custom URL, you won&rsquo;t like the one Netlify provides by default.)</li>
-</ul>
-
-<h2 id="enter-blogdown">Enter blogdown</h2>
-
-<p><code>blogdown</code> is an R package that manages the Hugo software, which is a static website generator. Here&rsquo;s the <a href="https://github.com/rstudio/blogdown">package on GitHub</a>, which has a handy 5 min instruction to get your feet wet. Here&rsquo;s the <a href="https://bookdown.org/yihui/blogdown/">official tutorial on blogdown</a> and is a great resource.</p>
-
-<p>You will spend some time getting to know blogdown and Hugo, and Hugo requires as much work figuring out as does Jekyll if you want to get into the gritty customization. That being said, blogdown makes it easy to get started and come back several months later without having to worry about managing all of the Jekyll packages.</p>
-
-<p>A few things about blogdown and Hugo I&rsquo;ve learned:</p>
-
-<ul>
-<li>Hugo is a static site generator (meaning it makes a very basic website)</li>
-<li>Hugo is software you download and run to build and compile your website</li>
-<li>blogdown is a wrapper for Hugo terminal commands</li>
-<li>blogdown renders R Markdown files (Hugo can&rsquo;t)</li>
-<li>blogdown automates installing everything you need for Hugo. (This was very difficult to do with Jekyll at first.)</li>
-<li>blogdown runs the Hugo commands to compile your site locally</li>
-<li><code>serve_site()</code> lets you edit your posts and view the changes simultaneously with every save</li>
-<li><code>build_site()</code> prepares the site for production</li>
-</ul>
-
-<h2 id="blogdown-for-tranquilpeak-theme">blogdown for Tranquilpeak theme</h2>
-
-<p>Every Hugo site is different, and each has a different config file. So I&rsquo;ll go step by step on how I launched my blog.</p>
-
-<h3 id="launch-your-website-in-5-minutes-locally">Launch your website in 5 minutes locally</h3>
-
-<ol>
-<li>Run <code>install_hugo()</code> to get the latest version. You may have to update Hugo periodically, as it&rsquo;s open source and keeps updating. So if you&rsquo;re having issues building your site, try debugging using <code>install_hugo(force = T)</code>.<br /></li>
-<li>Run <code>new_site()</code> command to build a website from scratch. (Note, these two steps can save you hours of reading documentation if you go the Jekyll route.)</li>
-<li>Make sure you <a href="https://bookdown.org/yihui/blogdown/themes.html">specify the theme</a> you want, e.g. <code>new_site(theme = 'kakawait/hugo-tranquilpeak-theme')</code>, because it&rsquo;ll download the right <code>config.toml</code>. Here&rsquo;s a note from the docs:
-<code>...You need to be very careful when changing themes, because one theme can be drastically different with another theme in terms of the configurations. It is quite possible that a different theme will not work with your current config.toml. Again, you have to read the documentation of a theme to know what options are supported or required.</code></li>
-<li>Now the site is built, you&rsquo;ll see several folders. The github Hugo theme is saved in <code>themes</code>. The entire site is saved and compiled in <code>public</code>. And Blogdown and Hugo do the work of preparing your content and putting it in the <code>public</code> folder. Your posts are in <code>content</code>, and your images are in <code>static</code>.</li>
-<li>To get started, put all your blogs in the <code>content/post</code>, and your site images in <code>static</code> and run <code>build_site()</code> when you&rsquo;re ready.</li>
-<li>If you run <code>new_post()</code>, it&rsquo;ll create a post in <code>content/post</code>.</li>
-</ol>
-
-<h3 id="host-your-blog-on-netlify">Host your blog on Netlify</h3>
-
-<p>If you want to do GitHub pages, see <a href="https://tclavelle.github.io/blog/blogdown_github/">Tyler Clavelle&rsquo;s tutorial</a>, <a href="https://proquestionasker.github.io/blog/Making_Site/">Amber Thomas&rsquo; tutorial</a> or the <a href="https://bookdown.org/yihui/blogdown/github-pages.html">blogdown docs</a>.</p>
-
-<p>I cover here how to use Netlify to host, which is extremely easy! Here are the steps:</p>
-
-<ol>
-<li>Put your entire site as a repository on GitHub, Gitlab, or Bitbucket. (I did GitHub.)</li>
-<li>Go to <a href="https://www.netlify.com/">Netlify</a>.</li>
-<li>Connect your GitHub accounts.</li>
-<li>Click <code>New site from Git</code>.</li>
-<li>Continuous deployment: click <code>GitHub</code>. You can limit access to only public repositories.</li>
-<li>Click on your GitHub blog repo.
-
-<ol>
-<li>Branch to deploy: <code>master</code></li>
-<li>Build command: <code>hugo_0.19</code> (<a href="https://bookdown.org/yihui/blogdown/netlify.html">See docs on build command</a>)</li>
-<li>Publish directory: <code>public</code></li>
-</ol></li>
-<li>Click <code>Deploy site</code>. Netlify will generate a random URL <code>&lt;netlify-name&gt;.netlify.com</code>, like <code>destiny-jones-84018.netlify.com</code> and launch your site.</li>
-</ol>
-
-<h3 id="connecting-your-custom-domain">Connecting your custom domain</h3>
-
-<p>Netlify makes it very easy, more straightforward than GitHub pages to connect your custom domain.</p>
-
-<p>Go to <code>Settings &gt; Configure domain</code>. Just add your custom domain in the space provided and update your <a href="https://www.netlify.com/docs/custom-domains/#dns-configuration">DNS configuration</a>. For some reason, this took me forever to figure out on Jekyll and GitHub pages (it seemed like everyone knew how to do this but me&hellip;).</p>
-
-<h3 id="encrypt-with-https">Encrypt with HTTPS</h3>
-
-<p>If you want, you can encrypt your site with HTTPS, as <a href="https://bookdown.org/yihui/blogdown/github-pages.html">Yihui recommends</a>. Once your site is deployed, you can click the <code>HTTPS</code> tab on Netlify and follow instructions.</p>
-
-<h3 id="connecting-disqus">Connecting Disqus</h3>
-
-<p><a href="https://disqus.com/">Disqus</a> is great for comments, but can be confusing to get set up. There are two parts - setting up a Disqus account and site and updating your Hugo <code>config.toml</code>.</p>
-
-<p>Set things up on Disqus:</p>
-
-<ol>
-<li>Go to <a href="https://disqus.com/">disqus.com</a> and create a profile.</li>
-<li>Click on <code>Admin</code> (or <a href="www.disqus.com/admin">www.disqus.com/admin</a>)</li>
-<li>In the top left corner, click <code>Your sites</code> then  <code>+ New</code></li>
-<li>Under website name, just put something like &ldquo;data science blog&rdquo;, or whatever you want to name it.</li>
-<li>It&rsquo;ll now ask you to connect to a platform. Skip this and go to <code>3. Configure Disqus</code>.</li>
-<li>You&rsquo;ll see your website name. Under <code>Website URL</code>, put the <code>http://&lt;netlify-name&gt;.netlify.com</code>. (I don&rsquo;t know if you can put your custom domain here, but for me putting my Netlify URL worked fine.)</li>
-<li>Go to <code>Settings</code> and it&rsquo;ll provide the shortname. Copy that.</li>
-</ol>
-
-<p>Set up <code>config.toml</code>:</p>
-
-<ol>
-<li>Under baseurl I put my custom URL &ldquo;<a href="https://www.bryanwhiting.com&quot;">https://www.bryanwhiting.com&quot;</a>.</li>
-</ol>
-
-<p>Note, Disqus won&rsquo;t work when you use <code>serve_site()</code> command. It only works on the live website.</p>
-
-<h3 id="change-the-background-photo">Change the background photo</h3>
-
-<p>This took me a minute to figure out, but I learned something about Hugo, so I&rsquo;ll share it here.</p>
-
-<ol>
-<li>Put your desired photo in <code>static/images</code>.</li>
-<li>Under `[author] picture = yourphoto.png&rsquo;</li>
-</ol>
-
-<p>You&rsquo;ll notice in the <code>public</code> folder, the <code>static</code> folder doesn&rsquo;t exist, but <code>images</code> does (after you <code>build_site()</code>).</p>
-
-<h3 id="adding-a-static-about-page">Adding a static About page</h3>
-
-<p>I love the Tranquilpeak about popup page, but I wanted to have more than just a 10-word description. Here&rsquo;s how you add one to the sidebar menu. The <a href="https://bookdown.org/yihui/blogdown/configuration.html">blogdown docs</a> explain this.</p>
-
-<ol>
-<li>Add a file in <code>content/about.md</code>.</li>
-<li>Add the following menu link in <code>config.toml</code>. Note the default URL connects to <code>#about</code>, which is defined in <code>theme/hugo-tranquilpeak-theme/scr/js/about.js</code> and yields the cool pop-up. When you create <code>content/about.md</code> and run <code>serve_site()</code>, the file <code>public/about/index.html</code> is created.</li>
-</ol>
-
-<pre><code>[[menu.main]]
-  weight = 4
-  identifier = &quot;about&quot;
-  name = &quot;About&quot;
-  pre = &quot;&lt;i class=\&quot;sidebar-button-icon fa fa-lg fa-question\&quot;&gt;&lt;/i&gt;&quot;
-  #url = &quot;/#about&quot;
-  url = &quot;/about/index.html&quot;
-</code></pre>
-
-<p>There&rsquo;s probably a <a href="https://bookdown.org/yihui/blogdown/templates.html#how-to">better way to do this</a>, but that&rsquo;s beyond my current understanding.</p>
-
-<h3 id="categories-and-tags">Categories and tags</h3>
-
-<p>I could use the following YAML to tag this post. Since <code>&quot;blog&quot;</code> is the second category, it&rsquo;s considered a subcategory of tutorials. Each blog should fit into only one category, but have multiple tags.</p>
-
-<pre><code>title: 'Blogdown and Tranquilpeak Theme Hosted on Netlify'
-date: '2017-06-20'
-author: 'Bryan Whiting'
-categories: [&quot;tutorials&quot;, &quot;blog&quot;]
-tags: [&quot;blogdown&quot;, &quot;r&quot;, &quot;hugo&quot;]
-</code></pre>
-
-<blockquote>
-<p>Debugging tip: I think you need to have the brackets <code>[]</code> for the categories and tags, even if you only have one element. I was getting the error &ldquo;Error while rendering &ldquo;page&rdquo;: template: &hellip; &lt;.&gt;: range can&rsquo;t iterate over &hellip;<tagname>&rdquo; when I lacked the brackets</p>
-</blockquote>
-
-<h2 id="takeaways-and-next-steps">Takeaways and next steps</h2>
-
-<p>You&rsquo;ve got a great blog ready to go! There are things I&rsquo;d like to add to my Tranquilpeak site, such as a project page (similar to having a second post page). The key to learning how to do that may be <a href="https://bookdown.org/yihui/blogdown/templates.html#how-to">documented here</a>.</p>
-<div class="footnotes">
-
-<hr />
-
-<ol>
-<li id="fn:1">Alternatively, I could knit the R Markdown file to HTML and Jekyll could read the HTML file, but each R Markdown post ultimately had a different formatting than the normal markdown posts.
- <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
-</ol>
-</div>
+<p>Click here for <a href="https://github.com/bryanwhiting/the-garden">the garden</a></p>
 
               
             </div>
@@ -449,11 +294,15 @@ tags: [&quot;blogdown&quot;, &quot;r&quot;, &quot;hugo&quot;]
                   <div class="post-footer-tags">
                     <span class="text-color-light text-small">TAGGED IN</span><br/>
                     
-  <a class="tag tag--primary tag--small" href="https://www.bryanwhiting.com//tags/blogdown/">blogdown</a>
-
   <a class="tag tag--primary tag--small" href="https://www.bryanwhiting.com//tags/r/">r</a>
 
-  <a class="tag tag--primary tag--small" href="https://www.bryanwhiting.com//tags/hugo/">hugo</a>
+  <a class="tag tag--primary tag--small" href="https://www.bryanwhiting.com//tags/bash/">bash</a>
+
+  <a class="tag tag--primary tag--small" href="https://www.bryanwhiting.com//tags/projects/">projects</a>
+
+  <a class="tag tag--primary tag--small" href="https://www.bryanwhiting.com//tags/innovations/">innovations</a>
+
+  <a class="tag tag--primary tag--small" href="https://www.bryanwhiting.com//tags/agile/">agile</a>
 
                   </div>
                 
@@ -465,7 +314,7 @@ tags: [&quot;blogdown&quot;, &quot;r&quot;, &quot;hugo&quot;]
       
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://www.bryanwhiting.com/post/2017/06/yet-another-weekly-planner/" data-tooltip="Yet Another Weekly Planner">
+            <a class="post-action-btn btn btn--disabled">
           
             <i class="fa fa-angle-left"></i>
             <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
@@ -473,7 +322,7 @@ tags: [&quot;blogdown&quot;, &quot;r&quot;, &quot;hugo&quot;]
         </li>
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://www.bryanwhiting.com/post/2017/02/the-dataviz-battle-plotly-vs-ggplot2/" data-tooltip="The DataViz battle: Plotly vs ggplot2">
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://www.bryanwhiting.com/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/" data-tooltip="Blogdown and Tranquilpeak Hosted on Netlify: a Deep Dive">
           
             <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
             <i class="fa fa-angle-right"></i>
@@ -490,17 +339,17 @@ tags: [&quot;blogdown&quot;, &quot;r&quot;, &quot;hugo&quot;]
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f06%2fblogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fwww.bryanwhiting.com%2f2017%2f06%2fyet-another-weekly-planner%2f">
           <i class="fa fa-google-plus"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f06%2fblogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.bryanwhiting.com%2f2017%2f06%2fyet-another-weekly-planner%2f">
           <i class="fa fa-facebook-official"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f06%2fblogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwww.bryanwhiting.com%2f2017%2f06%2fyet-another-weekly-planner%2f">
           <i class="fa fa-twitter"></i>
         </a>
       </li>
@@ -546,7 +395,7 @@ tags: [&quot;blogdown&quot;, &quot;r&quot;, &quot;hugo&quot;]
       
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://www.bryanwhiting.com/post/2017/06/yet-another-weekly-planner/" data-tooltip="Yet Another Weekly Planner">
+            <a class="post-action-btn btn btn--disabled">
           
             <i class="fa fa-angle-left"></i>
             <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
@@ -554,7 +403,7 @@ tags: [&quot;blogdown&quot;, &quot;r&quot;, &quot;hugo&quot;]
         </li>
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://www.bryanwhiting.com/post/2017/02/the-dataviz-battle-plotly-vs-ggplot2/" data-tooltip="The DataViz battle: Plotly vs ggplot2">
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://www.bryanwhiting.com/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/" data-tooltip="Blogdown and Tranquilpeak Hosted on Netlify: a Deep Dive">
           
             <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
             <i class="fa fa-angle-right"></i>
@@ -571,17 +420,17 @@ tags: [&quot;blogdown&quot;, &quot;r&quot;, &quot;hugo&quot;]
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f06%2fblogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fwww.bryanwhiting.com%2f2017%2f06%2fyet-another-weekly-planner%2f">
           <i class="fa fa-google-plus"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f06%2fblogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.bryanwhiting.com%2f2017%2f06%2fyet-another-weekly-planner%2f">
           <i class="fa fa-facebook-official"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f06%2fblogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwww.bryanwhiting.com%2f2017%2f06%2fyet-another-weekly-planner%2f">
           <i class="fa fa-twitter"></i>
         </a>
       </li>
@@ -608,17 +457,17 @@ tags: [&quot;blogdown&quot;, &quot;r&quot;, &quot;hugo&quot;]
       <div id="share-options-bar" class="share-options-bar" data-behavior="4">
   <ul class="share-options">
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f06%2fblogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive%2f">
+      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fwww.bryanwhiting.com%2f2017%2f06%2fyet-another-weekly-planner%2f">
         <i class="fa fa-google-plus"></i><span>Share on Google Plus</span>
       </a>
     </li>
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f06%2fblogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive%2f">
+      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.bryanwhiting.com%2f2017%2f06%2fyet-another-weekly-planner%2f">
         <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
       </a>
     </li>
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f06%2fblogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive%2f">
+      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwww.bryanwhiting.com%2f2017%2f06%2fyet-another-weekly-planner%2f">
         <i class="fa fa-twitter"></i><span>Share on Twitter</span>
       </a>
     </li>
@@ -678,7 +527,7 @@ tags: [&quot;blogdown&quot;, &quot;r&quot;, &quot;hugo&quot;]
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://www.bryanwhiting.com/post/2017/06/yet-another-weekly-planner/">
+              <a class="link-unstyled" href="https://www.bryanwhiting.com/2017/06/yet-another-weekly-planner/">
                 <h3 class="media-heading">Yet Another Weekly Planner</h3>
               </a>
               <span class="media-meta">
@@ -696,7 +545,7 @@ I wanted a scrum for my personal life, but I didn&rsquo;t find it practical to u
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://www.bryanwhiting.com/post/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/">
+              <a class="link-unstyled" href="https://www.bryanwhiting.com/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/">
                 <h3 class="media-heading">Blogdown and Tranquilpeak Hosted on Netlify: a Deep Dive</h3>
               </a>
               <span class="media-meta">
@@ -714,7 +563,7 @@ Why Hugo? One of my first posts was about blogging with Jekyll hosted on GitHub.
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://www.bryanwhiting.com/post/2017/02/the-dataviz-battle-plotly-vs-ggplot2/">
+              <a class="link-unstyled" href="https://www.bryanwhiting.com/2017/02/the-dataviz-battle-plotly-vs-ggplot2/">
                 <h3 class="media-heading">The DataViz battle: Plotly vs ggplot2</h3>
               </a>
               <span class="media-meta">
@@ -732,7 +581,7 @@ For this post, I assume that you have a working knowledge of the dplyr (or magri
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://www.bryanwhiting.com/post/2017/01/the-shell-and-its-many-languages/">
+              <a class="link-unstyled" href="https://www.bryanwhiting.com/2017/01/the-shell-and-its-many-languages/">
                 <h3 class="media-heading">The Shell and its Many Languages</h3>
               </a>
               <span class="media-meta">
@@ -750,7 +599,7 @@ For this post, I assume that you have a working knowledge of the dplyr (or magri
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://www.bryanwhiting.com/post/2016/11/starting-with-jekyll/">
+              <a class="link-unstyled" href="https://www.bryanwhiting.com/2016/11/starting-with-jekyll/">
                 <h3 class="media-heading">Starting with Jekyll</h3>
               </a>
               <span class="media-meta">
@@ -835,9 +684,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/www.bryanwhiting.com\/post\/2017\/06\/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive\/';
+          this.page.url = 'https:\/\/www.bryanwhiting.com\/2017\/06\/yet-another-weekly-planner\/';
           
-            this.page.identifier = '\/post\/2017\/06\/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive\/'
+            this.page.identifier = '\/2017\/06\/yet-another-weekly-planner\/'
           
         };
         (function() {

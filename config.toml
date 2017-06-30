@@ -24,7 +24,7 @@ canonifyurls = true
 ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 
 [permalinks]
-  post = "/post/:year/:month/:slug/"
+  post = "/:year/:month/:slug/"
   #tutorial = "/tutorial/:year/:month/:slug/"
 
 [taxonomies]

@@ -23,7 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.23">
     <meta name="theme" content="Tranquilpeak 0.3.1-BETA">
-    <title>The Shell and its Many Languages</title>
+    <title>Starting with Jekyll</title>
     <meta name="author" content="Bryan Whiting">
     <meta name="keywords" content="">
 
@@ -31,18 +31,24 @@
     
 
     
-    <meta name="description" content="If you don&rsquo;t know how to use the shell/terminal/command line, you should. Why? Here&rsquo;s a sampling of I&rsquo;ve done in the last month:
- I used R to generate 30,000 plots using ggplot(). I used the shell and ffmpeg to animate those plots as a movie. I&rsquo;ve used the shell from VBA to send an Excel column of data into Stata, execute a summary statistic command, and then import the results back into Excel.">
-    <meta property="og:description" content="If you don&rsquo;t know how to use the shell/terminal/command line, you should. Why? Here&rsquo;s a sampling of I&rsquo;ve done in the last month:
- I used R to generate 30,000 plots using ggplot(). I used the shell and ffmpeg to animate those plots as a movie. I&rsquo;ve used the shell from VBA to send an Excel column of data into Stata, execute a summary statistic command, and then import the results back into Excel.">
+    <meta name="description" content="Hello world.
+I wanted to start a blog. I wanted to set it up for free, use a custom URL (and not something.bloggingplatform.com), and be able to both blog and create tutorials. I didn&rsquo;t mind it possibly being technical1. Enter Jekyll.
+If you want to get your blog in 10 minutes, skip to below.
+Why Blog with Jekyll? Here&rsquo;s why you can and should blog with Jekyll (if you&rsquo;re a data scientist):">
+    <meta property="og:description" content="Hello world.
+I wanted to start a blog. I wanted to set it up for free, use a custom URL (and not something.bloggingplatform.com), and be able to both blog and create tutorials. I didn&rsquo;t mind it possibly being technical1. Enter Jekyll.
+If you want to get your blog in 10 minutes, skip to below.
+Why Blog with Jekyll? Here&rsquo;s why you can and should blog with Jekyll (if you&rsquo;re a data scientist):">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="The Shell and its Many Languages">
-    <meta property="og:url" content="/post/2017/01/the-shell-and-its-many-languages/">
+    <meta property="og:title" content="Starting with Jekyll">
+    <meta property="og:url" content="/2016/11/starting-with-jekyll/">
     <meta property="og:site_name" content="My take on data">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="My take on data">
-    <meta name="twitter:description" content="If you don&rsquo;t know how to use the shell/terminal/command line, you should. Why? Here&rsquo;s a sampling of I&rsquo;ve done in the last month:
- I used R to generate 30,000 plots using ggplot(). I used the shell and ffmpeg to animate those plots as a movie. I&rsquo;ve used the shell from VBA to send an Excel column of data into Stata, execute a summary statistic command, and then import the results back into Excel.">
+    <meta name="twitter:description" content="Hello world.
+I wanted to start a blog. I wanted to set it up for free, use a custom URL (and not something.bloggingplatform.com), and be able to both blog and create tutorials. I didn&rsquo;t mind it possibly being technical1. Enter Jekyll.
+If you want to get your blog in 10 minutes, skip to below.
+Why Blog with Jekyll? Here&rsquo;s why you can and should blog with Jekyll (if you&rsquo;re a data scientist):">
     
       <meta name="twitter:creator" content="@bryanwhiting">
     
@@ -246,14 +252,14 @@ ga('send', 'pageview');
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      The Shell and its Many Languages
+      Starting with Jekyll
     </h1>
   
   <div class="postShorten-meta post-meta">
   
-    <time itemprop="datePublished" datetime="2017-01-14T00:00:00Z">
+    <time itemprop="datePublished" datetime="2016-11-07T00:00:00Z">
       
-  January 14, 2017
+  November 7, 2016
 
     </time>
   
@@ -267,63 +273,81 @@ ga('send', 'pageview');
             <div class="main-content-wrap">
               
 
-<p>If you don&rsquo;t know how to use the shell/terminal/command line, you should. Why? Here&rsquo;s a sampling of I&rsquo;ve done in the last month:</p>
+<p>Hello world.</p>
 
-<ul>
-<li>I used R to generate 30,000 plots using <em>ggplot()</em>. I used the shell and <a href="https://ffmpeg.org/">ffmpeg</a> to animate those plots as a movie.</li>
-<li>I&rsquo;ve used the shell from VBA to send an Excel column of data into Stata, execute a summary statistic command, and then import the results back into Excel. I did this because Excel can&rsquo;t quickly get the percentiles of a dataset, but Stata can.</li>
-<li>I&rsquo;ve used the shell in Stata to execute a Python script to concatenate 10,000 text files, something that is harder in Stata.</li>
-<li>You can use the shell command in Matlab, Stata, VBA, R, etc. to send an email from a Python script. Although the other languages are mostly capable of sending emails, sometimes it&rsquo;s easier to figure it out in just one language.</li>
-</ul>
+<p>I wanted to start a blog. I wanted to set it up for free, use a custom URL (and not <em>something.bloggingplatform.com</em>), and be able to both blog and create tutorials. I didn&rsquo;t mind it possibly being technical<sup class="footnote-ref" id="fnref:1"><a rel="footnote" href="#fn:1">1</a></sup>. Enter Jekyll.</p>
 
-<p>Last week, I had scripts open from R, Matlab, Python, Stata, VBA and EViews, because as great as your default language is, sometimes other languages have irreplaceable functionality.</p>
+<p><em>If you want to get your blog in 10 minutes, skip to below.</em></p>
 
-<p>You don&rsquo;t need to know too much about a program in order to be able to use its comparative advantage. EViews is good at time series, for example, and it has statistical tests that are harder in R, Stata, or Matlab to perform. And so, I learned just enough EViews to read in the data, do the test, and save out the results.</p>
+<h1 id="why-blog-with-jekyll">Why Blog with Jekyll?</h1>
 
-<h1 id="here-s-how-you-get-your-programs-to-talk-using-the-shell">Here&rsquo;s how you get your programs to talk using the shell:</h1>
+<p>Here&rsquo;s why you can and should blog with Jekyll (if you&rsquo;re a data scientist):</p>
 
-<ul>
-<li>Pick a language (let&rsquo;s choose R)</li>
-<li>Pick a second language that can do something that language A can&rsquo;t (let&rsquo;s choose Stata)</li>
-<li>In R, learn how to write lines of text to a text file</li>
-<li>In R, write Stata code to a &ldquo;.do&rdquo; file</li>
-<li>Once your Stata script is created, use the shell command in R to execute the Stata script (most statistical programming languages have a shell command)</li>
-<li>If necessary, you can then read the Stata output into R</li>
-</ul>
+<ol>
+<li>Jekyll has beautiful, free, open-source templates.</li>
+<li>GitHub will host your website for free<sup class="footnote-ref" id="fnref:2"><a rel="footnote" href="#fn:2">2</a></sup>.</li>
+<li>Jekyll is <a href="https://www.smashingmagazine.com/2015/11/modern-static-website-generators-next-big-thing/">static</a>.</li>
+<li>Jekyll can be simple to set up<sup class="footnote-ref" id="fnref:3"><a rel="footnote" href="#fn:3">3</a></sup>.</li>
+<li>I tried Wordpress and blogger.com and got frustrated.</li>
+<li>The blogging content you create is very portable (easy to take your posts from one blog site to another).</li>
+<li>Creating blogs in Markdown syntax is a dream (even for non-technical folks).</li>
+<li>You can manage your blog from your terminal</li>
+<li>You can manage your blog from your phone (if you have a GitHub-editing app)</li>
+</ol>
 
-<h1 id="a-hello-world-example">A &lsquo;Hello World&rsquo; example:</h1>
+<p>But if you don&rsquo;t like debugging occasional errors, you probably shouldn&rsquo;t blog with Jekyll.</p>
 
-<p>For example, let&rsquo;s say I want to make Stata print &ldquo;hello world&rdquo;. I can use R to write a script and then execute it using the shell.</p>
+<p>What is Jekyll, you ask? Jekyll is an open-source blogging platform. Anyone can write a template and post it, and anyone else can use that template. Perusing <a href="http://jekyllthemes.org/">Jekyllthemes.org</a>, you can pick out any template you&rsquo;d like.</p>
 
-<pre><code class="language-r"># Create the Stata file
-fileID &lt;- file(&quot;stata_file.do&quot;)
-writeLines('display &quot;hello world&quot;', fileID)
-close(fileID)
-</code></pre>
+<h1 id="how-did-i-get-started-with-jekyll">How did I get started with Jekyll?</h1>
 
-<p>In R, run the <code>system()</code> command to call the shell. Use the <code>&quot;Stata.exe&quot; do</code> command to execute the <em>.do</em> file.</p>
+<p>As a blogging noob, I&rsquo;ve discovered there are hundreds of ways to generate a blog (e.g., WordPress, Squarespace, blogger.com, Weebly, etc.). But when my colleague <a href="http://luiarthur.github.io/">Arthur Lui</a> showed me his blog, I wanted something similar. I first tried Wordpress, then tried blogspot, then gave up and followed Arthur&rsquo;s example and landed with Jekyll.</p>
 
-<pre><code class="language-r"># Execute the Stata file
-system(&quot;C:\Program Files\...\Stata.exe do stata_file.do&quot;)
-</code></pre>
+<h1 id="set-up-a-blog-in-10-minutes">Set up a blog in 10 minutes!</h1>
 
-<p>Taking it one step further, have Stata save the results to an output file.</p>
+<p>I followed this Jekyll <a href="https://www.smashingmagazine.com/2014/08/build-blog-jekyll-github-pages/">tutorial</a> to set up my first blog. I&rsquo;ll simplify those steps here to get you up and running quickly:</p>
 
-<pre><code class="language-r"># Create the Stata file
-fileID &lt;- file(&quot;stata_file.do&quot;)
-writeLines('log using file.log', fileID)
-writeLines('display &quot;hello world&quot;', fileID)
-writeLines('log close', fileID)
-close(fileID)
-# Execute the stata script
-system(&quot;C:\Program Files\...\Stata.exe do stata_file.do&quot;)
-</code></pre>
+<ol>
+<li>Get a GitHub account. (2 min)</li>
+<li>Go to <a href="http://jekyllthemes.org/">Jekyllthemes.org</a>. All of these blog themes are free. Find one you like, and Fork the repo (i.e., &ldquo;repository&rdquo;). (2-60 min, depending on how long you peruse)</li>
+<li>In GitHub, rename the newly-forked repo from &ldquo;REPO name&rdquo; to &ldquo;yourgithubusername.github.io&rdquo;. (1 min)</li>
+<li>Now go to &ldquo;githubuserbame.github.io&rdquo;. Voila, you have a blog.</li>
+</ol>
 
-<p>Now, you&rsquo;ve written an R script that writes a Stata script and executes it. As an output, you&rsquo;ll have a &ldquo;.log&rdquo; file.</p>
+<p>And if you want to start writing posts, go to your &ldquo;_posts&rdquo; folder. Then create new files and follow the default templates that the repository provides. (The blogs will need to be written in Markdown syntax.)</p>
 
-<h1 id="takeaways">Takeaways</h1>
+<p>That was my 10 minute promise. If you feel a bit cheated or lost, go to the well-done <a href="https://www.smashingmagazine.com/2014/08/build-blog-jekyll-github-pages/">tutorial</a> and do all the steps. But the steps I listed are the essential steps to setting up a blog from scratch. So if you want to make a few blogs really quickly, after you figure out the first one the others follow nicely. For example, once I finished the tutorial, I followed those steps above to try two other themes before deciding on the <a href="https://github.com/bencentra/centrarium">Centrarium</a> theme.</p>
 
-<p>If you have most of your analysis done in one language, but another has some comparative advantages, perhaps it&rsquo;s time to use the shell. This is like using the <code>Rcpp</code> package, but for any language you need.</p>
+<p>To get Centrarium to work, I did have to change some configurations in the &ldquo;_config.yml&rdquo;, so there can be some minor debugging depending on the theme you choose. But with a little patience and some Googling, you&rsquo;ll get it.</p>
+
+<h1 id="add-to-jekyll-a-custom-url-from-godaddy">Add to Jekyll a custom URL from GoDaddy</h1>
+
+<p>You&rsquo;ll notice I have a custom URL and not &ldquo;bryanwhiting.github.io&rdquo;. I used GoDaddy to get a domain. (I have no affiliation with GoDaddy.) Here&rsquo;s how I linked GoDaddy with my GitHub Jekyll blog:</p>
+
+<ol>
+<li>Go to GoDaddy. Get a domain.</li>
+<li>In your Github repo, change (or create) a CNAME file in the main directory. (See my <a href="https://github.com/bryanwhiting/bryanwhiting.github.io/blob/master/CNAME">CNAME</a> file for an example). And for the CNAME file contents, just type in the new &ldquo;www&rdquo; that you registered through GoDaddy.</li>
+<li>Then, on GoDaddy, go to the section &ldquo;DNS Management&rdquo;. Here&rsquo;s where you tell GoDaddy how to connect your newly purchased &ldquo;www&rdquo; with GitHub. Create the following connections:</li>
+<li>[Type, Name, Value, TTL] = [A, @, 192.30.252.153, 600 seconds]</li>
+<li>[Type, Name, Value, TTL] = [A, @, 192.30.252.154, 600 seconds]</li>
+<li>[Type, Name, Value, TTL] = [CNAME, ftp, yourgithubusername.github.io, 600 seconds]</li>
+<li>[Type, Name, Value, TTL] = [CNAME, www, yourgithubusername.github.io, 600 seconds]</li>
+</ol>
+
+<p>If you have the CNAME file in your GitHub folder, GitHub and GoDaddy will talk and after a few minutes your custom &ldquo;www&rdquo; will work. You don&rsquo;t technically need the two [A] steps, but those connections allow users to type &ldquo;<a href="http://bryanwhiting.com">bryanwhiting.com</a>&rdquo; instead of &ldquo;www.bryanwhiting.com&rdquo;. It can take up to 24 hours before these [A] connections enable, so don&rsquo;t be worried if the short URL doesn&rsquo;t work first try. But the full URL should work soon enough.</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">Specifically, I was interested in being able to use the command line for my posts. Additionally, I didn&rsquo;t mind seeing or using a little bit of code.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">Someone has to <a href="https://www.google.com/search?q=what+does+it+mean+to+host+a+website&amp;oq=what+does+it+mean+to+host+&amp;aqs=chrome.0.0j69i57j0l4.2810j0j9&amp;sourceid=chrome&amp;ie=UTF-8">host</a> it (i.e., store and display all the files). I started off trying to set up a WordPress blog, but you have to pay another company to <a href="http://www.webhostingbest10.com/web-hosting-reviews">host</a>. I didn&rsquo;t want to bother.
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:3">If you try to set it up by following the instructions on <a href="https://jekyllrb.com/">jekyllrb.com</a>, that&rsquo;s the complicated way. That&rsquo;s how I originally started, got lost for five hours, and stopped. Six months later, I found a better way.
+ <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
+</ol>
+</div>
 
               
             </div>
@@ -338,8 +362,6 @@ system(&quot;C:\Program Files\...\Stata.exe do stata_file.do&quot;)
                     
   <a class="tag tag--primary tag--small" href="https://www.bryanwhiting.com//tags/productivity/">productivity</a>
 
-  <a class="tag tag--primary tag--small" href="https://www.bryanwhiting.com//tags/code/">code</a>
-
                   </div>
                 
               
@@ -350,7 +372,7 @@ system(&quot;C:\Program Files\...\Stata.exe do stata_file.do&quot;)
       
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://www.bryanwhiting.com/post/2017/02/the-dataviz-battle-plotly-vs-ggplot2/" data-tooltip="The DataViz battle: Plotly vs ggplot2">
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://www.bryanwhiting.com/2017/01/the-shell-and-its-many-languages/" data-tooltip="The Shell and its Many Languages">
           
             <i class="fa fa-angle-left"></i>
             <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
@@ -358,7 +380,7 @@ system(&quot;C:\Program Files\...\Stata.exe do stata_file.do&quot;)
         </li>
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://www.bryanwhiting.com/post/2016/11/starting-with-jekyll/" data-tooltip="Starting with Jekyll">
+            <a class="post-action-btn btn btn--disabled">
           
             <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
             <i class="fa fa-angle-right"></i>
@@ -375,17 +397,17 @@ system(&quot;C:\Program Files\...\Stata.exe do stata_file.do&quot;)
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f01%2fthe-shell-and-its-many-languages%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fwww.bryanwhiting.com%2f2016%2f11%2fstarting-with-jekyll%2f">
           <i class="fa fa-google-plus"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f01%2fthe-shell-and-its-many-languages%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.bryanwhiting.com%2f2016%2f11%2fstarting-with-jekyll%2f">
           <i class="fa fa-facebook-official"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f01%2fthe-shell-and-its-many-languages%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwww.bryanwhiting.com%2f2016%2f11%2fstarting-with-jekyll%2f">
           <i class="fa fa-twitter"></i>
         </a>
       </li>
@@ -431,7 +453,7 @@ system(&quot;C:\Program Files\...\Stata.exe do stata_file.do&quot;)
       
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://www.bryanwhiting.com/post/2017/02/the-dataviz-battle-plotly-vs-ggplot2/" data-tooltip="The DataViz battle: Plotly vs ggplot2">
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://www.bryanwhiting.com/2017/01/the-shell-and-its-many-languages/" data-tooltip="The Shell and its Many Languages">
           
             <i class="fa fa-angle-left"></i>
             <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
@@ -439,7 +461,7 @@ system(&quot;C:\Program Files\...\Stata.exe do stata_file.do&quot;)
         </li>
         <li class="post-action">
           
-            <a class="post-action-btn btn btn--default tooltip--top" href="https://www.bryanwhiting.com/post/2016/11/starting-with-jekyll/" data-tooltip="Starting with Jekyll">
+            <a class="post-action-btn btn btn--disabled">
           
             <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
             <i class="fa fa-angle-right"></i>
@@ -456,17 +478,17 @@ system(&quot;C:\Program Files\...\Stata.exe do stata_file.do&quot;)
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f01%2fthe-shell-and-its-many-languages%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fwww.bryanwhiting.com%2f2016%2f11%2fstarting-with-jekyll%2f">
           <i class="fa fa-google-plus"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f01%2fthe-shell-and-its-many-languages%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.bryanwhiting.com%2f2016%2f11%2fstarting-with-jekyll%2f">
           <i class="fa fa-facebook-official"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f01%2fthe-shell-and-its-many-languages%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwww.bryanwhiting.com%2f2016%2f11%2fstarting-with-jekyll%2f">
           <i class="fa fa-twitter"></i>
         </a>
       </li>
@@ -493,17 +515,17 @@ system(&quot;C:\Program Files\...\Stata.exe do stata_file.do&quot;)
       <div id="share-options-bar" class="share-options-bar" data-behavior="4">
   <ul class="share-options">
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f01%2fthe-shell-and-its-many-languages%2f">
+      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fwww.bryanwhiting.com%2f2016%2f11%2fstarting-with-jekyll%2f">
         <i class="fa fa-google-plus"></i><span>Share on Google Plus</span>
       </a>
     </li>
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f01%2fthe-shell-and-its-many-languages%2f">
+      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.bryanwhiting.com%2f2016%2f11%2fstarting-with-jekyll%2f">
         <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
       </a>
     </li>
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwww.bryanwhiting.com%2fpost%2f2017%2f01%2fthe-shell-and-its-many-languages%2f">
+      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwww.bryanwhiting.com%2f2016%2f11%2fstarting-with-jekyll%2f">
         <i class="fa fa-twitter"></i><span>Share on Twitter</span>
       </a>
     </li>
@@ -563,7 +585,7 @@ system(&quot;C:\Program Files\...\Stata.exe do stata_file.do&quot;)
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://www.bryanwhiting.com/post/2017/06/yet-another-weekly-planner/">
+              <a class="link-unstyled" href="https://www.bryanwhiting.com/2017/06/yet-another-weekly-planner/">
                 <h3 class="media-heading">Yet Another Weekly Planner</h3>
               </a>
               <span class="media-meta">
@@ -581,7 +603,7 @@ I wanted a scrum for my personal life, but I didn&rsquo;t find it practical to u
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://www.bryanwhiting.com/post/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/">
+              <a class="link-unstyled" href="https://www.bryanwhiting.com/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/">
                 <h3 class="media-heading">Blogdown and Tranquilpeak Hosted on Netlify: a Deep Dive</h3>
               </a>
               <span class="media-meta">
@@ -599,7 +621,7 @@ Why Hugo? One of my first posts was about blogging with Jekyll hosted on GitHub.
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://www.bryanwhiting.com/post/2017/02/the-dataviz-battle-plotly-vs-ggplot2/">
+              <a class="link-unstyled" href="https://www.bryanwhiting.com/2017/02/the-dataviz-battle-plotly-vs-ggplot2/">
                 <h3 class="media-heading">The DataViz battle: Plotly vs ggplot2</h3>
               </a>
               <span class="media-meta">
@@ -617,7 +639,7 @@ For this post, I assume that you have a working knowledge of the dplyr (or magri
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://www.bryanwhiting.com/post/2017/01/the-shell-and-its-many-languages/">
+              <a class="link-unstyled" href="https://www.bryanwhiting.com/2017/01/the-shell-and-its-many-languages/">
                 <h3 class="media-heading">The Shell and its Many Languages</h3>
               </a>
               <span class="media-meta">
@@ -635,7 +657,7 @@ For this post, I assume that you have a working knowledge of the dplyr (or magri
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://www.bryanwhiting.com/post/2016/11/starting-with-jekyll/">
+              <a class="link-unstyled" href="https://www.bryanwhiting.com/2016/11/starting-with-jekyll/">
                 <h3 class="media-heading">Starting with Jekyll</h3>
               </a>
               <span class="media-meta">
@@ -720,9 +742,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/www.bryanwhiting.com\/post\/2017\/01\/the-shell-and-its-many-languages\/';
+          this.page.url = 'https:\/\/www.bryanwhiting.com\/2016\/11\/starting-with-jekyll\/';
           
-            this.page.identifier = '\/post\/2017\/01\/the-shell-and-its-many-languages\/'
+            this.page.identifier = '\/2016\/11\/starting-with-jekyll\/'
           
         };
         (function() {

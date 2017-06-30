@@ -13,20 +13,20 @@
     
     <item>
       <title>The Shell and its Many Languages</title>
-      <link>https://www.bryanwhiting.com/post/2017/01/the-shell-and-its-many-languages/</link>
+      <link>https://www.bryanwhiting.com/2017/01/the-shell-and-its-many-languages/</link>
       <pubDate>Sat, 14 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://www.bryanwhiting.com/post/2017/01/the-shell-and-its-many-languages/</guid>
+      <guid>https://www.bryanwhiting.com/2017/01/the-shell-and-its-many-languages/</guid>
       <description>If you don&amp;rsquo;t know how to use the shell/terminal/command line, you should. Why? Here&amp;rsquo;s a sampling of I&amp;rsquo;ve done in the last month:
  I used R to generate 30,000 plots using ggplot(). I used the shell and ffmpeg to animate those plots as a movie. I&amp;rsquo;ve used the shell from VBA to send an Excel column of data into Stata, execute a summary statistic command, and then import the results back into Excel.</description>
     </item>
     
     <item>
       <title>Starting with Jekyll</title>
-      <link>https://www.bryanwhiting.com/post/2016/11/starting-with-jekyll/</link>
+      <link>https://www.bryanwhiting.com/2016/11/starting-with-jekyll/</link>
       <pubDate>Mon, 07 Nov 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://www.bryanwhiting.com/post/2016/11/starting-with-jekyll/</guid>
+      <guid>https://www.bryanwhiting.com/2016/11/starting-with-jekyll/</guid>
       <description>Hello world.
 I wanted to start a blog. I wanted to set it up for free, use a custom URL (and not something.bloggingplatform.com), and be able to both blog and create tutorials. I didn&amp;rsquo;t mind it possibly being technical1. Enter Jekyll.
 If you want to get your blog in 10 minutes, skip to below.
