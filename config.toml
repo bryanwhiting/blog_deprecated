@@ -21,6 +21,7 @@ disqusShortname = "bryanwhiting1"
 googleAnalytics = "UA-85616639-1"
 paginate = 7
 canonifyurls = true
+ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 
 [permalinks]
   post = "/post/:year/:month/:slug/"
