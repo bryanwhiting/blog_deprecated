@@ -2,102 +2,102 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on My take on data</title>
-    <link>/tags/</link>
+    <link>https://www.bryanwhiting.com/tags/</link>
     <description>Recent content in Tags on My take on data</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 23 Jun 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.bryanwhiting.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Agile</title>
-      <link>/tags/agile/</link>
+      <link>https://www.bryanwhiting.com/tags/agile/</link>
       <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>/tags/agile/</guid>
+      <guid>https://www.bryanwhiting.com/tags/agile/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Bash</title>
-      <link>/tags/bash/</link>
+      <link>https://www.bryanwhiting.com/tags/bash/</link>
       <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>/tags/bash/</guid>
+      <guid>https://www.bryanwhiting.com/tags/bash/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Blogdown</title>
-      <link>/tags/blogdown/</link>
+      <link>https://www.bryanwhiting.com/tags/blogdown/</link>
       <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>/tags/blogdown/</guid>
+      <guid>https://www.bryanwhiting.com/tags/blogdown/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Code</title>
-      <link>/tags/code/</link>
+      <link>https://www.bryanwhiting.com/tags/code/</link>
       <pubDate>Sat, 14 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>/tags/code/</guid>
+      <guid>https://www.bryanwhiting.com/tags/code/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Dataviz</title>
-      <link>/tags/dataviz/</link>
+      <link>https://www.bryanwhiting.com/tags/dataviz/</link>
       <pubDate>Fri, 10 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>/tags/dataviz/</guid>
+      <guid>https://www.bryanwhiting.com/tags/dataviz/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Hugo</title>
-      <link>/tags/hugo/</link>
+      <link>https://www.bryanwhiting.com/tags/hugo/</link>
       <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>/tags/hugo/</guid>
+      <guid>https://www.bryanwhiting.com/tags/hugo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Innovations</title>
-      <link>/tags/innovations/</link>
+      <link>https://www.bryanwhiting.com/tags/innovations/</link>
       <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>/tags/innovations/</guid>
+      <guid>https://www.bryanwhiting.com/tags/innovations/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Productivity</title>
-      <link>/tags/productivity/</link>
+      <link>https://www.bryanwhiting.com/tags/productivity/</link>
       <pubDate>Sat, 14 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>/tags/productivity/</guid>
+      <guid>https://www.bryanwhiting.com/tags/productivity/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Projects</title>
-      <link>/tags/projects/</link>
+      <link>https://www.bryanwhiting.com/tags/projects/</link>
       <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>/tags/projects/</guid>
+      <guid>https://www.bryanwhiting.com/tags/projects/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R</title>
-      <link>/tags/r/</link>
+      <link>https://www.bryanwhiting.com/tags/r/</link>
       <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>/tags/r/</guid>
+      <guid>https://www.bryanwhiting.com/tags/r/</guid>
       <description></description>
     </item>
     

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Productivity on My take on data</title>
-    <link>/categories/productivity/</link>
+    <link>https://www.bryanwhiting.com/categories/productivity/</link>
     <description>Recent content in Productivity on My take on data</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 23 Jun 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/productivity/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.bryanwhiting.com/categories/productivity/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Yet Another Weekly Planner</title>
-      <link>/post/2017/06/yet-another-weekly-planner/</link>
+      <link>https://www.bryanwhiting.com/post/2017/06/yet-another-weekly-planner/</link>
       <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017/06/yet-another-weekly-planner/</guid>
+      <guid>https://www.bryanwhiting.com/post/2017/06/yet-another-weekly-planner/</guid>
       <description>I believe that each creation has four phases: dreaming, planning, acting, and reflecting. Think about it - is there anything you&amp;rsquo;ve ever made that didn&amp;rsquo;t first enter into your mind, you came up with some game plan, you carried it out, and then when you were done you could see what went well and where you improved? Isn&amp;rsquo;t this what scrums are really about?
 I wanted a scrum for my personal life, but I didn&amp;rsquo;t find it practical to use the many online resources available.</description>
     </item>

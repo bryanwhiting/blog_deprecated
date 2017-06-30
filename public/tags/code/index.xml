@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Code on My take on data</title>
-    <link>/tags/code/</link>
+    <link>https://www.bryanwhiting.com/tags/code/</link>
     <description>Recent content in Code on My take on data</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 14 Jan 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/code/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.bryanwhiting.com/tags/code/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>The Shell and its Many Languages</title>
-      <link>/post/2017/01/the-shell-and-its-many-languages/</link>
+      <link>https://www.bryanwhiting.com/post/2017/01/the-shell-and-its-many-languages/</link>
       <pubDate>Sat, 14 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>/post/2017/01/the-shell-and-its-many-languages/</guid>
+      <guid>https://www.bryanwhiting.com/post/2017/01/the-shell-and-its-many-languages/</guid>
       <description>If you don&amp;rsquo;t know how to use the shell/terminal/command line, you should. Why? Here&amp;rsquo;s a sampling of I&amp;rsquo;ve done in the last month:
  I used R to generate 30,000 plots using ggplot(). I used the shell and ffmpeg to animate those plots as a movie. I&amp;rsquo;ve used the shell from VBA to send an Excel column of data into Stata, execute a summary statistic command, and then import the results back into Excel.</description>
     </item>
