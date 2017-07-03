@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>My take on data</title>
-    <link>https://www.bryanwhiting.com/</link>
-    <description>Recent content on My take on data</description>
+    <title>Posts on My take on data</title>
+    <link>https://www.bryanwhiting.com/post/</link>
+    <description>Recent content in Posts on My take on data</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 03 Jul 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://www.bryanwhiting.com/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.bryanwhiting.com/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,26 +19,6 @@
       <guid>https://www.bryanwhiting.com/2017/07/rmd-test/</guid>
       <description>This is a test of an Rmd file
 hist(rnorm(100)) </description>
-    </item>
-    
-    <item>
-      <title>Projects</title>
-      <link>https://www.bryanwhiting.com/projects/</link>
-      <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.bryanwhiting.com/projects/</guid>
-      <description>Some projects I&amp;rsquo;ve worked on. Some are complete, some are in progress. If it&amp;rsquo;s research, I say whether it&amp;rsquo;s complete or not. If it&amp;rsquo;s a product, I say that it&amp;rsquo;s either &amp;ldquo;In development&amp;rdquo; or in &amp;ldquo;beta&amp;rdquo;.
-   Project Description Type/Status     LDS conference analytics dashboard An R Shiny tool to analyze word frequencies and trends for the semi-annual LDS General Conference talks In development   Comparing GLMs, hurdle models, and zero-inflated models to detect discrepancies in banking overdrafts A regulatory framework to detect behavioral differences in overdraft fees between low-income and high-income users Complete   the garden A meditative planning tool Beta    </description>
-    </item>
-    
-    <item>
-      <title>Why I Write</title>
-      <link>https://www.bryanwhiting.com/about/</link>
-      <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.bryanwhiting.com/about/</guid>
-      <description>I want to share. And I believe that writing is a process where scrambled thoughts can be converted into shareable information.
-In math, processes are called functions. In writing, my thoughts are the inputs, writing is the function, and this post is my output. In statistics, the truth is unattainable, only estimable. Writing is the function that uses my thoughts to estimate truth. And bias is the distance from the truth.</description>
     </item>
     
     <item>

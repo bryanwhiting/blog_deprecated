@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://www.bryanwhiting.com/2017/07/rmd-test/</loc>
+    <lastmod>2017-07-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.bryanwhiting.com/projects/</loc>
     <lastmod>2017-06-23T00:00:00+00:00</lastmod>
   </url>
@@ -91,12 +96,18 @@
   
   <url>
     <loc>https://www.bryanwhiting.com/</loc>
-    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
+    <lastmod>2017-07-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.bryanwhiting.com/post/</loc>
+    <lastmod>2017-07-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.bryanwhiting.com/categories/productivity/</loc>
     <lastmod>2017-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -104,12 +115,6 @@
   <url>
     <loc>https://www.bryanwhiting.com/tags/productivity/</loc>
     <lastmod>2017-01-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.bryanwhiting.com/categories/productivity/</loc>
-    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
