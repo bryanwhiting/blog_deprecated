@@ -2,23 +2,78 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Code on My take on data</title>
-    <link>https://www.bryanwhiting.com/tags/code/</link>
+    <link>/tags/code/index.xml</link>
     <description>Recent content in Code on My take on data</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 14 Jan 2017 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://www.bryanwhiting.com/tags/code/index.xml" rel="self" type="application/rss+xml" />
-    
+    <atom:link href="/tags/code/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>The Shell and its Many Languages</title>
-      <link>https://www.bryanwhiting.com/2017/01/the-shell-and-its-many-languages/</link>
+      <link>/2017/01/the-shell-and-its-many-languages/</link>
       <pubDate>Sat, 14 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://www.bryanwhiting.com/2017/01/the-shell-and-its-many-languages/</guid>
-      <description>If you don&amp;rsquo;t know how to use the shell/terminal/command line, you should. Why? Here&amp;rsquo;s a sampling of I&amp;rsquo;ve done in the last month:
- I used R to generate 30,000 plots using ggplot(). I used the shell and ffmpeg to animate those plots as a movie. I&amp;rsquo;ve used the shell from VBA to send an Excel column of data into Stata, execute a summary statistic command, and then import the results back into Excel.</description>
+      <guid>/2017/01/the-shell-and-its-many-languages/</guid>
+      <description>
+
+&lt;p&gt;If you don&amp;rsquo;t know how to use the shell/terminal/command line, you should. Why? Here&amp;rsquo;s a sampling of I&amp;rsquo;ve done in the last month:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I used R to generate 30,000 plots using &lt;em&gt;ggplot()&lt;/em&gt;. I used the shell and &lt;a href=&#34;https://ffmpeg.org/&#34;&gt;ffmpeg&lt;/a&gt; to animate those plots as a movie.&lt;/li&gt;
+&lt;li&gt;I&amp;rsquo;ve used the shell from VBA to send an Excel column of data into Stata, execute a summary statistic command, and then import the results back into Excel. I did this because Excel can&amp;rsquo;t quickly get the percentiles of a dataset, but Stata can.&lt;/li&gt;
+&lt;li&gt;I&amp;rsquo;ve used the shell in Stata to execute a Python script to concatenate 10,000 text files, something that is harder in Stata.&lt;/li&gt;
+&lt;li&gt;You can use the shell command in Matlab, Stata, VBA, R, etc. to send an email from a Python script. Although the other languages are mostly capable of sending emails, sometimes it&amp;rsquo;s easier to figure it out in just one language.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Last week, I had scripts open from R, Matlab, Python, Stata, VBA and EViews, because as great as your default language is, sometimes other languages have irreplaceable functionality.&lt;/p&gt;
+
+&lt;p&gt;You don&amp;rsquo;t need to know too much about a program in order to be able to use its comparative advantage. EViews is good at time series, for example, and it has statistical tests that are harder in R, Stata, or Matlab to perform. And so, I learned just enough EViews to read in the data, do the test, and save out the results.&lt;/p&gt;
+
+&lt;h1 id=&#34;here-s-how-you-get-your-programs-to-talk-using-the-shell&#34;&gt;Here&amp;rsquo;s how you get your programs to talk using the shell:&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Pick a language (let&amp;rsquo;s choose R)&lt;/li&gt;
+&lt;li&gt;Pick a second language that can do something that language A can&amp;rsquo;t (let&amp;rsquo;s choose Stata)&lt;/li&gt;
+&lt;li&gt;In R, learn how to write lines of text to a text file&lt;/li&gt;
+&lt;li&gt;In R, write Stata code to a &amp;ldquo;.do&amp;rdquo; file&lt;/li&gt;
+&lt;li&gt;Once your Stata script is created, use the shell command in R to execute the Stata script (most statistical programming languages have a shell command)&lt;/li&gt;
+&lt;li&gt;If necessary, you can then read the Stata output into R&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;a-hello-world-example&#34;&gt;A &amp;lsquo;Hello World&amp;rsquo; example:&lt;/h1&gt;
+
+&lt;p&gt;For example, let&amp;rsquo;s say I want to make Stata print &amp;ldquo;hello world&amp;rdquo;. I can use R to write a script and then execute it using the shell.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;# Create the Stata file
+fileID &amp;lt;- file(&amp;quot;stata_file.do&amp;quot;)
+writeLines(&#39;display &amp;quot;hello world&amp;quot;&#39;, fileID)
+close(fileID)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In R, run the &lt;code&gt;system()&lt;/code&gt; command to call the shell. Use the &lt;code&gt;&amp;quot;Stata.exe&amp;quot; do&lt;/code&gt; command to execute the &lt;em&gt;.do&lt;/em&gt; file.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;# Execute the Stata file
+system(&amp;quot;C:\Program Files\...\Stata.exe do stata_file.do&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Taking it one step further, have Stata save the results to an output file.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;# Create the Stata file
+fileID &amp;lt;- file(&amp;quot;stata_file.do&amp;quot;)
+writeLines(&#39;log using file.log&#39;, fileID)
+writeLines(&#39;display &amp;quot;hello world&amp;quot;&#39;, fileID)
+writeLines(&#39;log close&#39;, fileID)
+close(fileID)
+# Execute the stata script
+system(&amp;quot;C:\Program Files\...\Stata.exe do stata_file.do&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, you&amp;rsquo;ve written an R script that writes a Stata script and executes it. As an output, you&amp;rsquo;ll have a &amp;ldquo;.log&amp;rdquo; file.&lt;/p&gt;
+
+&lt;h1 id=&#34;takeaways&#34;&gt;Takeaways&lt;/h1&gt;
+
+&lt;p&gt;If you have most of your analysis done in one language, but another has some comparative advantages, perhaps it&amp;rsquo;s time to use the shell. This is like using the &lt;code&gt;Rcpp&lt;/code&gt; package, but for any language you need.&lt;/p&gt;
+</description>
     </item>
     
   </channel>

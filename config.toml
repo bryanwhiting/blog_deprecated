@@ -163,7 +163,7 @@ ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
   # Otherwise put your image in folder `static/_images/` (development)  or in `source/assets/images/` if you can't or don't want to build the theme,
   # and use relative url : `your-image.png`
   # coverImage = "cover.jpg"
-  coverImage = "durango-road-trimmed.JPG"
+  coverImage = "durango-blurred.JPG"
 
   # Display an image gallery at the end of a post which have photos variables (false: disabled, true: enabled)
   imageGallery = true

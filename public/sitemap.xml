@@ -1,148 +1,146 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://www.bryanwhiting.com/2017/07/rmd-test/</loc>
+    <loc>/2017/07/rmd-test/</loc>
     <lastmod>2017-07-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/2017/07/rmd-test-no-figure/</loc>
+    <loc>/2017/07/rmd-test/</loc>
     <lastmod>2017-07-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/projects/</loc>
+    <loc>/2017/07/rmd-test-no-figure/</loc>
+    <lastmod>2017-07-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/projects/</loc>
     <lastmod>2017-06-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/about/</loc>
+    <loc>/about/</loc>
     <lastmod>2017-06-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/2017/06/yet-another-weekly-planner/</loc>
+    <loc>/2017/06/yet-another-weekly-planner/</loc>
     <lastmod>2017-06-23T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/</loc>
+    <loc>/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/</loc>
     <lastmod>2017-06-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/2017/02/the-dataviz-battle-plotly-vs-ggplot2/</loc>
+    <loc>/2017/02/the-dataviz-battle-plotly-vs-ggplot2/</loc>
     <lastmod>2017-02-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/2017/01/the-shell-and-its-many-languages/</loc>
+    <loc>/2017/01/the-shell-and-its-many-languages/</loc>
     <lastmod>2017-01-14T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/2016/11/starting-with-jekyll/</loc>
+    <loc>/2016/11/starting-with-jekyll/</loc>
     <lastmod>2016-11-07T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/tags/agile/</loc>
+    <loc>/tags/agile/</loc>
     <lastmod>2017-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/archives/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.bryanwhiting.com/tags/bash/</loc>
+    <loc>/tags/bash/</loc>
     <lastmod>2017-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/tags/blogdown/</loc>
+    <loc>/tags/blogdown/</loc>
     <lastmod>2017-06-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/categories/</loc>
+    <loc>/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/tags/code/</loc>
+    <loc>/tags/code/</loc>
     <lastmod>2017-01-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/tags/dataviz/</loc>
+    <loc>/tags/dataviz/</loc>
     <lastmod>2017-02-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/tags/hugo/</loc>
+    <loc>/tags/hugo/</loc>
     <lastmod>2017-06-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/tags/innovations/</loc>
+    <loc>/tags/innovations/</loc>
     <lastmod>2017-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/</loc>
+    <loc>/</loc>
     <lastmod>2017-07-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/post/</loc>
+    <loc>/post/</loc>
     <lastmod>2017-07-03T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/categories/productivity/</loc>
-    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.bryanwhiting.com/tags/productivity/</loc>
+    <loc>/tags/productivity/</loc>
     <lastmod>2017-01-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/tags/projects/</loc>
+    <loc>/categories/productivity/</loc>
     <lastmod>2017-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/tags/r/</loc>
+    <loc>/tags/projects/</loc>
     <lastmod>2017-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/tags/</loc>
+    <loc>/tags/r/</loc>
     <lastmod>2017-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.bryanwhiting.com/categories/tutorials/</loc>
+    <loc>/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/tutorials/</loc>
     <lastmod>2017-06-20T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
