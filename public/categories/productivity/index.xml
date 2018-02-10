@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Productivity on My take on data</title>
-    <link>/categories/productivity/index.xml</link>
+    <link>/categories/productivity/</link>
     <description>Recent content in Productivity on My take on data</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="/categories/productivity/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 23 Jun 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/productivity/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Yet Another Weekly Planner</title>
@@ -14,16 +17,8 @@
       <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
       
       <guid>/2017/06/yet-another-weekly-planner/</guid>
-      <description>&lt;p&gt;I believe that each creation has four phases: dreaming, planning, acting, and reflecting. Think about it - is there anything you&amp;rsquo;ve ever made that didn&amp;rsquo;t first enter into your mind, you came up with some game plan, you carried it out, and then when you were done you could see what went well and where you improved? Isn&amp;rsquo;t this what &lt;a href=&#34;https://en.wikipedia.org/wiki/Scrum_(software_development)&#34;&gt;scrums&lt;/a&gt; are really about?&lt;/p&gt;
-
-&lt;p&gt;I wanted a scrum for my personal life, but I didn&amp;rsquo;t find it practical to use the many online resources available. I investigated many, such as &lt;a href=&#34;https://craft.io/&#34;&gt;craft.io&lt;/a&gt;, and &lt;a href=&#34;https://taiga.io/&#34;&gt;Taiga&lt;/a&gt;. While these are great for product development, I still didn&amp;rsquo;t think they met my needs as someone who wants to include both a trip to the grocery store as well as writing a blog post in my backlog. My life isn&amp;rsquo;t quite a product, but I&amp;rsquo;d like to get things done in a similar way - dream, plan, execute, and reflect.&lt;/p&gt;
-
-&lt;p&gt;This is exactly why I created &lt;code&gt;the garden&lt;/code&gt;. It&amp;rsquo;s a full-circle planning and reporting tool designed to make you not only get stuff done, but become a better person. It combines journaling and planning, so you don&amp;rsquo;t just write down meaningless task lists and chores. Yes, you could be going to get the oil changed, but isn&amp;rsquo;t it better if you were focusing this week on taking better care of your car? And to do that, your goal is to get the oil changed? A small, but powerful change in perspective.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;the garden&lt;/code&gt; is a combination between planning and journaling. I use R and bash to do the planning, and &lt;a href=&#34;http://jrnl.sh/&#34;&gt;jrnl&lt;/a&gt; to do the journaling. Take a look below to see if this is a useful tool. If it is, shoot me a note.&lt;/p&gt;
-
-&lt;p&gt;Click here for &lt;a href=&#34;https://github.com/bryanwhiting/the-garden&#34;&gt;the garden&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>I believe that each creation has four phases: dreaming, planning, acting, and reflecting. Think about it - is there anything you&amp;rsquo;ve ever made that didn&amp;rsquo;t first enter into your mind, you came up with some game plan, you carried it out, and then when you were done you could see what went well and where you improved? Isn&amp;rsquo;t this what scrums are really about?
+I wanted a scrum for my personal life, but I didn&amp;rsquo;t find it practical to use the many online resources available.</description>
     </item>
     
   </channel>

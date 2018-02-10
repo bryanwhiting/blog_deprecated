@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Hugo on My take on data</title>
-    <link>/tags/hugo/index.xml</link>
+    <link>/tags/hugo/</link>
     <description>Recent content in Hugo on My take on data</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 20 Jun 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Blogdown and Tranquilpeak Hosted on Netlify: a Deep Dive</title>
@@ -14,171 +17,8 @@
       <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
       
       <guid>/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/</guid>
-      <description>
-
-&lt;p&gt;This blog will outline what I see as differences between Hugo and Jekyll, some benefits and drawbacks of using Netlify vs. GitHub pages to host, and how to launch the Hugo Tranquilpeak theme from scratch.&lt;/p&gt;
-
-&lt;h2 id=&#34;why-hugo&#34;&gt;Why Hugo?&lt;/h2&gt;
-
-&lt;p&gt;One of my first posts was about blogging with Jekyll hosted on GitHub. About six months after writing that post, I hit a few bugs trying to debug it and got frustrated because I had already forgotten all of what I binge-learned earlier. I was tired of re-updating my Jekyll code, and ultimately gave up since I didn&amp;rsquo;t use it often enough. And so I switched to Hugo and blogdown. Here are the reasons why I&amp;rsquo;ve already switched from Jekyll to Hugo:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Jekyll requires you to download and manage the software which caused me a lot of headaches and debugging. Blogdown manages all of the Hugo installations for you.&lt;/li&gt;
-&lt;li&gt;I wanted to be able to use R Markdown in my blogs and Jekyll doesn&amp;rsquo;t have a native integration. &lt;a href=&#34;http://brooksandrew.github.io/simpleblog/articles/blogging-with-r-markdown-and-jekyll-using-knitr/&#34;&gt;Andrew Brooks has a solution&lt;/a&gt; that allows you to use R Markdown and Jekyll, though I had trouble using it&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/li&gt;
-&lt;li&gt;Netlify allows HTTPS for custom URLs, whereas GitHub only allows HTTPS for &lt;code&gt;username.github.io&lt;/code&gt; pages (not custom URLs). Here&amp;rsquo;s a discussion on &lt;a href=&#34;https://bookdown.org/yihui/blogdown/github-pages.html&#34;&gt;GitHub pages v. Netlify&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Configuring a custom URL on Netlify is extremely easy compared to GitHub pages. (If you don&amp;rsquo;t use a custom URL, you won&amp;rsquo;t like the one Netlify provides by default.)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;enter-blogdown&#34;&gt;Enter blogdown&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;blogdown&lt;/code&gt; is an R package that manages the Hugo software, which is a static website generator. Here&amp;rsquo;s the &lt;a href=&#34;https://github.com/rstudio/blogdown&#34;&gt;package on GitHub&lt;/a&gt;, which has a handy 5 min instruction to get your feet wet. Here&amp;rsquo;s the &lt;a href=&#34;https://bookdown.org/yihui/blogdown/&#34;&gt;official tutorial on blogdown&lt;/a&gt; and is a great resource.&lt;/p&gt;
-
-&lt;p&gt;You will spend some time getting to know blogdown and Hugo, and Hugo requires as much work figuring out as does Jekyll if you want to get into the gritty customization. That being said, blogdown makes it easy to get started and come back several months later without having to worry about managing all of the Jekyll packages.&lt;/p&gt;
-
-&lt;p&gt;A few things about blogdown and Hugo I&amp;rsquo;ve learned:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Hugo is a static site generator (meaning it makes a very basic website)&lt;/li&gt;
-&lt;li&gt;Hugo is software you download and run to build and compile your website&lt;/li&gt;
-&lt;li&gt;blogdown is a wrapper for Hugo terminal commands&lt;/li&gt;
-&lt;li&gt;blogdown renders R Markdown files (Hugo can&amp;rsquo;t)&lt;/li&gt;
-&lt;li&gt;blogdown automates installing everything you need for Hugo. (This was very difficult to do with Jekyll at first.)&lt;/li&gt;
-&lt;li&gt;blogdown runs the Hugo commands to compile your site locally&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;serve_site()&lt;/code&gt; lets you edit your posts and view the changes simultaneously with every save&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;build_site()&lt;/code&gt; prepares the site for production&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;blogdown-for-tranquilpeak-theme&#34;&gt;blogdown for Tranquilpeak theme&lt;/h2&gt;
-
-&lt;p&gt;Every Hugo site is different, and each has a different config file. So I&amp;rsquo;ll go step by step on how I launched my blog.&lt;/p&gt;
-
-&lt;h3 id=&#34;launch-your-website-in-5-minutes-locally&#34;&gt;Launch your website in 5 minutes locally&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Run &lt;code&gt;install_hugo()&lt;/code&gt; to get the latest version. You may have to update Hugo periodically, as it&amp;rsquo;s open source and keeps updating. So if you&amp;rsquo;re having issues building your site, try debugging using &lt;code&gt;install_hugo(force = T)&lt;/code&gt;.&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;Run &lt;code&gt;new_site()&lt;/code&gt; command to build a website from scratch. (Note, these two steps can save you hours of reading documentation if you go the Jekyll route.)&lt;/li&gt;
-&lt;li&gt;Make sure you &lt;a href=&#34;https://bookdown.org/yihui/blogdown/themes.html&#34;&gt;specify the theme&lt;/a&gt; you want, e.g. &lt;code&gt;new_site(theme = &#39;kakawait/hugo-tranquilpeak-theme&#39;)&lt;/code&gt;, because it&amp;rsquo;ll download the right &lt;code&gt;config.toml&lt;/code&gt;. Here&amp;rsquo;s a note from the docs:
-&lt;code&gt;...You need to be very careful when changing themes, because one theme can be drastically different with another theme in terms of the configurations. It is quite possible that a different theme will not work with your current config.toml. Again, you have to read the documentation of a theme to know what options are supported or required.&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Now the site is built, you&amp;rsquo;ll see several folders. The github Hugo theme is saved in &lt;code&gt;themes&lt;/code&gt;. The entire site is saved and compiled in &lt;code&gt;public&lt;/code&gt;. And Blogdown and Hugo do the work of preparing your content and putting it in the &lt;code&gt;public&lt;/code&gt; folder. Your posts are in &lt;code&gt;content&lt;/code&gt;, and your images are in &lt;code&gt;static&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;To get started, put all your blogs in the &lt;code&gt;content/post&lt;/code&gt;, and your site images in &lt;code&gt;static&lt;/code&gt; and run &lt;code&gt;build_site()&lt;/code&gt; when you&amp;rsquo;re ready.&lt;/li&gt;
-&lt;li&gt;If you run &lt;code&gt;new_post()&lt;/code&gt;, it&amp;rsquo;ll create a post in &lt;code&gt;content/post&lt;/code&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&#34;host-your-blog-on-netlify&#34;&gt;Host your blog on Netlify&lt;/h3&gt;
-
-&lt;p&gt;If you want to do GitHub pages, see &lt;a href=&#34;https://tclavelle.github.io/blog/blogdown_github/&#34;&gt;Tyler Clavelle&amp;rsquo;s tutorial&lt;/a&gt;, &lt;a href=&#34;https://proquestionasker.github.io/blog/Making_Site/&#34;&gt;Amber Thomas&amp;rsquo; tutorial&lt;/a&gt; or the &lt;a href=&#34;https://bookdown.org/yihui/blogdown/github-pages.html&#34;&gt;blogdown docs&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;I cover here how to use Netlify to host, which is extremely easy! Here are the steps:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Put your entire site as a repository on GitHub, Gitlab, or Bitbucket. (I did GitHub.)&lt;/li&gt;
-&lt;li&gt;Go to &lt;a href=&#34;https://www.netlify.com/&#34;&gt;Netlify&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Connect your GitHub accounts.&lt;/li&gt;
-&lt;li&gt;Click &lt;code&gt;New site from Git&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Continuous deployment: click &lt;code&gt;GitHub&lt;/code&gt;. You can limit access to only public repositories.&lt;/li&gt;
-&lt;li&gt;Click on your GitHub blog repo.
-
-&lt;ol&gt;
-&lt;li&gt;Branch to deploy: &lt;code&gt;master&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Build command: &lt;code&gt;hugo_0.19&lt;/code&gt; (&lt;a href=&#34;https://bookdown.org/yihui/blogdown/netlify.html&#34;&gt;See docs on build command&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Publish directory: &lt;code&gt;public&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-&lt;li&gt;Click &lt;code&gt;Deploy site&lt;/code&gt;. Netlify will generate a random URL &lt;code&gt;&amp;lt;netlify-name&amp;gt;.netlify.com&lt;/code&gt;, like &lt;code&gt;destiny-jones-84018.netlify.com&lt;/code&gt; and launch your site.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&#34;connecting-your-custom-domain&#34;&gt;Connecting your custom domain&lt;/h3&gt;
-
-&lt;p&gt;Netlify makes it very easy, more straightforward than GitHub pages to connect your custom domain.&lt;/p&gt;
-
-&lt;p&gt;Go to &lt;code&gt;Settings &amp;gt; Configure domain&lt;/code&gt;. Just add your custom domain in the space provided and update your &lt;a href=&#34;https://www.netlify.com/docs/custom-domains/#dns-configuration&#34;&gt;DNS configuration&lt;/a&gt;. For some reason, this took me forever to figure out on Jekyll and GitHub pages (it seemed like everyone knew how to do this but me&amp;hellip;).&lt;/p&gt;
-
-&lt;h3 id=&#34;encrypt-with-https&#34;&gt;Encrypt with HTTPS&lt;/h3&gt;
-
-&lt;p&gt;If you want, you can encrypt your site with HTTPS, as &lt;a href=&#34;https://bookdown.org/yihui/blogdown/github-pages.html&#34;&gt;Yihui recommends&lt;/a&gt;. Once your site is deployed, you can click the &lt;code&gt;HTTPS&lt;/code&gt; tab on Netlify and follow instructions.&lt;/p&gt;
-
-&lt;h3 id=&#34;connecting-disqus&#34;&gt;Connecting Disqus&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://disqus.com/&#34;&gt;Disqus&lt;/a&gt; is great for comments, but can be confusing to get set up. There are two parts - setting up a Disqus account and site and updating your Hugo &lt;code&gt;config.toml&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Set things up on Disqus:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Go to &lt;a href=&#34;https://disqus.com/&#34;&gt;disqus.com&lt;/a&gt; and create a profile.&lt;/li&gt;
-&lt;li&gt;Click on &lt;code&gt;Admin&lt;/code&gt; (or &lt;a href=&#34;www.disqus.com/admin&#34;&gt;www.disqus.com/admin&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;In the top left corner, click &lt;code&gt;Your sites&lt;/code&gt; then  &lt;code&gt;+ New&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Under website name, just put something like &amp;ldquo;data science blog&amp;rdquo;, or whatever you want to name it.&lt;/li&gt;
-&lt;li&gt;It&amp;rsquo;ll now ask you to connect to a platform. Skip this and go to &lt;code&gt;3. Configure Disqus&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;You&amp;rsquo;ll see your website name. Under &lt;code&gt;Website URL&lt;/code&gt;, put the &lt;code&gt;http://&amp;lt;netlify-name&amp;gt;.netlify.com&lt;/code&gt;. (I don&amp;rsquo;t know if you can put your custom domain here, but for me putting my Netlify URL worked fine.)&lt;/li&gt;
-&lt;li&gt;Go to &lt;code&gt;Settings&lt;/code&gt; and it&amp;rsquo;ll provide the shortname. Copy that.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Set up &lt;code&gt;config.toml&lt;/code&gt;:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Under baseurl I put my custom URL &amp;ldquo;&lt;a href=&#34;https://www.bryanwhiting.com&amp;quot;&#34;&gt;https://www.bryanwhiting.com&amp;quot;&lt;/a&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Note, Disqus won&amp;rsquo;t work when you use &lt;code&gt;serve_site()&lt;/code&gt; command. It only works on the live website.&lt;/p&gt;
-
-&lt;h3 id=&#34;change-the-background-photo&#34;&gt;Change the background photo&lt;/h3&gt;
-
-&lt;p&gt;This took me a minute to figure out, but I learned something about Hugo, so I&amp;rsquo;ll share it here.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Put your desired photo in &lt;code&gt;static/images&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Under `[author] picture = yourphoto.png&amp;rsquo;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;You&amp;rsquo;ll notice in the &lt;code&gt;public&lt;/code&gt; folder, the &lt;code&gt;static&lt;/code&gt; folder doesn&amp;rsquo;t exist, but &lt;code&gt;images&lt;/code&gt; does (after you &lt;code&gt;build_site()&lt;/code&gt;).&lt;/p&gt;
-
-&lt;h3 id=&#34;adding-a-static-about-page&#34;&gt;Adding a static About page&lt;/h3&gt;
-
-&lt;p&gt;I love the Tranquilpeak about popup page, but I wanted to have more than just a 10-word description. Here&amp;rsquo;s how you add one to the sidebar menu. The &lt;a href=&#34;https://bookdown.org/yihui/blogdown/configuration.html&#34;&gt;blogdown docs&lt;/a&gt; explain this.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Add a file in &lt;code&gt;content/about.md&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Add the following menu link in &lt;code&gt;config.toml&lt;/code&gt;. Note the default URL connects to &lt;code&gt;#about&lt;/code&gt;, which is defined in &lt;code&gt;theme/hugo-tranquilpeak-theme/scr/js/about.js&lt;/code&gt; and yields the cool pop-up. When you create &lt;code&gt;content/about.md&lt;/code&gt; and run &lt;code&gt;serve_site()&lt;/code&gt;, the file &lt;code&gt;public/about/index.html&lt;/code&gt; is created.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code&gt;[[menu.main]]
-  weight = 4
-  identifier = &amp;quot;about&amp;quot;
-  name = &amp;quot;About&amp;quot;
-  pre = &amp;quot;&amp;lt;i class=\&amp;quot;sidebar-button-icon fa fa-lg fa-question\&amp;quot;&amp;gt;&amp;lt;/i&amp;gt;&amp;quot;
-  #url = &amp;quot;/#about&amp;quot;
-  url = &amp;quot;/about/index.html&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;There&amp;rsquo;s probably a &lt;a href=&#34;https://bookdown.org/yihui/blogdown/templates.html#how-to&#34;&gt;better way to do this&lt;/a&gt;, but that&amp;rsquo;s beyond my current understanding.&lt;/p&gt;
-
-&lt;h3 id=&#34;categories-and-tags&#34;&gt;Categories and tags&lt;/h3&gt;
-
-&lt;p&gt;I could use the following YAML to tag this post. Since &lt;code&gt;&amp;quot;blog&amp;quot;&lt;/code&gt; is the second category, it&amp;rsquo;s considered a subcategory of tutorials. Each blog should fit into only one category, but have multiple tags.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;title: &#39;Blogdown and Tranquilpeak Theme Hosted on Netlify&#39;
-date: &#39;2017-06-20&#39;
-author: &#39;Bryan Whiting&#39;
-categories: [&amp;quot;tutorials&amp;quot;, &amp;quot;blog&amp;quot;]
-tags: [&amp;quot;blogdown&amp;quot;, &amp;quot;r&amp;quot;, &amp;quot;hugo&amp;quot;]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Debugging tip: I think you need to have the brackets &lt;code&gt;[]&lt;/code&gt; for the categories and tags, even if you only have one element. I was getting the error &amp;ldquo;Error while rendering &amp;ldquo;page&amp;rdquo;: template: &amp;hellip; &amp;lt;.&amp;gt;: range can&amp;rsquo;t iterate over &amp;hellip;&lt;tagname&gt;&amp;rdquo; when I lacked the brackets&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&#34;takeaways-and-next-steps&#34;&gt;Takeaways and next steps&lt;/h2&gt;
-
-&lt;p&gt;You&amp;rsquo;ve got a great blog ready to go! There are things I&amp;rsquo;d like to add to my Tranquilpeak site, such as a project page (similar to having a second post page). The key to learning how to do that may be &lt;a href=&#34;https://bookdown.org/yihui/blogdown/templates.html#how-to&#34;&gt;documented here&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&#34;footnotes&#34;&gt;
-
-&lt;hr /&gt;
-
-&lt;ol&gt;
-&lt;li id=&#34;fn:1&#34;&gt;Alternatively, I could knit the R Markdown file to HTML and Jekyll could read the HTML file, but each R Markdown post ultimately had a different formatting than the normal markdown posts.
- &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
-</description>
+      <description>This blog will outline what I see as differences between Hugo and Jekyll, some benefits and drawbacks of using Netlify vs. GitHub pages to host, and how to launch the Hugo Tranquilpeak theme from scratch.
+Why Hugo? One of my first posts was about blogging with Jekyll hosted on GitHub. About six months after writing that post, I hit a few bugs trying to debug it and got frustrated because I had already forgotten all of what I binge-learned earlier.</description>
     </item>
     
   </channel>
