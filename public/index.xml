@@ -6,37 +6,29 @@
     <description>Recent content on My take on data</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 03 Jul 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 19 Oct 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>rmd test</title>
-      <link>/2017/07/rmd-test/</link>
-      <pubDate>Mon, 03 Jul 2017 00:00:00 +0000</pubDate>
+      <title>Buying a used car, the data science way</title>
+      <link>/2017/10/buying-a-used-car-the-data-science-way/</link>
+      <pubDate>Thu, 19 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/07/rmd-test/</guid>
-      <description>This is a test of an Rmd file
-hist(rnorm(100)) </description>
+      <guid>/2017/10/buying-a-used-car-the-data-science-way/</guid>
+      <description>Buying a car, the data science way So you want to buy a car, but you don’t know anything about them? Welcome to my life.
+You show up at the dealer and there’s a sticker on the window. You know the difference between make and model, but you soon learn what a trim is. Some versions come with leather. Some have a sun roof. Some have all wheel drive. Some have 20k in miles, and a similarly priced car in a higher trim is at 40k miles.</description>
     </item>
     
     <item>
-      <title>rmd test</title>
-      <link>/2017/07/rmd-test/</link>
-      <pubDate>Mon, 03 Jul 2017 00:00:00 +0000</pubDate>
+      <title>Getting used car data</title>
+      <link>/2017/10/getting-used-car-data/</link>
+      <pubDate>Wed, 18 Oct 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/07/rmd-test/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>rmd test no figure</title>
-      <link>/2017/07/rmd-test-no-figure/</link>
-      <pubDate>Mon, 03 Jul 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/2017/07/rmd-test-no-figure/</guid>
-      <description>This is a second rmd test with no figure.</description>
+      <guid>/2017/10/getting-used-car-data/</guid>
+      <description>How to get used car data In another post, I describe how I use this data that I’ve scraped, but I wanted to provide a more in-depth tutorial for those interested in how I got the data. Note, this data belongs to Truecar, so all uses herein are for personal and academic reasons only.
+ Git dat data! In order to do any good analaysis, you first need data.</description>
     </item>
     
     <item>
