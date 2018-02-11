@@ -1,33 +1,21 @@
 ---
-title: Buying a used car, the data science way
+title: Buying a used car the data science way (and hacking Truecar)
 author: ~
-date: '2017-10-19'
+date: '2018-02-10'
 slug: buying-a-used-car-the-data-science-way
-categories: []
-tags: []
+categories: ['analysis']
+tags: ['r', 'regression']
 ---
 
 
 
-<div id="buying-a-car-the-data-science-way" class="section level1">
-<h1>Buying a car, the data science way</h1>
 <p>So you want to buy a car, but you don’t know anything about them? Welcome to my life.</p>
-<p>You show up at the dealer and there’s a sticker on the window. You know the difference between make and model, but you soon learn what a trim is. Some versions come with leather. Some have a sun roof. Some have all wheel drive. Some have 20k in miles, and a similarly priced car in a higher trim is at 40k miles. How do you know what you’re really paying for, and what these features are worth? And how do you know what it’ll be worth when it’s four years older after you drive it for 40k miles?</p>
+<p>You show up at the dealer and there’s a sticker on the window. You know the difference between make and model, but you soon learn what a trim is. Some versions come with leather. Some have a sun roof. Some have all wheel drive. Some have 20k in miles, and a similarly priced car in a higher trim is at 40k miles. How do you know what you’re really paying for, and what these features are worth? And how do you know what it’ll be worth when it’s four years older and has an additional 40k miles?</p>
 <p>Pretty advanced questions for someone who just learned what a powertrain is.</p>
-</div>
-<div id="git-dat-data" class="section level1">
-<h1>Git dat data!</h1>
-<p>Please see my most recent post if you’re interested in learning how I got the data for this analysis. Suffice it to say, I webscraped it.</p>
-</div>
-<div id="know-your-car" class="section level1">
-<h1>Know your car!</h1>
-<p>You should know the car you’re buying: Here we answer three questions using the used car data I’ve obtained:</p>
-<ol style="list-style-type: decimal">
-<li>What am I paying for? (Now and later)</li>
-<li>How do I identify a good ‘market’ deal? (And how might Truecar do it?)</li>
-</ol>
-<div id="what-am-i-paying-for" class="section level2">
-<h2>What am I paying for?</h2>
+<p>In this analysis, I’ll dive into how you can use data to learn a lot about an industry in a short amount of time. I’ll first dive into knowing what you’re buying (now and later). Then, I’ll dive into how <a href="https://www.truecar.com/">Truecar</a> and others might be finding their ‘deals’.</p>
+<div id="what-am-i-paying-for" class="section level1">
+<h1>What am I paying for?</h1>
+<p>To do any analysis, you need data. Please see <a href="https://www.bryanwhiting.com/2017/10/getting-used-car-data/">my most recent post</a> if you’re interested in learning how I got the data for this analysis. Suffice it to say, I webscraped it. The data is not my own, but belongs to Truecar.</p>
 <p>I love using linear regression to understand my data on a granular level. In my data set, I was able to extract the make, model, year, mileage, trim, and a flag for whether the car was all wheel drive (<code>awd == 1</code>) or not. Putting this data into a linear regression, we can see some interesting results. First let’s look at the data we have:</p>
 <pre class="r"><code>library(dplyr)</code></pre>
 <pre><code>## 
@@ -88,24 +76,30 @@ summary(mod)</code></pre>
 ## Residual standard error: 1450 on 211 degrees of freedom
 ## Multiple R-squared:  0.9231, Adjusted R-squared:  0.9191 
 ## F-statistic: 230.2 on 11 and 211 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>First, we see the Intercept. This is the average value of a car for every level of every feature not show. So it represents the average price of a year 2000 with 0 miles, Limited trim, without all wheel drive. This allows us to now see what the average effect of, say, year is, holding all else constant. Every unit is in terms of dollars, so we can see that for <code>as.factor(year)2013</code> that 2013 cars are worth $1,267 more than 2012 cars. This makes sense.</p>
+<div id="interpretation-matters" class="section level3">
+<h3>Interpretation matters</h3>
+<p>First, we see the <code>(Intercept)</code>. This is the average value of a car for every level of every feature not show. So it represents the average price of a year 2000 with 0 miles, Limited trim, without all wheel drive. This allows us to now see what the average effect of, say, year is, holding all else constant. Every unit is in terms of dollars, so we can see that for <code>as.factor(year)2013</code> that 2013 cars are worth $1,267 more than 2012 cars. This makes sense.</p>
 <p>I scaled mileage to be in the thousands so that it’s a little easier to interpret. So we see that for every 1,000 miles you drive a Ford Edge, it decreases the value of the car by $91 dollars. This tells you a few things. One, if I’m being offered two cars that are 10K miles different, there should be about a ~$900 difference in the car.</p>
 <p>Second, if I’m planning on driving my car 30k miles over the next two years, how much should I expect the price to drop <em>just</em> due to mileage? Well, about <code>-$91 * 30 = -$2,730</code>. And maybe if you bought a 2014 model, two years later it could perhaps be like owning a 2012 model today. What’s the two-year difference between a 2014 and a 2012 model? About $3,160 dollars.</p>
+</div>
+<div id="inference" class="section level3">
+<h3>Inference</h3>
 <p>Now it’s getting interesting! You’re now starting to remember how your mom told you to never buy a car new, because once you drive it off the lot, it’s worth significantly less. Well, we can see that if you own a brand-new 2017 model and a 2016 model, they’re about <code>$9082 - $6166 = $2916</code> different. So yea, just by getting the 2017 model you’ll lose $3,000 in the first year. See how 2016 is only $502 dollars more than the 2015? Having the 2015 model is practically the same price as a 2016. So you might as well buy the 2015 model.</p>
 <p>Well, my theory kind of starts breaking down because 2015 cars and 2014 cars are similarly spaced as 2014 and 2013 ones. So maybe I shouldn’t read too much into this. But the ability to see these trends shouldn’t stop you from asking important questions, like, why is there a difference between years?</p>
-<p>When investigating the Nissan Murano, I observed a $5430 difference between 2015 and 2014. That’s non-trivial considering the other years were equally spaced. Doing a little research I saw that <a href="https://www.autotrader.com/car-reviews/2014-vs-2015-nissan-murano-whats-the-difference-235714">Nissan changed</a> the 2015 Murano style, and the new style was apparently worth a lot more. Turns out the same thing happened here for the Ford Edge - the 2015 model is slightly longer with re-designed interior.</p>
+<p>When investigating the Nissan Murano, I observed a $5430 difference between 2015 and 2014. That’s non-trivial considering the other years were equally spaced. Doing a little research I saw that <a href="https://www.autotrader.com/car-reviews/2014-vs-2015-nissan-murano-whats-the-difference-235714">Nissan changed</a> the 2015 Murano style, and the new style was apparently worth a lot more. Turns out the same thing happened here for the Ford Edge - the 2015 model is slightly longer with redesigned interior.</p>
 <p>You can also use this framework to get a decent sense for what features are important to you. Like, is having all wheel drive really worth $1,277? If you live in an area where it snows, it probably is. But if you live in Florida, you may not need it.</p>
 <p>Not only is this framework helpful for comparing within-make-model differences, it helps you get a sense of between-make-model differences. Say, comparing the Ford Edge with the Nissan Murano and the Toyota RAV4. The coefficient for milage on the Edge is -$91. On the Murano it’s -$83, and on the RAV4 -$61. Remember this is the cost per 1,000 miles. That tells me that if I ‘spend’ 30k miles on a car over two years, I’ll lose -$2,730 on the Edge, but only -$1,830 on the RAV4, saving me $900. This also validates that Toyotas hold their value more.</p>
 </div>
-<div id="identify-a-good-market-deal-and-how-truecar-might-do-it" class="section level2">
-<h2>Identify a good market deal (and how TrueCar might do it)</h2>
-<p>Beyond the research above, you can use such a model for</p>
+</div>
+<div id="identify-a-good-market-deal-and-how-truecar-might-do-it" class="section level1">
+<h1>Identify a good market deal (and how TrueCar might do it)</h1>
+<p>Beyond the research above, you can use such a model to identify deals in the market and guide your buying decision. Here’s how:</p>
 <ol style="list-style-type: decimal">
-<li>Make a PriceFinder: Get the residuals for each observation. The more negative the residual, the better the price! This is probably how TrueCar and CarGurus get their ‘deals’. They fit a model and use its residuals to value each car.</li>
-<li>Identify ‘overpriced’ cars and try to possibly haggle those dealers down.</li>
+<li>Make a PriceFinder: Get the residuals (actual minus predicted value) for each car. The more negative the residual, the more this car is a good price! This may be how TrueCar and CarGurus get their ‘deals’. They fit a model (probably one better than what I’ve created here) and use its residuals to value each car.</li>
+<li>Identify ‘overpriced’ cars and try to possibly haggle those dealers down. Again, use the residuals here.</li>
 <li>Use this model to predict ‘out-of-sample’ cars. You can use this model built on TrueCar data and find a car on the classifieds or another site and evaluate whether it’s a good deal or not.</li>
 </ol>
-<p>Let’s predict a theoretical 2015 SEL Ford Edge FWD with 27.6k miles.</p>
+<p>Here’s an example of how we do that. First, let’s predict a hypothetical 2015 SEL Ford Edge FWD with 27.6k miles:</p>
 <pre class="r"><code>that_car &lt;- as.data.frame(list(
   year = 2015,
   mileage = 27.6,
@@ -116,73 +110,47 @@ summary(mod)</code></pre>
 predict(mod, newdata = that_car)</code></pre>
 <pre><code>##        1 
 ## 23520.13</code></pre>
-<p>Now, just compare the price you’re being offered to that one to determine if you’re getting an ‘average’ price.</p>
+<p>We’d expect, on average, such a car to cost $23,520.13. Is what the dealer’s offering you above or below that? If they’re offering $25,000 then you know the car is $1,479.87 higher than what you might expect.</p>
 </div>
-<div id="improving-the-model" class="section level2">
-<h2>Improving the model</h2>
-<p>Now, this is a pretty naive model, but it’s a model. As <a href="https://en.wikipedia.org/wiki/All_models_are_wrong">George Box</a> said, “All models are wrong, but some are useful.” But here are some quick ways to play with this model:</p>
-<ul>
-<li>One quick way to improve the model is to check for interactions. I did this and didn’t really find any. An interaction between miles and year would tell you whether the effect of miles would change across different years. For example, I think adding 10k miles to a 2017 would devalue the car more steeply than adding 10k miles to a 2012 model.</li>
-<li>A second option is to use a linear trend for year rather than a ‘factor’ trend. I’ve chosen here to treat year as a factor, which implies that I think that each year is completely different. Had I used year as a numeric feature, I could have possibly interpreted year as, “Each additional year increases/decreases the price by X on average, holding all else constant.” I liked the simplicity of thinking that each year was different, and since cars usually update models every four years, I wanted to be able to see where this happened. You couldn’t easily see this if year were a linear trend. Objectively, waht would be a good way to choose? Fit both models and see which had better R-squared or AIC.</li>
+<div id="how-to-improve-our-model" class="section level1">
+<h1>How to improve our model</h1>
+<p>Now, this is a pretty naive model, but it’s a model. As <a href="https://en.wikipedia.org/wiki/All_models_are_wrong">George Box</a> said, “All models are wrong, but some are useful.” But here are some quick ways to improve this model:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Check for interactions.</strong> An interaction between miles and year would tell you whether the effect of miles would change across different years. For example, I think adding 10k miles to a 2017 would devalue the car more steeply than adding 10k miles to a 2012 model. During my quick research I checked for interactions, but I didn’t find many to be significant and I chose to ignore them for simplicity.</li>
+<li><strong>Use a linear trend</strong> for year rather than a ‘factor’ trend. I’ve chosen here to treat year as a factor, which implies that I think that each year is completely different. Had I used year as a numeric feature, I could have possibly interpreted year as, “Each additional year increases/decreases the price by X on average, holding all else constant.” I liked the simplicity of thinking that each year was different, and since cars usually update models every four years, I wanted to be able to see where this happened. You couldn’t easily see this if year were a linear trend. Objectively, what would be a good way to choose? Fit both models and see which had better R-squared or AIC.</li>
 <li>Do model diagnostics. Check the residual plot to make sure the errors are normally distributed. Check for outliers. Each of these affects the accuracy of your residuals. I did some brief checks and was genearlly satisfied.</li>
-</ul>
-</div>
+</ol>
 </div>
 <div id="takeaways" class="section level1">
 <h1>Takeaways</h1>
-<div id="model-hits-reality" class="section level2">
-<h2>Model hits reality</h2>
-<p>I</p>
-</div>
+<p>So, a data scientist walks into a dealership with a computer with a registry of thousands of used cars on it. He negotiates with the front-office salesman. And the salesman says…</p>
 <div id="non-statistical-considerations" class="section level2">
 <h2>Non-statistical considerations</h2>
-<p>When you’re buying a car from a dealership, remember that this is their job. Other things to think about when buying a car that I learned:</p>
+<p>When you’re buying a car from a dealership, remember that it’s their job to sell you that car. Here are other random things I learned to think about during the car-buying process.</p>
 <ul>
-<li>How many miles has it been driven, and how old is it?</li>
-<li>We found a car with 45,000 miles in <em>one</em> year. That’s almost two trips around the entire world in a year! This is also 3750 miles per month (a cross-country US trip), or about 125 miles per day. What kind of driving do you have to do in a year to get that?</li>
-<li>How many prior owners?</li>
+<li>How many miles has it been driven, and how old is it? (We found a car with 45,000 miles in <em>one</em> year. That’s almost two trips around the entire world in a year! This is also 3750 miles per month (a cross-country US trip), or about 125 miles per day. What kind of driving do you have to do in a year to get that?</li>
+<li>How many prior owners were there?</li>
 <li>Was the car previously a rental? A lease? A fleet?</li>
 <li>Rental: Abused by X number of people? But also perhaps better maintained by rental companies?</li>
 <li>Lease: What kind of person would lease?</li>
 <li>Fleet: Probably a corporate car. Like a rental, but different kind of drivers.</li>
-<li>Where was the car purchased?</li>
-<li>Is there snow where they live? And do they use salt on the roads there? (Salt = rust)</li>
+<li>*Where did the car come from?()</li>
+<li>Is there snow where they live? And do they use salt on the roads there? (Salt = rust underneath)</li>
 <li>What else does the geography tell you about the possible wear on the car (causing long-term problems)</li>
-<li>What does the CarFax or Autocheck say?</li>
-<li>If someone gets into an accident and doesn’t report it, the CarFax won’t tell you</li>
+<li><em>What does the CarFax or Autocheck say?</em></li>
 <li>Was the car sold at auction? When? What could the time between sales tell you about the car?</li>
-<li>Car dealerships don’t usually make that much on the car, but make their money on warranties and fees</li>
-<li>It’s hard to negotiate them down.</li>
-<li>You could probably negotiate them on the ‘deals’ offered</li>
-<li>Don’t get the powertrain warranty. This is like the “french fries” of the auto industry. Pure profit.</li>
+<li>If someone gets into an accident and doesn’t report it, the CarFax won’t tell you. I drove 45 minutes to look at a ‘great’ deal only to learn the door was nearly falling off.</li>
+<li><em>Good luck haggling the dealer down.</em> Car dealerships don’t usually make that much on the car, but make their money on warranties and fees. Your best chance is to haggle on the deals being offered (terms and agreements).</li>
+<li><em>Don’t get the powertrain warranty.</em> This is like the “french fries” of the auto industry. Pure profit.</li>
+<li><em>Every dealership has quota.</em> Going in at the end of the month might help you, but the dealership will be packed.</li>
+<li><em>Used cars are bought at auction.</em> Carmax buys all their cars at auction and only keeps 1/3 of them. Local dealers also get their cars this way, and they don’t always know what the car looks like till it gets to their lot. Check the Carfax to see if any prior dealers ‘flipped’ the car quickly.</li>
+<li><em>Used cars have a shelf life.</em> If a car isn’t sold in 45-60 days, some dealerships might have to auction off the car. That means you’ll see a tiering in the price. Less-favorable cars will see the price drop several times in its life cycle. Check CarGurus to see how many times the price has dropped, and try to guess for yourself if it might drop again (or just get sold).</li>
+<li><em>They know their prices</em>. They’ve got their back-office guys looking at every price of every same car within 100 mile radius. While I’m also able to get as many of those cars as available on TrueCar, I’m not able to segment by all the various features. It’s easy to webscrape for Make, Model, Year, AWD/FWD, and maybe V6 engine, but it’s very hard to get the details like leather, sunroof, twin-turbo, etc. That’s where the pricing gets <em>really</em> interesting.</li>
 </ul>
-<p>Let’s make sure there aren’t any interactions (because you can’t interpret main effects if there’s an interaction).</p>
-<p>Look at the summary of the output to see if mileage interacts with any variables:</p>
-<p>The interactions aren’t significant, so let’s simplify the model! Now we have a pretty straight forward model (what I wanted):</p>
-<p>Sure, if I were being more thorough, I’d dive heavily into some diagnostics to make sure the model is good. I check the residuals to make sure those are at least good. But at the end of the day, I’ll be working with a haggle-able car salesmen (in which case it doesn’t matter what your model says, it matters how well you can negotiate!). So this model is just to give a rough approximation.</p>
-<p>Let’s interpret those coefficients. This is where the magic happens! We see a one-unit increase in mileage has a -$100 impact on the car’s value. All wheel drive is worth $2000, and Titanium is worth $2,000 above SE.</p>
-<p>So what do we do with this? Well, if you sort the residuals of the model you can see which cars are outliers (in a good way). We see these cars are about $1500 below-average value. I’d start looking at these cars to see if they’re in my price range.</p>
-<p>If I like a car that’s not so well priced, I know I should haggle with the dealer to bring the price down. When they ask how I got my numbers, do I tell them? Probably not, says a good negotiator.</p>
-<p>Also, since we have a model, we can now predict out-of-sample cars, say those on a different website that you can’t scrape as easily. Here’s how you predict the price of a car that’s 40,000 miles, trim SEL, 2015, with all wheel drive.</p>
-<ul>
-<li></li>
-</ul>
-<p>Be careful that the data point you predict lies within the realm of your data. I still believe that mileage is actually a non-linear effect. I imagine that -100 rate only lasts so far, and then the car would decrease more heavily around 70-90k, and then eventually lower near 120k miles. Since I don’t have any cars in my data set at 70k, I can’t predict them!</p>
-<p>Last question: how do you know what your car will be worth 3 years later and after 30,000 miles? Well, you get data for 2012-2017, and between 10k miles and 120k. Once you have more data you could say, “Well, if I buy a 2015 car at 30k, in 3 years and 30k more miles that would be like buying at 2012 60k car today.” So you just predict what a 2012 60k car is worth today:</p>
-<p>Yea, there are a lot of reasons why that’s maybe not a good method, such as economic inflation rates, variations in year (the 2015 model is very different from 2014), prices of similar models, and maybe many other reasons you could find. Tomorrow is always different than today. But I think it’s a rough idea, and better than nothing.</p>
 </div>
 </div>
-<div id="wrapping-up" class="section level1">
-<h1>Wrapping up</h1>
-<p>Ultimately, a car is bought by irrational humans, and sold by more experienced irrational ones too. So all of this data will probably go out the door when you try to make a deal. So you would probably be better if learning to just negotiate. Ultimately, the salesman probably shoots to sell it for 20% higher than what the bought it for. So try getting it for 15% off? Then why did I do all this research anyway…</p>
-</div>
-<div id="putting-this-into-practice" class="section level1">
-<h1>Putting this into practice</h1>
-<p>Dealer Koons - “we live by other great cars, therefore we are great”. We’re by an Audi dealership. People come to this area to buy great cars. - “been here 17 years” - “v6, that’s a lot of burned gas” - 2775 warranty to 125,000 miles on just drivetrain. written on paper - Car dropped prices 3 times. They have 45 days to sell the car or it returns to auction. - Steering wheel was worn - This car will be gone tomorrow. - Let me just check to make sure it’s here. - You see on that board, we do 800 sales per month. You’ll see us selling like crazy this weekend. -</p>
-<p>Sketch dealer: - “oh, it’s just a bad paint job” - Front door was falling off. - Careful about ‘too good to be true’. You’re actually just getting a car that’s been in an undocumented wreck. - Car sold at auction. Ford bought it. Resold at auction two days later.</p>
-<p>Tedd Britt - I can do a couple hundred, not a couple thousand - 1 .046 state tax at tend britt (not 1.042). Carmax actually charged 1.04204. - normal dealership: shop fees. What’s in this shop fee?</p>
-<p>Cowles ford - Oh, let me just check to make sure it’s still here. We’ve had a huge weekend. - This is where I tried negotiating hard core - “Oh, i’ve gotten into a huge wreck recently, i don’t have a car.” - “I’m so good at sales they won’t let me work in the office” - CarGurus price dropped, and they increased it right before the sale. “We don’t go by those prices”</p>
-<p>Leased Cars: - Returned and sold at internal auction. Toyota gets 1st dibs. - If no buyers, sold at external auction 3 weeks. r</p>
-<p>Carmax(- higher list price - MaxCare (in theory) seems to cover way more than drive train - Total carmax fees: 299 + 200? No ‘shop’ fee (that’s presumably built into the price) - Fleet = corporate. Rental = rental. or trade ins for owners - Loved that we could go into any car in the parking lot - Flat commission - Held our car 3 days (including over a holiday) - Carmax for every three cars at auction they take, they keep oke</p>
-<p>Everyone goes in on the end of the month. They have a quota. - Weekends and holidays</p>
+<div id="final-thoughts" class="section level1">
+<h1>Final thoughts</h1>
+<p>Ultimately, a car is bought by irrational humans, and sold by more experienced ones too. So all of this data will probably go out the door when you try to make a deal.</p>
+<p>So a data scientist walked into several dealerships, and left frustrated because nobody budged on their prices. Doesn’t matter how much data I have, or what I think I know, everyone’s got their price.</p>
 </div>

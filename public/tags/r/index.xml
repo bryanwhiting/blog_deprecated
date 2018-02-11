@@ -2,31 +2,51 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on My take on data</title>
-    <link>/tags/r/</link>
+    <link>https://www.bryanwhiting.com/tags/r/</link>
     <description>Recent content in R on My take on data</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 23 Jun 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 10 Feb 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.bryanwhiting.com/tags/r/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Buying a used car the data science way (and hacking Truecar)</title>
+      <link>https://www.bryanwhiting.com/2018/02/buying-a-used-car-the-data-science-way/</link>
+      <pubDate>Sat, 10 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.bryanwhiting.com/2018/02/buying-a-used-car-the-data-science-way/</guid>
+      <description>So you want to buy a car, but you don’t know anything about them? Welcome to my life.
+You show up at the dealer and there’s a sticker on the window. You know the difference between make and model, but you soon learn what a trim is. Some versions come with leather. Some have a sun roof. Some have all wheel drive. Some have 20k in miles, and a similarly priced car in a higher trim is at 40k miles.</description>
+    </item>
+    
+    <item>
+      <title>Webscraping Thousands of Used Cars</title>
+      <link>https://www.bryanwhiting.com/2017/10/getting-used-car-data/</link>
+      <pubDate>Wed, 18 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.bryanwhiting.com/2017/10/getting-used-car-data/</guid>
+      <description>In another post, I describe how I use this data that I’ve scraped, but I wanted to provide a more in-depth tutorial for those interested in how I got the data. Note, this data belongs to Truecar, so all uses herein are for personal and academic reasons only.
+Get the data In order to do any good analaysis, you first need data. I prefer to have more data than less, where possible.</description>
+    </item>
+    
+    <item>
       <title>Yet Another Weekly Planner</title>
-      <link>/2017/06/yet-another-weekly-planner/</link>
+      <link>https://www.bryanwhiting.com/2017/06/yet-another-weekly-planner/</link>
       <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/06/yet-another-weekly-planner/</guid>
+      <guid>https://www.bryanwhiting.com/2017/06/yet-another-weekly-planner/</guid>
       <description>I believe that each creation has four phases: dreaming, planning, acting, and reflecting. Think about it - is there anything you&amp;rsquo;ve ever made that didn&amp;rsquo;t first enter into your mind, you came up with some game plan, you carried it out, and then when you were done you could see what went well and where you improved? Isn&amp;rsquo;t this what scrums are really about?
 I wanted a scrum for my personal life, but I didn&amp;rsquo;t find it practical to use the many online resources available.</description>
     </item>
     
     <item>
       <title>Blogdown and Tranquilpeak Hosted on Netlify: a Deep Dive</title>
-      <link>/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/</link>
+      <link>https://www.bryanwhiting.com/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/</link>
       <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/</guid>
+      <guid>https://www.bryanwhiting.com/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/</guid>
       <description>This blog will outline what I see as differences between Hugo and Jekyll, some benefits and drawbacks of using Netlify vs. GitHub pages to host, and how to launch the Hugo Tranquilpeak theme from scratch.
 Why Hugo? One of my first posts was about blogging with Jekyll hosted on GitHub. About six months after writing that post, I hit a few bugs trying to debug it and got frustrated because I had already forgotten all of what I binge-learned earlier.</description>
     </item>

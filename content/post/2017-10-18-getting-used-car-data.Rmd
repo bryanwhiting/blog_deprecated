@@ -1,19 +1,18 @@
 ---
-title: Getting used car data
+title: Webscraping Thousands of Used Cars
 author: ~
 date: '2017-10-18'
 slug: getting-used-car-data
-categories: []
-tags: []
+categories: ['tutorials']
+tags: ['r', 'webscraping']
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning=F)
 ```
 
-# How to get used car data
 In another post, I describe how I use this data that I've scraped, but I wanted to provide a more in-depth tutorial for those interested in how I got the data. Note, this data belongs to Truecar, so all uses herein are for personal and academic reasons only.
 
-# Git dat data!
+# Get the data
 In order to do any good analaysis, you first need data. I prefer to have more data than less, where possible. In this case, I don't have any data, so I use webscraping to get the data. There are much better tutorials on how to scrape data, so I'll be light. I use R's `rvest` package here, which does a decent job.[^1] Let's look at Truecar's Used Car postings[^2]. First I use `google` to find the search query on Truecar that I like. 
 
 [^1]: Python's `beautifulSoup` package could probably do a better job.
@@ -124,9 +123,7 @@ df$deal <- str_extract(df$stats, '\\$[0-9]*,[0-9]* below') %>%
 
 And here's what the results look like. You've got the original scraped data in the `stats` column and then everything else that you can parse out. Just like that, you've got
 ```{r}
-# DT for pretty tables
-library(DT)
 # df was the dataframe object we needed
-head(df) %>% datatable()
+head(df) %>% knitr::kable()
 ```
 

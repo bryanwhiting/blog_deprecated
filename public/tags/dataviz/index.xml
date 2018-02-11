@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Dataviz on My take on data</title>
-    <link>/tags/dataviz/</link>
+    <link>https://www.bryanwhiting.com/tags/dataviz/</link>
     <description>Recent content in Dataviz on My take on data</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 10 Feb 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/dataviz/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.bryanwhiting.com/tags/dataviz/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>The DataViz battle: Plotly vs ggplot2</title>
-      <link>/2017/02/the-dataviz-battle-plotly-vs-ggplot2/</link>
+      <link>https://www.bryanwhiting.com/2017/02/the-dataviz-battle-plotly-vs-ggplot2/</link>
       <pubDate>Fri, 10 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/02/the-dataviz-battle-plotly-vs-ggplot2/</guid>
+      <guid>https://www.bryanwhiting.com/2017/02/the-dataviz-battle-plotly-vs-ggplot2/</guid>
       <description>R users fall in love with ggplot2, the growing standard for data visualization in R. The ability to quickly vizualize trends, and customize just about anything you’d want, make it a powerful tool. Yet this week, I made a discvoery that may reduce how much I used ggplot2. Enter plot_ly().
 For this post, I assume that you have a working knowledge of the dplyr (or magrittr) and ggplot2 packages.</description>
     </item>
