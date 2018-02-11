@@ -124,6 +124,6 @@ df$deal <- str_extract(df$stats, '\\$[0-9]*,[0-9]* below') %>%
 And here's what the results look like. You've got the original scraped data in the `stats` column and then everything else that you can parse out. Just like that, you've got
 ```{r}
 # df was the dataframe object we needed
-head(df) %>% knitr::kable()
+head(df) %>% DT::datatable()
 ```
 

@@ -7,6 +7,12 @@ categories: ['tutorials']
 tags: ['r', 'webscraping']
 ---
 
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<script src="/rmarkdown-libs/datatables-binding/datatables.js"></script>
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/dt-core/js/jquery.dataTables.min.js"></script>
 
 
 <p>In another post, I describe how I use this data that I’ve scraped, but I wanted to provide a more in-depth tutorial for those interested in how I got the data. Note, this data belongs to Truecar, so all uses herein are for personal and academic reasons only.</p>
@@ -65,7 +71,12 @@ read_html(url)</code></pre>
 ## [37] &quot;2015 Ford EdgeTitaniumMileage: 44,860 milesLocation: San Juan Capistrano, CAExterior: White Platinum Metallic Tri-CoatInterior: EbonyVIN: 2FMTK3K92FBB43801 Rating: Great Price$22,895$7,327 below marketView Details&quot;
 ## [38] &quot;2015 Ford EdgeSELMileage: 40,057 milesLocation: Upland, CAExterior: BlackInterior: BlackVIN: 2FMTK3J85FBB34115$24,880View Details&quot;                                                                                    
 ## [39] &quot;2015 Ford EdgeTitaniumMileage: 24,267 milesLocation: Downey, CAExterior: BlackInterior: BlackVIN: 2FMTK3K86FBB66389$26,600View Details&quot;                                                                               
-## [40] &quot;2015 Ford EdgeSportMileage: 15,515 milesLocation: Long Beach, CAExterior: Tuxedo Black MetallicInterior: EbonyVIN: 2FMTK3AP8FBB73837Discount Available $28,967View Details&quot;</code></pre>
+## [40] &quot;2015 Ford EdgeSportMileage: 15,515 milesLocation: Long Beach, CAExterior: Tuxedo Black MetallicInterior: EbonyVIN: 2FMTK3AP8FBB73837Discount Available $28,967View Details&quot;                                           
+## [41] &quot;2015 Ford EdgeSELMileage: 35,269 milesLocation: Chino, CAExterior: Ingot Silver MetallicInterior: EbonyVIN: 2FMTK3J98FBB67750$25,775View Details&quot;                                                                     
+## [42] &quot;2015 Ford EdgeSportMileage: 53,110 milesLocation: Garden Grove, CAExterior: ChromeInterior: AluminumVIN: 2FMTK3AP9FBB09242Discount Available $23,995View Details&quot;                                                     
+## [43] &quot;2015 Ford EdgeTitaniumMileage: 47,589 milesLocation: Downey, CAExterior: RedInterior: BeigeVIN: 2FMTK4K91FBB56691 Rating: Great Price$25,100$6,937 below marketView Details&quot;                                          
+## [44] &quot;2015 Ford EdgeTitaniumMileage: 48,183 milesLocation: Long Beach, CAExterior: Tuxedo Black MetallicInterior: EbonyVIN: 2FMTK4K90FBB61994Discount Available  Rating: Great Price$25,354$6,439 below marketView Details&quot; 
+## [45] &quot;2015 Ford EdgeSELMileage: 43,937 milesLocation: Riverside, CAExterior: Ruby Red Metallic Tinted ClearcoatInterior: DuneVIN: 2FMTK3J82FBB55861$24,985View Details&quot;</code></pre>
 <p>So that’s how you get the data on a single page. If you look closer at the URL, you see a lot of helpful things. First, there’s the make, then the model, then the location-zip, then the year-range, and ultimately the trim. This is a very pretty and clean URL. If you click on a few additional pages, you’ll see the URL opens up with <code>?page=2</code>.</p>
 <pre><code>https://www.truecar.com/used-cars-for-sale/listings/ford/edge/location-90210/?page=2</code></pre>
 <p>This is our ‘in’ to scraping multiple pages. I won’t bore you with the details of how to get <em>that</em> data into a neat matrix for us to analyze, but suffice it to say that I’m able to do it. Just build a function to construct a URL, and build a loop to go through the different pages, then use lots of <code>str_extract</code> from the <code>stringr</code> package and <code>gsub</code> to clean up the data.</p>
@@ -148,118 +159,9 @@ df$deal &lt;- str_extract(df$stats, &#39;\\$[0-9]*,[0-9]* below&#39;) %&gt;%
   as.numeric()</code></pre>
 <p>And here’s what the results look like. You’ve got the original scraped data in the <code>stats</code> column and then everything else that you can parse out. Just like that, you’ve got</p>
 <pre class="r"><code># df was the dataframe object we needed
-head(df) %&gt;% knitr::kable()</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">stats</th>
-<th align="right">price</th>
-<th align="right">year</th>
-<th align="right">mileage</th>
-<th align="left">trim</th>
-<th align="right">awd</th>
-<th align="right">manual</th>
-<th align="right">v6</th>
-<th align="left">location</th>
-<th align="left">ext</th>
-<th align="left">int</th>
-<th align="left">vin</th>
-<th align="right">deal</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">2012 Ford EdgeSELMileage: 87,179 milesLocation: Long Beach, CAExterior: Ingot Silver MetallicInterior: Charcoal BlackVIN: 2FMDK3JCXCBA82243Discount Available $12,967View Details</td>
-<td align="right">12967</td>
-<td align="right">2012</td>
-<td align="right">87179</td>
-<td align="left">SEL</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="left">Long Beach, CA</td>
-<td align="left">Ingot Silver Metallic</td>
-<td align="left">Charcoal Black</td>
-<td align="left">2FMDK3JCXCBA82243</td>
-<td align="right">NA</td>
-</tr>
-<tr class="even">
-<td align="left">2012 Ford EdgeLimitedMileage: 83,415 milesLocation: Thousand Oaks, CAExterior: WhiteInterior: TanVIN: 2FMDK3KC6CBA95361Discount Available $13,333View Details</td>
-<td align="right">13333</td>
-<td align="right">2012</td>
-<td align="right">83415</td>
-<td align="left">Limited</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="left">Thousand Oaks, CA</td>
-<td align="left">White</td>
-<td align="left">Tan</td>
-<td align="left">2FMDK3KC6CBA95361</td>
-<td align="right">NA</td>
-</tr>
-<tr class="odd">
-<td align="left">2012 Ford EdgeSELMileage: 41,470 milesLocation: Woodland Hills, CAExterior: CinnamonVIN: 2FMDK3J94CBA49744$18,000View Details</td>
-<td align="right">18000</td>
-<td align="right">2012</td>
-<td align="right">41470</td>
-<td align="left">SEL</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="left">Woodland Hills, CA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">2FMDK3J94CBA49744</td>
-<td align="right">NA</td>
-</tr>
-<tr class="even">
-<td align="left">2012 Ford EdgeLimitedMileage: 77,883 milesLocation: Mission Hills, CAExterior: SilverVIN: 2FMDK3KC2CBA41460Discount Available $14,992View Details</td>
-<td align="right">14992</td>
-<td align="right">2012</td>
-<td align="right">77883</td>
-<td align="left">Limited</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="left">Mission Hills, CA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">2FMDK3KC2CBA41460</td>
-<td align="right">NA</td>
-</tr>
-<tr class="odd">
-<td align="left">2012 Ford EdgeLimitedMileage: 83,603 milesLocation: Irvine, CAExterior: Ingot Silver MetallicInterior: Charcoal BlackVIN: 2FMDK3K96CBA46150$13,980View Details</td>
-<td align="right">13980</td>
-<td align="right">2012</td>
-<td align="right">83603</td>
-<td align="left">Limited</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="left">Irvine, CA</td>
-<td align="left">Ingot Silver Metallic</td>
-<td align="left">Charcoal Black</td>
-<td align="left">2FMDK3K96CBA46150</td>
-<td align="right">NA</td>
-</tr>
-<tr class="even">
-<td align="left">2012 Ford EdgeSportMileage: 58,297 milesLocation: Buena Park, CAExterior: Tuxedo Black MetallicInterior: Charcoal BlackVIN: 2FMDK3AK7CBA93272$17,980View Details</td>
-<td align="right">17980</td>
-<td align="right">2012</td>
-<td align="right">58297</td>
-<td align="left">Sport</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="left">Buena Park, CA</td>
-<td align="left">Tuxedo Black Metallic</td>
-<td align="left">Charcoal Black</td>
-<td align="left">2FMDK3AK7CBA93272</td>
-<td align="right">NA</td>
-</tr>
-</tbody>
-</table>
+head(df) %&gt;% DT::datatable()</code></pre>
+<div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","data":[["1","2","3","4","5","6"],["2012 Ford EdgeSELMileage: 87,179 milesLocation: Long Beach, CAExterior: Ingot Silver MetallicInterior: Charcoal BlackVIN: 2FMDK3JCXCBA82243Discount Available $12,967View Details","2012 Ford EdgeLimitedMileage: 83,415 milesLocation: Thousand Oaks, CAExterior: WhiteInterior: TanVIN: 2FMDK3KC6CBA95361Discount Available $13,333View Details","2012 Ford EdgeSELMileage: 41,470 milesLocation: Woodland Hills, CAExterior: CinnamonVIN: 2FMDK3J94CBA49744$18,000View Details","2012 Ford EdgeLimitedMileage: 77,883 milesLocation: Mission Hills, CAExterior: SilverVIN: 2FMDK3KC2CBA41460Discount Available $14,992View Details","2012 Ford EdgeLimitedMileage: 83,603 milesLocation: Irvine, CAExterior: Ingot Silver MetallicInterior: Charcoal BlackVIN: 2FMDK3K96CBA46150$13,980View Details","2012 Ford EdgeSportMileage: 58,297 milesLocation: Buena Park, CAExterior: Tuxedo Black MetallicInterior: Charcoal BlackVIN: 2FMDK3AK7CBA93272$17,980View Details"],[12967,13333,18000,14992,13980,17980],[2012,2012,2012,2012,2012,2012],[87179,83415,41470,77883,83603,58297],["SEL","Limited","SEL","Limited","Limited","Sport"],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],["Long Beach, CA","Thousand Oaks, CA","Woodland Hills, CA","Mission Hills, CA","Irvine, CA","Buena Park, CA"],["Ingot Silver Metallic","White",null,null,"Ingot Silver Metallic","Tuxedo Black Metallic"],["Charcoal Black","Tan",null,null,"Charcoal Black","Charcoal Black"],["2FMDK3JCXCBA82243","2FMDK3KC6CBA95361","2FMDK3J94CBA49744","2FMDK3KC2CBA41460","2FMDK3K96CBA46150","2FMDK3AK7CBA93272"],[null,null,null,null,null,null]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>stats<\/th>\n      <th>price<\/th>\n      <th>year<\/th>\n      <th>mileage<\/th>\n      <th>trim<\/th>\n      <th>awd<\/th>\n      <th>manual<\/th>\n      <th>v6<\/th>\n      <th>location<\/th>\n      <th>ext<\/th>\n      <th>int<\/th>\n      <th>vin<\/th>\n      <th>deal<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4,6,7,8,13]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="footnotes">
 <hr />
