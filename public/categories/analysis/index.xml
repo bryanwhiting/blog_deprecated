@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Analysis on My take on data</title>
-    <link>https://www.bryanwhiting.com/categories/analysis/</link>
+    <link>/categories/analysis/</link>
     <description>Recent content in Analysis on My take on data</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 10 Feb 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://www.bryanwhiting.com/categories/analysis/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/analysis/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Buying a used car the data science way (and hacking Truecar)</title>
-      <link>https://www.bryanwhiting.com/2018/02/buying-a-used-car-the-data-science-way/</link>
+      <link>/2018/02/buying-a-used-car-the-data-science-way/</link>
       <pubDate>Sat, 10 Feb 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://www.bryanwhiting.com/2018/02/buying-a-used-car-the-data-science-way/</guid>
+      <guid>/2018/02/buying-a-used-car-the-data-science-way/</guid>
       <description>So you want to buy a car, but you don’t know anything about them? Welcome to my life.
 You show up at the dealer and there’s a sticker on the window. You know the difference between make and model, but you soon learn what a trim is. Some versions come with leather. Some have a sun roof. Some have all wheel drive. Some have 20k in miles, and a similarly priced car in a higher trim is at 40k miles.</description>
     </item>
