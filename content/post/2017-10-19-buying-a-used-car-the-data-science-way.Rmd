@@ -99,15 +99,15 @@ When you're buying a car from a dealership, remember that it's their job to sell
 * How many miles has it been driven, and how old is it? (We found a car with 45,000 miles in _one_ year. That's almost two trips around the entire world in a year! This is also 3750 miles per month (a cross-country US trip), or about 125 miles per day. What kind of driving do you have to do in a year to get that?
 * How many prior owners were there?
 * Was the car previously a rental? A lease? A fleet? 
-  + Rental: Abused by X number of people? But also perhaps better maintained by rental companies?
-  + Lease: What kind of person would lease? 
-  + Fleet: Probably a corporate car. Like a rental, but different kind of drivers.
-* *Where did the car come from?()
-  + Is there snow where they live? And do they use salt on the roads there? (Salt = rust underneath)
-  + What else does the geography tell you about the possible wear on the car (causing long-term problems)
+    + Rental: Abused by X number of people? But also perhaps better maintained by rental companies?
+    + Lease: What kind of person would lease? 
+    + Fleet: Probably a corporate car. Like a rental, but different kind of drivers.
+* *Where did the car come from?*
+    + Is there snow where they live? And do they use salt on the roads there? (Salt = rust underneath)
+    + What else does the geography tell you about the possible wear on the car (causing long-term problems)
 * *What does the CarFax or Autocheck say?*
-  + Was the car sold at auction? When? What could the time between sales tell you about the car?
-  + If someone gets into an accident and doesn't report it, the CarFax won't tell you. I drove 45 minutes to look at a 'great' deal only to learn the door was nearly falling off. 
+    + Was the car sold at auction? When? What could the time between sales tell you about the car?
+    + If someone gets into an accident and doesn't report it, the CarFax won't tell you. I drove 45 minutes to look at a 'great' deal only to learn the door was nearly falling off. 
 * *Good luck haggling the dealer down.* Car dealerships don't usually make that much on the car, but make their money on warranties and fees. Your best chance is to haggle on the deals being offered (terms and agreements).
 * *Don't get the powertrain warranty.* This is like the "french fries" of the auto industry. Pure profit.
 * *Every dealership has quota.* Going in at the end of the month might help you, but the dealership will be packed.
