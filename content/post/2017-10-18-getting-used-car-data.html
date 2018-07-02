@@ -26,36 +26,36 @@ read_html(url)</code></pre>
 ## [2] &lt;body&gt;&lt;div&gt;\n&lt;div&gt;&lt;div id=&quot;main&quot;&gt;&lt;div&gt;&lt;div data-qa=&quot;TransitionHooks&quot; ...</code></pre>
 <p>You’ll see there’s a head and a body. Our data’s in the body, so let’s use <code>html_nodes()</code> and <code>html_text()</code> to parse out the data we want. I used <a href="https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html">Selectorgadget</a> to know what HTML classes to search for.</p>
 <pre class="r"><code>read_html(url) %&gt;% html_nodes(&#39;.col-xs-6.col-sm-8.no-left-padding&#39;) %&gt;% html_text()</code></pre>
-<pre><code>##  [1] &quot;2015 Ford EdgeSE FWDMileage: 70,069 milesLocation: Whittier, CAExterior: GreyInterior: BlackVIN: 2FMTK3G84FBB39684$13,995View Details&quot;                                      
-##  [2] &quot;2015 Ford EdgeSE FWDMileage: 45,117 milesLocation: Downey, CAExterior: Dk. GrayInterior: BeigeVIN: 2FMTK3G86FBB43431$16,500View Details&quot;                                    
-##  [3] &quot;2015 Ford EdgeSE FWDMileage: 18,969 milesLocation: Placentia, CAExterior: Tuxedo Black MetallicInterior: EbonyVIN: 2FMTK3G90FBB67457$18,599View Details&quot;                    
-##  [4] &quot;2015 Ford EdgeSE FWDMileage: 43,801 milesLocation: Downey, CAExterior: SilverInterior: BeigeVIN: 2FMTK3G85FBB52847$17,100View Details&quot;                                      
-##  [5] &quot;2015 Ford EdgeSE FWDMileage: 46,916 milesLocation: Downey, CAExterior: SilverInterior: BlackVIN: 2FMTK3G80FBB52769$17,200View Details&quot;                                      
-##  [6] &quot;2015 Ford EdgeSEL FWDMileage: 45,104 milesLocation: Downey, CAExterior: WhiteInterior: GoldVIN: 2FMTK3J92FBB73835$17,999View Details&quot;                                       
-##  [7] &quot;2015 Ford EdgeSE FWDMileage: 56,510 milesLocation: Downey, CAExterior: GrayInterior: BeigeVIN: 2FMTK3G85FBB43338$16,500View Details&quot;                                        
-##  [8] &quot;2015 Ford EdgeSE FWDMileage: 62,747 milesLocation: Montclair, CAExterior: GrayInterior: TanVIN: 2FMTK3G98FBB43553 Rating: Great Price$14,995$8,778 below marketView Details&quot;
-##  [9] &quot;2015 Ford EdgeSE AWDMileage: 51,571 milesLocation: Downey, CAExterior: SilverInterior: BlackVIN: 2FMTK4G80FBB52826$17,500View Details&quot;                                      
-## [10] &quot;2015 Ford EdgeSE FWDMileage: 77,145 milesLocation: Santa Ana, CAExterior: Oxford WhiteInterior: EbonyVIN: 2FMTK3G90FBB43093$14,998View Details&quot;                             
-## [11] &quot;2015 Ford EdgeSEL FWDMileage: 34,725 milesLocation: Torrance, CAExterior: WhiteInterior: EbonyVIN: 2FMTK3J84FBB21467$22,495View Details&quot;                                    
-## [12] &quot;2015 Ford EdgeSE AWDMileage: 28,043 milesLocation: Los Angeles, CAExterior: BlackInterior: EbonyVIN: 2FMTK4G93FBB43319$21,895View Details&quot;                                  
-## [13] &quot;2015 Ford EdgeSEL FWDMileage: 29,690 milesLocation: Santa Ana, CAExterior: Ingot Silver MetallicInterior: BlackVIN: 2FMTK3J91FBB74278$19,499View Details&quot;                   
-## [14] &quot;2015 Ford EdgeSEL FWDMileage: 73,368 milesLocation: Huntington Beach, CAExterior: Magnetic MetallicInterior: EbonyVIN: 2FMTK3J95FBB81668$17,500View Details&quot;                
-## [15] &quot;2015 Ford EdgeSEL AWDMileage: 18,208 milesLocation: Carson, CAExterior: Ingot Silver MetallicInterior: EbonyVIN: 2FMTK4J82FBC05227$22,495View Details&quot;                      
-## [16] &quot;2015 Ford EdgeSEL FWDMileage: 29,516 milesLocation: Torrance, CAExterior: BlackInterior: EbonyVIN: 2FMTK3J97FBB92848$23,495View Details&quot;                                    
-## [17] &quot;2015 Ford EdgeSEL FWDMileage: 62,015 milesLocation: Valencia, CAExterior: WhiteInterior: DuneVIN: 2FMTK3J95FBB34110$19,930View Details&quot;                                     
-## [18] &quot;2015 Ford EdgeSEL FWDMileage: 27,108 milesLocation: Montebello, CAExterior: GrayInterior: BlackVIN: 2FMTK3J86FBB60853$21,499View Details&quot;                                   
-## [19] &quot;2015 Ford EdgeSEL FWDMileage: 83,984 milesLocation: Van Nuys, CAExterior: Guard MetallicInterior: DuneVIN: 2FMTK3J83FBB04109$17,200View Details&quot;                            
-## [20] &quot;2015 Ford EdgeSEL FWDMileage: 49,049 milesLocation: Downey, CAExterior: BlackInterior: BlackVIN: 2FMTK3J91FBB13612$19,600View Details&quot;                                      
-## [21] &quot;2015 Ford EdgeSEL FWDMileage: 27,169 milesLocation: Alhambra, CAExterior: BlackInterior: EbonyVIN: 2FMTK3J94FBB45521$22,991View Details&quot;                                    
-## [22] &quot;2015 Ford EdgeSEL FWDMileage: 66,586 milesLocation: North Hollywood, CAExterior: Tuxedo Black MInterior: BlackVIN: 2FMTK3J80FBB06271$20,995View Details&quot;                    
-## [23] &quot;2015 Ford EdgeSEL FWDMileage: 19,157 milesLocation: Downey, CAExterior: SilverInterior: BlackVIN: 2FMTK3J98FBB46896$22,400View Details&quot;                                     
-## [24] &quot;2015 Ford EdgeSEL FWDMileage: 72,782 milesLocation: Pacoima, CAExterior: GrayInterior: BlackVIN: 2FMTK3J93FBB77876$18,980View Details&quot;                                      
-## [25] &quot;2015 Ford EdgeSEL FWDMileage: 5,470 milesLocation: Glendora, CAExterior: Guard MetallicInterior: EbonyVIN: 2FMTK3J98FBC40065$23,388View Details&quot;                            
-## [26] &quot;2015 Ford EdgeSEL FWDMileage: 34,217 milesLocation: Simi Valley, CAExterior: SilverInterior: EbonyVIN: 2FMTK3J97FBB27868$22,909View Details&quot;                                
-## [27] &quot;2015 Ford EdgeSEL FWDMileage: 26,271 milesLocation: Rancho Santa Margarita, CAExterior: WhiteInterior: EbonyVIN: 2FMTK3J93FBB09190$22,239View Details&quot;                      
-## [28] &quot;2015 Ford EdgeSEL FWDMileage: 32,301 milesLocation: Downey, CAExterior: SilverInterior: BlackVIN: 2FMTK3J82FBB47792$21,600View Details&quot;                                     
-## [29] &quot;2015 Ford EdgeSEL AWDMileage: 76,547 milesLocation: Downey, CAExterior: Dk. GrayInterior: BeigeVIN: 2FMTK4J90FBB52746$18,200View Details&quot;                                   
-## [30] &quot;2015 Ford EdgeSEL FWDMileage: 41,340 milesLocation: North Hollywood, CAExterior: White PlatinumInterior: BlackVIN: 2FMTK3J85FBB67440$23,700View Details&quot;</code></pre>
+<pre><code>##  [1] &quot;2015 Ford EdgeSEMileage: 70,069 milesLocation: Whittier, CAExterior: GreyInterior: BlackVIN: 2FMTK3G84FBB39684$13,995View Details&quot;                                      
+##  [2] &quot;2015 Ford EdgeSEMileage: 45,117 milesLocation: Downey, CAExterior: Dk. GrayInterior: BeigeVIN: 2FMTK3G86FBB43431$16,500View Details&quot;                                    
+##  [3] &quot;2015 Ford EdgeSEMileage: 18,969 milesLocation: Placentia, CAExterior: Tuxedo Black MetallicInterior: EbonyVIN: 2FMTK3G90FBB67457$18,599View Details&quot;                    
+##  [4] &quot;2015 Ford EdgeSEMileage: 43,801 milesLocation: Downey, CAExterior: SilverInterior: BeigeVIN: 2FMTK3G85FBB52847$17,100View Details&quot;                                      
+##  [5] &quot;2015 Ford EdgeSEMileage: 46,916 milesLocation: Downey, CAExterior: SilverInterior: BlackVIN: 2FMTK3G80FBB52769$17,200View Details&quot;                                      
+##  [6] &quot;2015 Ford EdgeSELMileage: 45,104 milesLocation: Downey, CAExterior: WhiteInterior: GoldVIN: 2FMTK3J92FBB73835$17,999View Details&quot;                                       
+##  [7] &quot;2015 Ford EdgeSEMileage: 56,510 milesLocation: Downey, CAExterior: GrayInterior: BeigeVIN: 2FMTK3G85FBB43338$16,500View Details&quot;                                        
+##  [8] &quot;2015 Ford EdgeSEMileage: 62,747 milesLocation: Montclair, CAExterior: GrayInterior: TanVIN: 2FMTK3G98FBB43553 Rating: Great Price$14,995$8,778 below marketView Details&quot;
+##  [9] &quot;2015 Ford EdgeSEMileage: 51,571 milesLocation: Downey, CAExterior: SilverInterior: BlackVIN: 2FMTK4G80FBB52826$17,500View Details&quot;                                      
+## [10] &quot;2015 Ford EdgeSEMileage: 77,145 milesLocation: Santa Ana, CAExterior: Oxford WhiteInterior: EbonyVIN: 2FMTK3G90FBB43093$14,998View Details&quot;                             
+## [11] &quot;2015 Ford EdgeSELMileage: 34,725 milesLocation: Torrance, CAExterior: WhiteInterior: EbonyVIN: 2FMTK3J84FBB21467$22,495View Details&quot;                                    
+## [12] &quot;2015 Ford EdgeSEMileage: 28,043 milesLocation: Los Angeles, CAExterior: BlackInterior: EbonyVIN: 2FMTK4G93FBB43319$21,895View Details&quot;                                  
+## [13] &quot;2015 Ford EdgeSELMileage: 29,690 milesLocation: Santa Ana, CAExterior: Ingot Silver MetallicInterior: BlackVIN: 2FMTK3J91FBB74278$19,499View Details&quot;                   
+## [14] &quot;2015 Ford EdgeSELMileage: 73,368 milesLocation: Huntington Beach, CAExterior: Magnetic MetallicInterior: EbonyVIN: 2FMTK3J95FBB81668$17,500View Details&quot;                
+## [15] &quot;2015 Ford EdgeSELMileage: 18,208 milesLocation: Carson, CAExterior: Ingot Silver MetallicInterior: EbonyVIN: 2FMTK4J82FBC05227$22,495View Details&quot;                      
+## [16] &quot;2015 Ford EdgeSELMileage: 29,516 milesLocation: Torrance, CAExterior: BlackInterior: EbonyVIN: 2FMTK3J97FBB92848$23,495View Details&quot;                                    
+## [17] &quot;2015 Ford EdgeSELMileage: 62,015 milesLocation: Valencia, CAExterior: WhiteInterior: DuneVIN: 2FMTK3J95FBB34110$19,930View Details&quot;                                     
+## [18] &quot;2015 Ford EdgeSELMileage: 27,108 milesLocation: Montebello, CAExterior: GrayInterior: BlackVIN: 2FMTK3J86FBB60853$21,499View Details&quot;                                   
+## [19] &quot;2015 Ford EdgeSELMileage: 83,984 milesLocation: Van Nuys, CAExterior: Guard MetallicInterior: DuneVIN: 2FMTK3J83FBB04109$17,200View Details&quot;                            
+## [20] &quot;2015 Ford EdgeSELMileage: 49,049 milesLocation: Downey, CAExterior: BlackInterior: BlackVIN: 2FMTK3J91FBB13612$19,600View Details&quot;                                      
+## [21] &quot;2015 Ford EdgeSELMileage: 27,169 milesLocation: Alhambra, CAExterior: BlackInterior: EbonyVIN: 2FMTK3J94FBB45521$22,991View Details&quot;                                    
+## [22] &quot;2015 Ford EdgeSELMileage: 66,586 milesLocation: North Hollywood, CAExterior: Tuxedo Black MInterior: BlackVIN: 2FMTK3J80FBB06271$20,995View Details&quot;                    
+## [23] &quot;2015 Ford EdgeSELMileage: 19,157 milesLocation: Downey, CAExterior: SilverInterior: BlackVIN: 2FMTK3J98FBB46896$22,400View Details&quot;                                     
+## [24] &quot;2015 Ford EdgeSELMileage: 72,782 milesLocation: Pacoima, CAExterior: GrayInterior: BlackVIN: 2FMTK3J93FBB77876$18,980View Details&quot;                                      
+## [25] &quot;2015 Ford EdgeSELMileage: 5,470 milesLocation: Glendora, CAExterior: Guard MetallicInterior: EbonyVIN: 2FMTK3J98FBC40065$23,388View Details&quot;                            
+## [26] &quot;2015 Ford EdgeSELMileage: 34,217 milesLocation: Simi Valley, CAExterior: SilverInterior: EbonyVIN: 2FMTK3J97FBB27868$22,909View Details&quot;                                
+## [27] &quot;2015 Ford EdgeSELMileage: 26,271 milesLocation: Rancho Santa Margarita, CAExterior: WhiteInterior: EbonyVIN: 2FMTK3J93FBB09190$22,239View Details&quot;                      
+## [28] &quot;2015 Ford EdgeSELMileage: 32,301 milesLocation: Downey, CAExterior: SilverInterior: BlackVIN: 2FMTK3J82FBB47792$21,600View Details&quot;                                     
+## [29] &quot;2015 Ford EdgeSELMileage: 76,547 milesLocation: Downey, CAExterior: Dk. GrayInterior: BeigeVIN: 2FMTK4J90FBB52746$18,200View Details&quot;                                   
+## [30] &quot;2015 Ford EdgeSELMileage: 41,340 milesLocation: North Hollywood, CAExterior: White PlatinumInterior: BlackVIN: 2FMTK3J85FBB67440$23,700View Details&quot;</code></pre>
 <p>So that’s how you get the data on a single page. If you look closer at the URL, you see a lot of helpful things. First, there’s the make, then the model, then the location-zip, then the year-range, and ultimately the trim. This is a very pretty and clean URL. If you click on a few additional pages, you’ll see the URL opens up with <code>?page=2</code>.</p>
 <pre><code>https://www.truecar.com/used-cars-for-sale/listings/ford/edge/location-90210/?page=2</code></pre>
 <p>This is our ‘in’ to scraping multiple pages. I won’t bore you with the details of how to get <em>that</em> data into a neat matrix for us to analyze, but suffice it to say that I’m able to do it. Just build a function to construct a URL, and build a loop to go through the different pages, then use lots of <code>str_extract</code> from the <code>stringr</code> package and <code>gsub</code> to clean up the data.</p>
