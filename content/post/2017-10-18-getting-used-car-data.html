@@ -26,31 +26,36 @@ read_html(url)</code></pre>
 ## [2] &lt;body&gt;&lt;div&gt;\n&lt;div&gt;&lt;div id=&quot;main&quot;&gt;&lt;div&gt;&lt;div data-qa=&quot;TransitionHooks&quot; ...</code></pre>
 <p>You’ll see there’s a head and a body. Our data’s in the body, so let’s use <code>html_nodes()</code> and <code>html_text()</code> to parse out the data we want. I used <a href="https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html">Selectorgadget</a> to know what HTML classes to search for.</p>
 <pre class="r"><code>read_html(url) %&gt;% html_nodes(&#39;.col-xs-6.col-sm-8.no-left-padding&#39;) %&gt;% html_text()</code></pre>
-<pre><code>##  [1] &quot;2015 Ford EdgeSEMileage: 45,702 milesLocation: Santa Ana, CAExterior: Ingot Silver MetallicInterior: BlackVIN: 2FMTK3G84FBB96919$14,899View Details&quot;                                       
-##  [2] &quot;2015 Ford EdgeSEMileage: 31,750 milesLocation: Los Angeles, CAExterior: SilverInterior: BlackVIN: 2FMTK3G96FBB52901 Rating: Great Price$17,980$6,458 below marketView Details&quot;             
-##  [3] &quot;2015 Ford EdgeSEMileage: 62,844 milesLocation: Pacoima, CAExterior: BlackVIN: 2FMTK4G87FBB97410$15,482View Details&quot;                                                                        
-##  [4] &quot;2015 Ford EdgeSEMileage: 36,399 milesLocation: Huntington Beach, CAExterior: Tuxedo BlackInterior: EbonyVIN: 2FMTK3G97FBB92565$17,890View Details&quot;                                         
-##  [5] &quot;2015 Ford EdgeSEMileage: 35,874 milesLocation: Huntington Beach, CAExterior: Tuxedo Black MetallicInterior: EbonyVIN: 2FMTK3G98FBC34774$18,990View Details&quot;                                
-##  [6] &quot;2015 Ford EdgeSELMileage: 21,829 milesLocation: Los Angeles, CAExterior: GrayInterior: BlackVIN: 2FMTK3J95FBB01835 Rating: Great Price$20,480$7,063 below marketView Details&quot;              
-##  [7] &quot;2015 Ford EdgeSEMileage: 62,747 milesLocation: Montclair, CAExterior: GrayInterior: TanVIN: 2FMTK3G98FBB43553Discount Available  Rating: Great Price$15,400$8,373 below marketView Details&quot;
-##  [8] &quot;2015 Ford EdgeSEMileage: 7,526 milesLocation: Glendale, CAExterior: WhiteInterior: DuneVIN: 2FMTK3G95FBC20895$22,500View Details&quot;                                                          
-##  [9] &quot;2015 Ford EdgeSEMileage: 22,098 milesLocation: Downey, CAExterior: WhiteInterior: BlackVIN: 2FMTK4G88FBC08043$20,400View Details&quot;                                                          
-## [10] &quot;2015 Ford EdgeSEMileage: 30,332 milesLocation: Downey, CAExterior: WhiteInterior: BlackVIN: 2FMTK4G92FBB40573$19,900View Details&quot;                                                          
-## [11] &quot;2015 Ford EdgeSELMileage: 33,841 milesLocation: Downey, CAExterior: BlackInterior: BlackVIN: 2FMTK3J86FBB20045 Rating: Great Price$21,500$4,454 below marketView Details&quot;                  
-## [12] &quot;2015 Ford EdgeSELMileage: 5,470 milesLocation: Glendora, CAExterior: Guard MetallicInterior: EbonyVIN: 2FMTK3J98FBC40065$23,965View Details&quot;                                               
-## [13] &quot;2015 Ford EdgeTitaniumMileage: 30,703 milesLocation: Montebello, CAExterior: Tuxedo Black MetallicInterior: BlackVIN: 2FMPK3K8XFBB06293$22,499View Details&quot;                                
-## [14] &quot;2015 Ford EdgeSELMileage: 41,010 milesLocation: GARDEN GROVE, CAExterior: GrayInterior: EbonyVIN: 2FMTK3J94FBB47723$22,495View Details&quot;                                                    
-## [15] &quot;2015 Ford EdgeSELMileage: 77,865 milesLocation: Rancho Santa Margarita, CAExterior: Tuxedo Black MetallicInterior: DuneVIN: 2FMTK3J94FBB47740$18,700View Details&quot;                          
-## [16] &quot;2015 Ford EdgeSELMileage: 18,208 milesLocation: Carson, CAExterior: Ingot Silver MetallicInterior: EbonyVIN: 2FMTK4J82FBC05227Discount Available $24,997View Details&quot;                      
-## [17] &quot;2015 Ford EdgeSELMileage: 30,942 milesLocation: Huntington Beach, CAExterior: Ingot SilverInterior: EbonyVIN: 2FMTK3J98FBB45599$23,490View Details&quot;                                        
-## [18] &quot;2015 Ford EdgeSELMileage: 38,035 milesLocation: Downey, CAExterior: WhiteInterior: BeigeVIN: 2FMTK4J93FBB59643$22,100View Details&quot;                                                         
-## [19] &quot;2015 Ford EdgeSELMileage: 38,633 milesLocation: Downey, CAExterior: BlackInterior: BlackVIN: 2FMTK4J9XFBC10183$22,200View Details&quot;                                                         
-## [20] &quot;2015 Ford EdgeSELMileage: 27,169 milesLocation: Alhambra, CAExterior: BlackInterior: EbonyVIN: 2FMTK3J94FBB45521$24,991View Details&quot;                                                       
-## [21] &quot;2015 Ford EdgeSELMileage: 24,922 milesLocation: Long Beach, CAExterior: BlackInterior: EbonyVIN: 2FMTK3J8XFBB55896Discount Available $24,378View Details&quot;                                  
-## [22] &quot;2015 Ford EdgeTitaniumMileage: 19,284 milesLocation: Huntington Beach, CAExterior: Tuxedo Black MetallicInterior: EbonyVIN: 2FMPK3K87FBB67701$25,590View Details&quot;                          
-## [23] &quot;2015 Ford EdgeTitaniumMileage: 36,482 milesLocation: Downey, CAExterior: SilverInterior: BlackVIN: 2FMTK3K9XFBB06656 Rating: Great Price$23,400$6,371 below marketView Details&quot;            
-## [24] &quot;2015 Ford EdgeSELMileage: 29,704 milesLocation: Huntington Beach, CAExterior: Tuxedo BlackInterior: EbonyVIN: 2FMTK3J99FBB47748$24,890View Details&quot;                                        
-## [25] &quot;2015 Ford EdgeSELMileage: 19,405 milesLocation: Long Beach, CAExterior: BlackInterior: EbonyVIN: 2FMTK3J80FBB34135Discount Available $25,133View Details&quot;</code></pre>
+<pre><code>##  [1] &quot;2015 Ford EdgeSE FWDMileage: 70,069 milesLocation: Whittier, CAExterior: GreyInterior: BlackVIN: 2FMTK3G84FBB39684$13,995View Details&quot;                                      
+##  [2] &quot;2015 Ford EdgeSE FWDMileage: 45,117 milesLocation: Downey, CAExterior: Dk. GrayInterior: BeigeVIN: 2FMTK3G86FBB43431$16,500View Details&quot;                                    
+##  [3] &quot;2015 Ford EdgeSE FWDMileage: 18,969 milesLocation: Placentia, CAExterior: Tuxedo Black MetallicInterior: EbonyVIN: 2FMTK3G90FBB67457$18,599View Details&quot;                    
+##  [4] &quot;2015 Ford EdgeSE FWDMileage: 43,801 milesLocation: Downey, CAExterior: SilverInterior: BeigeVIN: 2FMTK3G85FBB52847$17,100View Details&quot;                                      
+##  [5] &quot;2015 Ford EdgeSE FWDMileage: 46,916 milesLocation: Downey, CAExterior: SilverInterior: BlackVIN: 2FMTK3G80FBB52769$17,200View Details&quot;                                      
+##  [6] &quot;2015 Ford EdgeSEL FWDMileage: 45,104 milesLocation: Downey, CAExterior: WhiteInterior: GoldVIN: 2FMTK3J92FBB73835$17,999View Details&quot;                                       
+##  [7] &quot;2015 Ford EdgeSE FWDMileage: 56,510 milesLocation: Downey, CAExterior: GrayInterior: BeigeVIN: 2FMTK3G85FBB43338$16,500View Details&quot;                                        
+##  [8] &quot;2015 Ford EdgeSE FWDMileage: 62,747 milesLocation: Montclair, CAExterior: GrayInterior: TanVIN: 2FMTK3G98FBB43553 Rating: Great Price$14,995$8,778 below marketView Details&quot;
+##  [9] &quot;2015 Ford EdgeSE AWDMileage: 51,571 milesLocation: Downey, CAExterior: SilverInterior: BlackVIN: 2FMTK4G80FBB52826$17,500View Details&quot;                                      
+## [10] &quot;2015 Ford EdgeSE FWDMileage: 77,145 milesLocation: Santa Ana, CAExterior: Oxford WhiteInterior: EbonyVIN: 2FMTK3G90FBB43093$14,998View Details&quot;                             
+## [11] &quot;2015 Ford EdgeSEL FWDMileage: 34,725 milesLocation: Torrance, CAExterior: WhiteInterior: EbonyVIN: 2FMTK3J84FBB21467$22,495View Details&quot;                                    
+## [12] &quot;2015 Ford EdgeSE AWDMileage: 28,043 milesLocation: Los Angeles, CAExterior: BlackInterior: EbonyVIN: 2FMTK4G93FBB43319$21,895View Details&quot;                                  
+## [13] &quot;2015 Ford EdgeSEL FWDMileage: 29,690 milesLocation: Santa Ana, CAExterior: Ingot Silver MetallicInterior: BlackVIN: 2FMTK3J91FBB74278$19,499View Details&quot;                   
+## [14] &quot;2015 Ford EdgeSEL FWDMileage: 73,368 milesLocation: Huntington Beach, CAExterior: Magnetic MetallicInterior: EbonyVIN: 2FMTK3J95FBB81668$17,500View Details&quot;                
+## [15] &quot;2015 Ford EdgeSEL AWDMileage: 18,208 milesLocation: Carson, CAExterior: Ingot Silver MetallicInterior: EbonyVIN: 2FMTK4J82FBC05227$22,495View Details&quot;                      
+## [16] &quot;2015 Ford EdgeSEL FWDMileage: 29,516 milesLocation: Torrance, CAExterior: BlackInterior: EbonyVIN: 2FMTK3J97FBB92848$23,495View Details&quot;                                    
+## [17] &quot;2015 Ford EdgeSEL FWDMileage: 62,015 milesLocation: Valencia, CAExterior: WhiteInterior: DuneVIN: 2FMTK3J95FBB34110$19,930View Details&quot;                                     
+## [18] &quot;2015 Ford EdgeSEL FWDMileage: 27,108 milesLocation: Montebello, CAExterior: GrayInterior: BlackVIN: 2FMTK3J86FBB60853$21,499View Details&quot;                                   
+## [19] &quot;2015 Ford EdgeSEL FWDMileage: 83,984 milesLocation: Van Nuys, CAExterior: Guard MetallicInterior: DuneVIN: 2FMTK3J83FBB04109$17,200View Details&quot;                            
+## [20] &quot;2015 Ford EdgeSEL FWDMileage: 49,049 milesLocation: Downey, CAExterior: BlackInterior: BlackVIN: 2FMTK3J91FBB13612$19,600View Details&quot;                                      
+## [21] &quot;2015 Ford EdgeSEL FWDMileage: 27,169 milesLocation: Alhambra, CAExterior: BlackInterior: EbonyVIN: 2FMTK3J94FBB45521$22,991View Details&quot;                                    
+## [22] &quot;2015 Ford EdgeSEL FWDMileage: 66,586 milesLocation: North Hollywood, CAExterior: Tuxedo Black MInterior: BlackVIN: 2FMTK3J80FBB06271$20,995View Details&quot;                    
+## [23] &quot;2015 Ford EdgeSEL FWDMileage: 19,157 milesLocation: Downey, CAExterior: SilverInterior: BlackVIN: 2FMTK3J98FBB46896$22,400View Details&quot;                                     
+## [24] &quot;2015 Ford EdgeSEL FWDMileage: 72,782 milesLocation: Pacoima, CAExterior: GrayInterior: BlackVIN: 2FMTK3J93FBB77876$18,980View Details&quot;                                      
+## [25] &quot;2015 Ford EdgeSEL FWDMileage: 5,470 milesLocation: Glendora, CAExterior: Guard MetallicInterior: EbonyVIN: 2FMTK3J98FBC40065$23,388View Details&quot;                            
+## [26] &quot;2015 Ford EdgeSEL FWDMileage: 34,217 milesLocation: Simi Valley, CAExterior: SilverInterior: EbonyVIN: 2FMTK3J97FBB27868$22,909View Details&quot;                                
+## [27] &quot;2015 Ford EdgeSEL FWDMileage: 26,271 milesLocation: Rancho Santa Margarita, CAExterior: WhiteInterior: EbonyVIN: 2FMTK3J93FBB09190$22,239View Details&quot;                      
+## [28] &quot;2015 Ford EdgeSEL FWDMileage: 32,301 milesLocation: Downey, CAExterior: SilverInterior: BlackVIN: 2FMTK3J82FBB47792$21,600View Details&quot;                                     
+## [29] &quot;2015 Ford EdgeSEL AWDMileage: 76,547 milesLocation: Downey, CAExterior: Dk. GrayInterior: BeigeVIN: 2FMTK4J90FBB52746$18,200View Details&quot;                                   
+## [30] &quot;2015 Ford EdgeSEL FWDMileage: 41,340 milesLocation: North Hollywood, CAExterior: White PlatinumInterior: BlackVIN: 2FMTK3J85FBB67440$23,700View Details&quot;</code></pre>
 <p>So that’s how you get the data on a single page. If you look closer at the URL, you see a lot of helpful things. First, there’s the make, then the model, then the location-zip, then the year-range, and ultimately the trim. This is a very pretty and clean URL. If you click on a few additional pages, you’ll see the URL opens up with <code>?page=2</code>.</p>
 <pre><code>https://www.truecar.com/used-cars-for-sale/listings/ford/edge/location-90210/?page=2</code></pre>
 <p>This is our ‘in’ to scraping multiple pages. I won’t bore you with the details of how to get <em>that</em> data into a neat matrix for us to analyze, but suffice it to say that I’m able to do it. Just build a function to construct a URL, and build a loop to go through the different pages, then use lots of <code>str_extract</code> from the <code>stringr</code> package and <code>gsub</code> to clean up the data.</p>
@@ -178,13 +183,13 @@ deal
 <tbody>
 <tr>
 <td style="text-align:right;">
-12967
+12599
 </td>
 <td style="text-align:right;">
 2012
 </td>
 <td style="text-align:right;">
-87179
+87724
 </td>
 <td style="text-align:right;">
 SEL
@@ -199,16 +204,16 @@ SEL
 0
 </td>
 <td style="text-align:right;">
-Long Beach, CA
+La Habra, CA
 </td>
 <td style="text-align:right;">
-Ingot Silver Metallic
+Silver
 </td>
 <td style="text-align:right;">
-Charcoal Black
+Beige
 </td>
 <td style="text-align:right;">
-2FMDK3JCXCBA82243
+2FMDK3J9XCBA82165
 </td>
 <td style="text-align:right;">
 NA
@@ -216,19 +221,16 @@ NA
 </tr>
 <tr>
 <td style="text-align:right;">
-13333
+14900
 </td>
 <td style="text-align:right;">
 2012
 </td>
 <td style="text-align:right;">
-83415
+65798
 </td>
 <td style="text-align:right;">
-Limited
-</td>
-<td style="text-align:right;">
-0
+SEL
 </td>
 <td style="text-align:right;">
 0
@@ -237,16 +239,19 @@ Limited
 0
 </td>
 <td style="text-align:right;">
-Thousand Oaks, CA
+0
+</td>
+<td style="text-align:right;">
+Downey, CA
 </td>
 <td style="text-align:right;">
 White
 </td>
 <td style="text-align:right;">
-Tan
+Black
 </td>
 <td style="text-align:right;">
-2FMDK3KC6CBA95361
+2FMDK3JC8CBA72701
 </td>
 <td style="text-align:right;">
 NA
@@ -254,168 +259,92 @@ NA
 </tr>
 <tr>
 <td style="text-align:right;">
-18000
+15994
 </td>
 <td style="text-align:right;">
 2012
 </td>
 <td style="text-align:right;">
-41470
+61006
+</td>
+<td style="text-align:right;">
+Limited
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+Corona, CA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+2FMDK3KCXCBA73167
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15999
+</td>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:right;">
+61834
+</td>
+<td style="text-align:right;">
+Limited
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+Ventura, CA
+</td>
+<td style="text-align:right;">
+White
+</td>
+<td style="text-align:right;">
+Black
+</td>
+<td style="text-align:right;">
+2FMDK3KC3CBA09052
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+13985
+</td>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:right;">
+84597
 </td>
 <td style="text-align:right;">
 SEL
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-Woodland Hills, CA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-2FMDK3J94CBA49744
-</td>
-<td style="text-align:right;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-14992
-</td>
-<td style="text-align:right;">
-2012
-</td>
-<td style="text-align:right;">
-77883
-</td>
-<td style="text-align:right;">
-Limited
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-Mission Hills, CA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-2FMDK3KC2CBA41460
-</td>
-<td style="text-align:right;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-13980
-</td>
-<td style="text-align:right;">
-2012
-</td>
-<td style="text-align:right;">
-83603
-</td>
-<td style="text-align:right;">
-Limited
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-Irvine, CA
-</td>
-<td style="text-align:right;">
-Ingot Silver Metallic
-</td>
-<td style="text-align:right;">
-Charcoal Black
-</td>
-<td style="text-align:right;">
-2FMDK3K96CBA46150
-</td>
-<td style="text-align:right;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-17980
-</td>
-<td style="text-align:right;">
-2012
-</td>
-<td style="text-align:right;">
-58297
-</td>
-<td style="text-align:right;">
-Sport
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-Buena Park, CA
-</td>
-<td style="text-align:right;">
-Tuxedo Black Metallic
-</td>
-<td style="text-align:right;">
-Charcoal Black
-</td>
-<td style="text-align:right;">
-2FMDK3AK7CBA93272
-</td>
-<td style="text-align:right;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-14777
-</td>
-<td style="text-align:right;">
-2012
-</td>
-<td style="text-align:right;">
-74332
-</td>
-<td style="text-align:right;">
-Limited
 </td>
 <td style="text-align:right;">
 0
@@ -430,13 +359,13 @@ Limited
 Ontario, CA
 </td>
 <td style="text-align:right;">
-NA
+White Suede
 </td>
 <td style="text-align:right;">
-NA
+Charcoal Black
 </td>
 <td style="text-align:right;">
-2FMDK3K91CBA92484
+2FMDK3J98CBA10168
 </td>
 <td style="text-align:right;">
 NA
@@ -444,13 +373,13 @@ NA
 </tr>
 <tr>
 <td style="text-align:right;">
-17399
+15488
 </td>
 <td style="text-align:right;">
 2012
 </td>
 <td style="text-align:right;">
-68191
+94946
 </td>
 <td style="text-align:right;">
 Sport
@@ -465,16 +394,16 @@ Sport
 0
 </td>
 <td style="text-align:right;">
-Santa Ana, CA
+Westlake Village, CA
 </td>
 <td style="text-align:right;">
-Black
+White
 </td>
 <td style="text-align:right;">
 Charcoal Black
 </td>
 <td style="text-align:right;">
-2FMDK3AKXCBA12748
+2FMDK3AK0CBA92464
 </td>
 <td style="text-align:right;">
 NA
@@ -482,51 +411,13 @@ NA
 </tr>
 <tr>
 <td style="text-align:right;">
-12967
+15995
 </td>
 <td style="text-align:right;">
 2012
 </td>
 <td style="text-align:right;">
-87179
-</td>
-<td style="text-align:right;">
-SEL
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-Long Beach, CA
-</td>
-<td style="text-align:right;">
-Ingot Silver Metallic
-</td>
-<td style="text-align:right;">
-Charcoal Black
-</td>
-<td style="text-align:right;">
-2FMDK3JCXCBA82243
-</td>
-<td style="text-align:right;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-13333
-</td>
-<td style="text-align:right;">
-2012
-</td>
-<td style="text-align:right;">
-83415
+94096
 </td>
 <td style="text-align:right;">
 Limited
@@ -541,16 +432,130 @@ Limited
 0
 </td>
 <td style="text-align:right;">
-Thousand Oaks, CA
+Alhambra, CA
+</td>
+<td style="text-align:right;">
+White Platinum
+</td>
+<td style="text-align:right;">
+Black
+</td>
+<td style="text-align:right;">
+2FMDK3KC2CBA41538
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12599
+</td>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:right;">
+87724
+</td>
+<td style="text-align:right;">
+SEL
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+La Habra, CA
+</td>
+<td style="text-align:right;">
+Silver
+</td>
+<td style="text-align:right;">
+Beige
+</td>
+<td style="text-align:right;">
+2FMDK3J9XCBA82165
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+14900
+</td>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:right;">
+65798
+</td>
+<td style="text-align:right;">
+SEL
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+Downey, CA
 </td>
 <td style="text-align:right;">
 White
 </td>
 <td style="text-align:right;">
-Tan
+Black
 </td>
 <td style="text-align:right;">
-2FMDK3KC6CBA95361
+2FMDK3JC8CBA72701
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15994
+</td>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:right;">
+61006
+</td>
+<td style="text-align:right;">
+Limited
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+Corona, CA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+2FMDK3KCXCBA73167
 </td>
 <td style="text-align:right;">
 NA

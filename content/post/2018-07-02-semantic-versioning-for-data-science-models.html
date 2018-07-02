@@ -1,0 +1,95 @@
+---
+title: Semantic Versioning for Data Science Models
+author: ~
+date: '2018-07-02'
+slug: semantic-versioning-for-data-science-models
+categories: []
+tags: []
+---
+
+
+
+<p>If you’ve ever wanted to tag your data science model, you’ve probably wondered how to version it. Which will it be: vx.4.1, v34.1231.51.21, or v91.x4.dev34? After reading about <em>semantic versioning</em>, I propose a method for versioning data science models.</p>
+<div id="semantic-versioning-for-software" class="section level1">
+<h1>Semantic Versioning for Software</h1>
+<p>Semantic versioning <a href="https://semver.org/">proposes the following</a>:</p>
+<blockquote>
+<p>Given a version number MAJOR.MINOR.PATCH, increment the:</p>
+<ol style="list-style-type: decimal">
+<li>MAJOR version when you make incompatible API changes,</li>
+<li>MINOR version when you add functionality in a backwards-compatible manner, and</li>
+<li>PATCH version when you make backwards-compatible bug fixes.</li>
+</ol>
+<p>Additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format.</p>
+</blockquote>
+<p>Well, I don’t build APIs right now, but I think there is a way to apply this to the ways in which my software <em>does</em> change.</p>
+</div>
+<div id="semantic-versioning-for-data-science-models" class="section level1">
+<h1>Semantic Versioning for Data Science Models</h1>
+<p>I propose that data science models use BETWEEN.WITHIN.PROCESS versioning, incrementing the</p>
+<ol style="list-style-type: decimal">
+<li>BETWEEN version when you have an incompatible data change or target variable change, which render your models incomparable to prior versions, the</li>
+<li>WITHIN version when you improve or enhance a model output, and the</li>
+<li>PROCESS version when you update a pipeline but it doesn’t ultimately improve the model.</li>
+</ol>
+<p>(Where BETWEEN implies ‘between model’ and WITHIN for ‘within model’.)</p>
+<div id="an-example" class="section level2">
+<h2>An Example</h2>
+<p>I build data science models by building python packages and committing the code to GitHub. The python package contains all of the support files and a <code>main.py</code> file to run the pipeline from start to finish. The support files could contain either helpful loggers to tell me where the pipeline is breaking down, diagnostic tools such as an AUC-ROC plot, files to engineer features, or files to train different model types. So there are really these three things that could happen to my code at any time. It doesn’t matter where those changes occur, or how many lines of code changed. What matters is what’s happened to the model. Each time I get a pull request approved, I’ll update the version number in my repo.</p>
+<div id="changing-between" class="section level3">
+<h3>Changing BETWEEN</h3>
+<p>Increment the BETWEEN version for the following changes:</p>
+<ul>
+<li>When the structure of your data changes</li>
+<li>If your target variable changes (how you coded it, or data that produced the target changed)</li>
+<li>The underlying population you’re training on changes</li>
+</ul>
+<p>Assume I discovered that I had a bad join. The join change might have been a minor one, but it’s now difficult to really compare the two models because my target was affected as a result. What I was predicting, even if slightly different, is now something different. If you ever feel like you’re comparing apples to oranges when looking at an AUC-ROC curve, update the BETWEEN version.</p>
+<p>With each BETWEEN change, there should be a clear communication in the release notes of why the model is inherently different from prior models. These changes should be less frequent.</p>
+</div>
+<div id="changing-within" class="section level3">
+<h3>Changing WITHIN</h3>
+<p>Increment the WITHIN number when the following happens:</p>
+<ul>
+<li>Features are added</li>
+<li>Data sources are added or updated. (You might have several data sources today that help contribute to the target. But adding a data source might just mean adding new features. If you add data in such a way that it changes what you’re ultimately modeling, update the BETWEEN version.)</li>
+<li>New modeling types are added. (You might be using a logistic regression, but add a mo)</li>
+</ul>
+<p>So if I added files that allowed me to train different model types, or added files that engineered new features, I’d incrememnt the WITHIN version. In my mind, this shouldn’t be a <em>count</em> of features you include, but should just be incremented every time you do something that affects the model performance.</p>
+<p>At any time, you might what to view different subsets of features and their effect on the model. So, you might not change the number of features, but add some functionality into your pipeline that now produces three different models in each run. I would increment the WITHIN version number in that case.</p>
+<p>Remember, the goal of this type of versioning is to show generally what’s changed in your pipeline.</p>
+</div>
+<div id="changing-process" class="section level3">
+<h3>Changing PROCESS</h3>
+<p>Increment the PROCESS version when the following happens:</p>
+<ul>
+<li>A minor bug is fixed (unless this updates BETWEEN or WITHIN)</li>
+<li>Enhance a logger or aspect of the pipeline</li>
+<li>Add a diagnostic plot or table</li>
+</ul>
+<p>Basically, any time you add something that doesn’t ultimately affect the performance of the model, you should update the PROCESS version. Your changes might improve the flow of your code and make you a much happier developer, but if it doesn’t improve the model, then the key priority of your code hasn’t improved.</p>
+</div>
+</div>
+</div>
+<div id="final-thoughts" class="section level1">
+<h1>Final Thoughts</h1>
+<p>Ultimately, data science semantic versioning can help communicate to team members what has fundamentally changed between software versions. Easily, a manager, colleague, or model governance officer could see the following version numbers and be able to know generally what’s changed:</p>
+<ol style="list-style-type: decimal">
+<li><code>0.0.1</code>: Process improvement</li>
+<li><code>0.1.0</code>: Model improvement</li>
+<li><code>0.2.0</code>: Model improvement</li>
+<li><code>1.0.0</code>: Model change</li>
+<li><code>1.1.0</code>: Model improvement</li>
+<li><code>1.1.1</code>: Process improvement</li>
+</ol>
+<p>So what changed?</p>
+<ol style="list-style-type: decimal">
+<li><code>0.0.1</code>: Setting up the code base, but no model or features yet</li>
+<li><code>0.1.0</code>: Finished a model, or added some features</li>
+<li><code>0.2.0</code>: Added some features</li>
+<li><code>1.0.0</code>: Discovered a bug in the target variable, something was miscoded. What is being predicted now changes (but you still have all the old features!)</li>
+<li><code>1.1.0</code>: Added some new features</li>
+<li><code>1.1.1</code>: Added a new plot to assess the financial impact of the model, but model doesn’t inherently change.</li>
+</ol>
+<p>This type of versioning also ultimately encourages a more disciplined workflow. Each sets of commit should be focused on one task alone. Because every time you update a version number, numbers to the right should refresh to zero. That’s how the theory goes, at least.</p>
+</div>

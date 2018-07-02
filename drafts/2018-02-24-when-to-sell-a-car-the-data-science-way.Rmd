@@ -1,0 +1,174 @@
+---
+title: When to Sell a Car (the Data Science Way)
+author: ~
+date: '2018-02-24'
+slug: when-to-sell-a-car-the-data-science-way
+categories: []
+tags: []
+draft: true
+---
+
+```{r}
+# Todo:
+# Extract make
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=F)
+```
+
+
+```{r}
+library(ggplot2)
+library(rvest)
+library(dplyr)
+library(magrittr)
+library(doParallel)
+
+make_url_yrs <- function(year, pg){
+  sprintf('https://www.truecar.com/used-cars-for-sale/listings/year-%s/?page=%s', year, pg)
+}
+make_url_miles <- function(i, pg){
+  sprintf('https://www.truecar.com/used-cars-for-sale/listings/?mileageLow=%s&mileageHigh=%s&page=%s', (i*1000), (i*1000 + 999), pg)
+}
+
+make_urls <- function(mile_range, page_range){
+  # yrs <- sapply(year_range, function(i) make_url(i, page_range)) %>% as.vector()
+  miles <- sapply(mile_range, function(i) make_url_miles(i, page_range)) %>% as.vector()
+  return(miles)
+}
+
+scrape <- function(urls, pageno){
+  read_html(urls[pageno]) %>% html_nodes('.col-xs-6.col-sm-8.no-left-padding') %>% html_text()
+}
+
+mega_scrape <- function(urls){
+  # Scrape using parallel processing
+  cl <- makeCluster(4)
+  registerDoParallel(cl)
+  
+  list_of_values <- foreach(i=1:length(urls), .packages = c('rvest'), 
+          .export=c('scrape'), 
+          .errorhandling = 'remove') %dopar% {
+    scrape(urls, i)  
+          }
+  stopCluster(cl)
+  cars <- list_of_values %>% unlist()
+  return(cars)
+}
+```
+
+
+# Process the data
+```{r}
+car_wash <- function(cars){
+  df <- as.data.frame(cars)
+  df$cars %<>% as.character()
+  df$price <- str_extract(df$cars, '\\$[0-9]*,[0-9]*') %>% 
+    gsub('Price: |\\$|,', '', .) %>%
+    as.numeric()
+  df$year <- str_extract(df$cars, '^[0-9]* ') %>% 
+    as.numeric()
+  df$make <- str_extract(df$cars, '^[0-9]* [A-Z][a-z]* ') %>%
+     gsub('^[0-9]* ', '', .) %>% trimws()
+  df$mileage <- str_extract(df$cars, 'Mileage: [0-9]*,[0-9]*') %>% 
+    gsub('Mileage: |,', '', .) %>%
+    as.numeric()
+  
+  # a = df$cars[1]
+  df$trim <- str_extract(df$cars, '.*Mileage:') %>% 
+    gsub('FWD|AWD|4x[24]|[24]WD|V6|4-cyl|^[0-9][0-9][0-9][0-9]|4dr|Automatic|Manual|Mileage:', '', ., ignore.case = T) %>% 
+    gsub(make, '', ., ignore.case = T) %>% 
+    gsub(model, '', ., ignore.case = T) %>% 
+    trimws() 
+  
+  df$awd <- grepl('AWD|4WD|4x4', df$cars, ignore.case = T) %>% as.numeric()
+  df$manual <- grepl('manual', df$cars) %>% as.numeric()
+  df$v6 <- grepl('V6', df$cars) %>% as.numeric()
+  df$location <- str_extract(df$cars, 'Location: .*Exterior:') %>% 
+    gsub('Location: |Exterior:', '', .) %>% 
+    trimws() 
+  df$ext <- str_extract(df$cars, 'Exterior: .*Interior:') %>% 
+    gsub('Interior:|Exterior:', '', .) %>% 
+    trimws() 
+  df$int <- str_extract(df$cars, 'Interior: .*VIN:') %>% 
+    gsub('Interior: |VIN:', '', .) %>% 
+    trimws() 
+  df$vin <- str_extract(df$cars, 'VIN: .*\\$') %>% 
+    gsub('VIN: |\\$', '', .) %>% 
+    substr(., 1, 17)
+  df$deal <- str_extract(df$cars, '\\$[0-9]*,[0-9]* below') %>% 
+    gsub('below|\\$|,', '', .) %>% trimws() %>%
+    as.numeric()  
+  return(df)
+}
+
+
+
+```
+
+
+# Analysis
+
+
+Now, let's get the data.
+```{r}
+start <- Sys.time()
+# cars <- make_urls(1998, 1:50) %>% mega_scrape()
+miles <- seq(from = 1, to = 200, by = 10)
+cars <- make_url_miles(miles, 1:2) %>% mega_scrape()
+df <- car_wash(cars)
+Sys.time() - start 
+done = Sys.time() - start
+```
+
+# Plots
+Price by mileage
+```{r}
+df %>% filter(year >= 2014) %>%
+ggplot(., aes(x = mileage, y = price)) + 
+  geom_smooth() + geom_point() + 
+  facet_wrap( ~ year) +
+  ylim(0, 20000) +
+  ggtitle('Price by Mileage')
+```
+
+```{r}
+tmp <- df %>% filter(year >= 2010, year < 2018)
+ggplot(data = tmp, aes(x = mileage, y=price, color = factor(year))) + 
+  geom_smooth(se=F) + 
+  ggtitle('Price by Mileage (by year)')
+```
+
+```{r}
+tmp <- df 
+qplot(data = tmp, x = mileage, y=price, color = factor(make)) +
+  geom_smooth()
+```
+
+
+
+
+
+
+
+
+
+
+# Other approaches
+
+```{r}
+# Alternatively, without parallel processing you can use this function:
+scrape_pages <- function(urls){
+  scraped_pages <- vector()
+  for(i in 1:length(urls)){
+    result <- try(scrape(urls, 1))
+    error <- ("try-error" %in% class(result))
+    if (error == FALSE){
+      scraped_pages <- c(scraped_pages, result)
+    }
+  }
+  return(scraped_pages)
+}
+```
