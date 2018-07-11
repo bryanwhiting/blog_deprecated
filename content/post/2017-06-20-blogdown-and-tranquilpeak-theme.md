@@ -3,7 +3,7 @@ title: 'Blogdown and Tranquilpeak Hosted on Netlify: a Deep Dive'
 date: '2017-06-20'
 author: 'Bryan Whiting'
 categories: ["tutorials"]
-tags: ["blogdown", "r", "hugo"]
+tags: ["blogdown", "r", "hugo", "blogging", "jekyll"]
 draft: no
 ---
 

@@ -2,7 +2,8 @@
 title: 'The DataViz battle: Plotly vs ggplot2'
 author: "Bryan Whiting"
 date: '2017-02-10'
-tags: ['dataviz']
+categories: ['dataviz']
+tags: ['ggplot2', 'r', 'plotly']
 ---
 
 R users fall in love with ```ggplot2```, the growing standard for data visualization in R. The ability to quickly vizualize trends, and customize just about anything you'd want, make it a powerful tool. Yet this week, I made a discvoery that may reduce how much I used ```ggplot2```. Enter ```plot_ly()```. 

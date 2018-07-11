@@ -2,7 +2,8 @@
 title: "Starting with Jekyll"
 author: "Bryan Whiting"
 date: 2016-11-07
-tags: ["productivity"]
+categories: ['productivity']
+tags:['jekyll', 'blogging']
 ---
 
 

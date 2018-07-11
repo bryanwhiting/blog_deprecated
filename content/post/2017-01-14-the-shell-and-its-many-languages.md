@@ -2,7 +2,8 @@
 title: "The Shell and its Many Languages"
 author: "Bryan Whiting"
 date: 2017-01-14
-tags: ["productivity", "code"]
+categories: ['tutorials']
+tags: ['coding', 'r', 'stata', 'python', 'bash']
 ---
 
 If you don't know how to use the shell/terminal/command line, you should. Why? Here's a sampling of I've done in the last month:
@@ -36,7 +37,7 @@ writeLines('display "hello world"', fileID)
 close(fileID)
 ```
 
-In R, run the `system()` command to call the shell. Use the `"Stata.exe" do` command to execute the *.do* file.
+In R, run the `system()` command to call the shell. Use the `"Stata.exe" do` command to execute the `.do` file.
 ```{r}
 # Execute the Stata file
 system("C:\Program Files\...\Stata.exe do stata_file.do")

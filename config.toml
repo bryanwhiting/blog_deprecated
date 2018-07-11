@@ -34,7 +34,7 @@ ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
 
 [author]
   name = "Bryan Whiting"
-  bio = "Hacker, innovator, data scientist, father"
+  bio = "father, innovator, data scientist"
   job = "Data Scientist"
   location = "Washington, D.C."
   # Your Gravatar email. Overwrite `author.picture` everywhere in the blog
