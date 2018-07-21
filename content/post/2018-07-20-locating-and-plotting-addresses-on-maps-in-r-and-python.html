@@ -7,15 +7,6 @@ categories: ['tutorials']
 tags: []
 ---
 
-<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
-<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
-<link href="/rmarkdown-libs/leaflet/leaflet.css" rel="stylesheet" />
-<script src="/rmarkdown-libs/leaflet/leaflet.js"></script>
-<link href="/rmarkdown-libs/leafletfix/leafletfix.css" rel="stylesheet" />
-<script src="/rmarkdown-libs/Proj4Leaflet/proj4-compressed.js"></script>
-<script src="/rmarkdown-libs/Proj4Leaflet/proj4leaflet.js"></script>
-<link href="/rmarkdown-libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
-<script src="/rmarkdown-libs/leaflet-binding/leaflet.js"></script>
 
 
 <p>The goal of this tutorial is to do the following:</p>
@@ -125,12 +116,12 @@ df %&gt;% knitr::kable()</code></pre>
 <h2>Plot in leaflet</h2>
 <div id="basic-plot" class="section level3">
 <h3>Basic plot</h3>
-<pre class="r"><code>df %&gt;%
+<pre class="r"><code>leafMap &lt;- df %&gt;%
    leaflet() %&gt;% 
     addTiles() %&gt;%
     addMarkers(~lon, ~lat)</code></pre>
-<div id="htmlwidget-1" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[40.6129419,40.6500629,40.6337817,40.873067,40.7329225,40.7520435,42.7618252,40.7010575],[-74.0766727,-73.8913059,-74.1230263,-73.858432,-74.00398,-73.9701833,-73.6629522,-73.7263072],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[40.6129419,42.7618252],"lng":[-74.1230263,-73.6629522]}},"evals":[],"jsHooks":[]}</script>
+<iframe src="content/post/resources/20180720/leafMap.html">
+</iframe>
 </div>
 </div>
 <div id="bugs-i-hit" class="section level2">

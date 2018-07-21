@@ -101,12 +101,18 @@ df <- read.csv('resources/20180720/addresses2.csv')
 ## Plot in leaflet
 ### Basic plot
 ```{r}
-df %>%
+leafMap <- df %>%
    leaflet() %>% 
     addTiles() %>%
     addMarkers(~lon, ~lat)
 ```
 
+```{r, echo=FALSE}
+library(htmlwidgets)
+library(htmltools)
+saveWidget(leafMap, file="~/github/blog/content/post/resources/20180720/leafMap.html")
+```
+<iframe src='content/post/resources/20180720/leafMap.html'></iframe>
 
 ## Bugs I hit:
 I hit a lot of bugs when building this tutorial.
