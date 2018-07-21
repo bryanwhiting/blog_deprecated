@@ -8,6 +8,7 @@ tags: ['r', 'webscraping']
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning=F)
+install.load::install_load('rvest', 'dplyr', 'stringr', 'magrittr', 'formattable')
 ```
 
 In another post, I describe how I use this data that I've scraped, but I wanted to provide a more in-depth tutorial for those interested in how I got the data. Note, this data belongs to Truecar, so all uses herein are for personal and academic reasons only.

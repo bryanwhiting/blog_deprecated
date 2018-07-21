@@ -17,16 +17,8 @@ tags: ['r', 'regression']
 <h1>What am I paying for?</h1>
 <p>To do any analysis, you need data. Please see <a href="https://www.bryanwhiting.com/2017/10/getting-used-car-data/">my most recent post</a> if you’re interested in learning how I got the data for this analysis. Suffice it to say, I webscraped it. The data is not my own, but belongs to Truecar.</p>
 <p>I love using linear regression to understand my data on a granular level. In my data set, I was able to extract the make, model, year, mileage, trim, and a flag for whether the car was all wheel drive (<code>awd == 1</code>) or not. Putting this data into a linear regression, we can see some interesting results. First let’s look at the data we have:</p>
-<pre class="r"><code>library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>load(&#39;../../data/used-car/tc-ford-edge.Rda&#39;)
+<pre class="r"><code>library(dplyr)
+load(&#39;../../data/used-car/tc-ford-edge.Rda&#39;)
 # Get the prices into the appropriate scale and remove some extraneous
 df$price = df$price*1000
 df %&gt;% select(-stats, -url, -int, -vin, -v6, -trueprice, -resid) %&gt;% head()</code></pre>

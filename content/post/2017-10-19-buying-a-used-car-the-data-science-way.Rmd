@@ -8,6 +8,7 @@ tags: ['r', 'regression']
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning=F)
+install.load::install_load('dplyr')
 ```
 
 So you want to buy a car, but you don't know anything about them? Welcome to my life. 
