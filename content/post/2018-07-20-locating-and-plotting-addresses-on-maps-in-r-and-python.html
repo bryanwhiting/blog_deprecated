@@ -1,0 +1,151 @@
+---
+title: Locating and Plotting Addresses on Maps in R and Python
+author: ~
+date: '2018-07-20'
+slug: locating-and-plotting-addresses-on-maps-in-r-and-python
+categories: ['tutorials']
+tags: []
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/rmarkdown-libs/leaflet/leaflet.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/leaflet/leaflet.js"></script>
+<link href="/rmarkdown-libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="/rmarkdown-libs/Proj4Leaflet/proj4leaflet.js"></script>
+<link href="/rmarkdown-libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/leaflet-binding/leaflet.js"></script>
+
+
+<p>The goal of this tutorial is to do the following:</p>
+<ol style="list-style-type: decimal">
+<li>Collect addresses (via Google Forms)</li>
+<li>Download to R (via Google Sheets)</li>
+<li>Geocode them (via <code>geocode</code>)</li>
+<li>Plot them (using <code>leaflet</code>)</li>
+<li>Get walking distance between them (via Google Maps api)</li>
+<li>Cluster them (<code>kmeans?</code>)</li>
+</ol>
+<p>I use the <a href="">googlesheets</a> API to connect to the google sheet of choice. <a href="https://datascienceplus.com/how-to-use-googlesheets-to-connect-r-to-google-sheets/">Tutorial</a> for first-timers. Also, this <a href="https://rawgit.com/jennybc/googlesheets/master/vignettes/basic-usage.html#get-a-google-sheet-to-practice-with">vignette</a> .</p>
+<pre class="r"><code># install the package if it doesn&#39;t exist, and load it
+devtools::install_github(&quot;dkahle/ggmap&quot;) # for the register_google function
+install.load::install_load(&#39;googlesheets&#39;, &#39;dplyr&#39;, &#39;leaflet&#39;, &#39;magrittr&#39;, &#39;ggmap&#39;)</code></pre>
+<pre class="r"><code># Run this to authorize your google account
+gs_auth(new_user=TRUE)</code></pre>
+<p>Create a Form: 1. Visit drive.google.com 2. Create a Form 3. Collect responses (hit up some random [fake address generator] for inspiration) 4. Save the responses to a new sheet <code>fake_addresses</code></p>
+<p>Steps in pretty picture form: <img src="resources/20180720/create_form1.png" /> <img src="resources/20180720/go_to_responses.png" /> <img src="resources/20180720/create_sheet.png" /></p>
+<pre class="r"><code>wb_name &lt;- gs_title(&#39;fake_addresses&#39;)
+# Or, if published to web, enter the key after /d/ in the url:
+# wb_name &lt;- gs_key(&#39;198ng981...&#39;)
+wb &lt;- gs_read(wb_name)
+# Save it to csv (you could skip this)
+wb %&gt;% write.csv(&#39;resources/20180720/addresses.csv&#39;)</code></pre>
+<p>Read it in and inspect</p>
+<pre class="r"><code>wb &lt;- read.csv(&#39;resources/20180720/addresses.csv&#39;)
+wb %&lt;&gt;% select(-X, -Timestamp)
+colnames(wb) &lt;- c(&#39;address&#39;, &#39;favorite_color&#39;, &#39;favorite_food&#39;)
+wb$address %&lt;&gt;% as.character() # geocode requires a character, not level
+wb %&gt;% knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">address</th>
+<th align="left">favorite_color</th>
+<th align="left">favorite_food</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">3094 Bell Street, New York, New York</td>
+<td align="left">Blue</td>
+<td align="left">Peanuts</td>
+</tr>
+<tr class="even">
+<td align="left">1181 Williams Avenue, New York, New York</td>
+<td align="left">Blue</td>
+<td align="left">Salmon</td>
+</tr>
+<tr class="odd">
+<td align="left">4289 Taylor Street, new york, new york</td>
+<td align="left">Green</td>
+<td align="left">Salmon</td>
+</tr>
+<tr class="even">
+<td align="left">2239 Duncan Avenue, new york, new york</td>
+<td align="left">Red</td>
+<td align="left">Caviar</td>
+</tr>
+<tr class="odd">
+<td align="left">2379 Grove Street, new york, ny</td>
+<td align="left">Blue</td>
+<td align="left">Salmon</td>
+</tr>
+<tr class="even">
+<td align="left">302 Pallet Street, new york, new york</td>
+<td align="left">Red</td>
+<td align="left">Caviar</td>
+</tr>
+<tr class="odd">
+<td align="left">2664 Oakwood Avenue, new york, new york</td>
+<td align="left">Red</td>
+<td align="left">Peanuts</td>
+</tr>
+<tr class="even">
+<td align="left">3897 Hoffman Avenue, new york, new york</td>
+<td align="left">Green</td>
+<td align="left">Peanuts</td>
+</tr>
+</tbody>
+</table>
+<div id="geocode-the-addresses" class="section level1">
+<h1>Geocode the addresses</h1>
+<p>To use the <code>geocode</code> funciton, you may need to create a google maps API if you over-do your quota.</p>
+<pre class="r"><code># load the googlemaps api
+api_key = trimws(readChar(&#39;resources/google_maps_api&#39;, 1000))
+register_google(key = api_key)
+substr(api_key, 1, 3)</code></pre>
+<pre><code>## [1] &quot;AIz&quot;</code></pre>
+<p>Use geocode each address.</p>
+<pre class="r"><code>df &lt;- wb
+df$lon &lt;- 0
+df$lat &lt;- 0
+df$geoAddress &lt;- &quot;&quot;
+
+for(i in 1:nrow(df))
+{
+  if(!is.na(df$address[i])){
+    result &lt;- geocode(df$address[i], output = &quot;latlona&quot;, source = &quot;google&quot;)
+    df$lon[i] &lt;- as.numeric(result[1])
+    df$lat[i] &lt;- as.numeric(result[2])
+    df$geoAddress[i] &lt;- as.character(result[3])
+  }
+}
+df %&gt;% knitr::kable()</code></pre>
+<div id="plot-in-leaflet" class="section level2">
+<h2>Plot in leaflet</h2>
+<div id="basic-plot" class="section level3">
+<h3>Basic plot</h3>
+<pre class="r"><code>df %&gt;%
+   leaflet() %&gt;% 
+    addTiles() %&gt;%
+    addMarkers(~lon, ~lat)</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[[40.6129419,40.6500629,40.6337817,40.873067,40.7329225,40.7520435,42.7618252,40.7010575],[-74.0766727,-73.8913059,-74.1230263,-73.858432,-74.00398,-73.9701833,-73.6629522,-73.7263072],null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[40.6129419,42.7618252],"lng":[-74.1230263,-73.6629522]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="bugs-i-hit" class="section level2">
+<h2>Bugs I hit:</h2>
+<p>I hit a lot of bugs when building this tutorial.</p>
+<p>First bug: Trying to do <code>blogdown::serve_site()</code>. I got the following <code>googlesheets</code> warning: &gt; Error: oauth_listener() needs an interactive environment.</p>
+<p>Solution: don’t do <code>gs_auth()</code> and <code>gs_title()</code>. Those only work in personal browsing. For public mode, use <code>gs_key()</code>.</p>
+<p>Second bug: (Right after the first). I got this bug:<a href="https://github.com/rstudio/blogdown/issues/130" class="uri">https://github.com/rstudio/blogdown/issues/130</a></p>
+<p>Proposed solution:</p>
+<pre><code>update.packages(ask = FALSE, checkBuilt = TRUE)</code></pre>
+<p>Then I see at the bottom: <a href="https://github.com/tidyverse/lubridate/issues/615" class="uri">https://github.com/tidyverse/lubridate/issues/615</a>, that this is actually a Mac issue with OS Sierra, so I <a href="https://cran.r-project.org/bin/macosx/">download R 3.5.1</a>. Then I discover I have to re-install all of my R packages.</p>
+<p>Third bug trying to run via Rmarkdown</p>
+<pre><code>Error in stop_for_content_type(req, expected = &quot;application/atom+xml; charset=UTF-8&quot;) :</code></pre>
+<p>Then I give up when I find this: <a href="https://github.com/jennybc/googlesheets/issues/272" class="uri">https://github.com/jennybc/googlesheets/issues/272</a>. You probably need to publish the sheet to the web to use it in a script. So I’m going to just use a csv. And you thougt Data Science wasn’t 90% package management?…sigh.</p>
+<p>And then I thought, I don’t want to use google sheets every time I run this RMarkdown anyway, in case things break down the road. So I’m just going to download the file to csv…</p>
+</div>
+</div>

@@ -1,8 +1,8 @@
 ---
-title: How to Fail Getting a Data Science Job
+title: Getting the First Data Science Job 
 author: ~
 date: '2018-07-11'
-slug: how-to-fail-getting-a-data-science-job
+slug: getting-the-first-data-science-job
 categories: ['data science']
 tags: ['recruiting', 'life lessons']
 ---
