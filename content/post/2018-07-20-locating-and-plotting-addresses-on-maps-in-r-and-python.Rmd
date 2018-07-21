@@ -110,9 +110,11 @@ leafMap <- df %>%
 ```{r, echo=FALSE}
 library(htmlwidgets)
 library(htmltools)
-saveWidget(leafMap, file="~/github/blog/content/post/resources/20180720/leafMap.html")
+saveWidget(leafMap, file="~/github/blog/static/img/leafMap.html")
 ```
-<iframe src='content/post/resources/20180720/leafMap.html'></iframe>
+<iframe src='static/img/leafMap.html'></iframe>
+
+# TODO: RENDER IMAGES AND LEAFLET PLOT
 
 ## Bugs I hit:
 I hit a lot of bugs when building this tutorial.
