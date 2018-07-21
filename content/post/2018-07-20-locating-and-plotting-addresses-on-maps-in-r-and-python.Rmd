@@ -27,7 +27,6 @@ I use the [googlesheets]() API to connect to the google sheet of choice.
 .
 
 ```{r, message=FALSE, warning=FALSE}
-# install the package if it doesn't exist, and load it
 devtools::install_github("dkahle/ggmap") # for the register_google function
 install.load::install_load('googlesheets', 'dplyr', 'leaflet', 'magrittr', 'ggmap')
 ```

@@ -28,8 +28,7 @@ tags: []
 <li>Cluster them (<code>kmeans?</code>)</li>
 </ol>
 <p>I use the <a href="">googlesheets</a> API to connect to the google sheet of choice. <a href="https://datascienceplus.com/how-to-use-googlesheets-to-connect-r-to-google-sheets/">Tutorial</a> for first-timers. Also, this <a href="https://rawgit.com/jennybc/googlesheets/master/vignettes/basic-usage.html#get-a-google-sheet-to-practice-with">vignette</a> .</p>
-<pre class="r"><code># install the package if it doesn&#39;t exist, and load it
-devtools::install_github(&quot;dkahle/ggmap&quot;) # for the register_google function
+<pre class="r"><code>devtools::install_github(&quot;dkahle/ggmap&quot;) # for the register_google function
 install.load::install_load(&#39;googlesheets&#39;, &#39;dplyr&#39;, &#39;leaflet&#39;, &#39;magrittr&#39;, &#39;ggmap&#39;)</code></pre>
 <pre class="r"><code># Run this to authorize your google account
 gs_auth(new_user=TRUE)</code></pre>
