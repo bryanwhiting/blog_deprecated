@@ -24,7 +24,7 @@ install.load::install_load(&#39;googlesheets&#39;, &#39;dplyr&#39;, &#39;leaflet
 <pre class="r"><code># Run this to authorize your google account
 gs_auth(new_user=TRUE)</code></pre>
 <p>Create a Form: 1. Visit drive.google.com 2. Create a Form 3. Collect responses (hit up some random [fake address generator] for inspiration) 4. Save the responses to a new sheet <code>fake_addresses</code></p>
-<p>Steps in pretty picture form: <img src="resources/20180720/create_form1.png" /> <img src="resources/20180720/go_to_responses.png" /> <img src="resources/20180720/create_sheet.png" /></p>
+<p>Steps in pretty picture form: <img src="/img/20180720/create_form1.png" /> <img src="/img/20180720/go_to_responses.png" /> <img src="/img/20180720/create_sheet.png" /></p>
 <pre class="r"><code>wb_name &lt;- gs_title(&#39;fake_addresses&#39;)
 # Or, if published to web, enter the key after /d/ in the url:
 # wb_name &lt;- gs_key(&#39;198ng981...&#39;)
@@ -120,7 +120,7 @@ df %&gt;% knitr::kable()</code></pre>
    leaflet() %&gt;% 
     addTiles() %&gt;%
     addMarkers(~lon, ~lat)</code></pre>
-<iframe src="static/img/leafMap.html">
+<iframe src="static/img/leafMap/index.html">
 </iframe>
 </div>
 </div>

@@ -9,7 +9,7 @@ tags: []
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning=F)
-setwd("~/github/blog/content/post")
+# setwd("~/github/blog/")
 ```
 
 The goal of this tutorial is to do the following:
@@ -42,9 +42,9 @@ Create a Form:
 4. Save the responses to a new sheet `fake_addresses`
 
 Steps in pretty picture form:
-![](resources/20180720/create_form1.png)
-![](resources/20180720/go_to_responses.png)
-![](resources/20180720/create_sheet.png)
+![](/img/20180720/create_form1.png)
+![](/img/20180720/go_to_responses.png)
+![](/img/20180720/create_sheet.png)
 
 ```{r sheets, eval=FALSE}
 wb_name <- gs_title('fake_addresses')
@@ -110,9 +110,9 @@ leafMap <- df %>%
 ```{r, echo=FALSE}
 library(htmlwidgets)
 library(htmltools)
-saveWidget(leafMap, file="~/github/blog/static/img/leafMap.html")
+saveWidget(leafMap, file="/img/leafMap.html")
 ```
-<iframe src='static/img/leafMap.html'></iframe>
+<iframe src='/img/leafMap/index.html'></iframe>
 
 # TODO: RENDER IMAGES AND LEAFLET PLOT
 
