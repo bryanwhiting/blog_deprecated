@@ -105,14 +105,21 @@ leafMap <- df %>%
    leaflet() %>% 
     addTiles() %>%
     addMarkers(~lon, ~lat)
+leafMap
 ```
-
+Try 2:
 ```{r, echo=FALSE}
 library(htmlwidgets)
 library(htmltools)
-saveWidget(leafMap, file="/img/leafMap.html")
+# dir.create("static/img/20180720/leaflet", showWarnings = FALSE)
+# saveWidget(leafMap, "static/img/20180720/leaflet/leafMap.html")
+# setwd(currentWD)
+# saveWidget(leafMap, file="/img/leafMap.html")
 ```
+Iframe:
 <iframe src='/img/leafMap/index.html'></iframe>
+
+<iframe src='/img/leafMap.html'></iframe>
 
 # TODO: RENDER IMAGES AND LEAFLET PLOT
 
