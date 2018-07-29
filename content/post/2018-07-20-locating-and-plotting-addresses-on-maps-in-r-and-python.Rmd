@@ -1,44 +1,35 @@
 ---
-title: Locating and Plotting Addresses on Maps in R and Python
+title: Collect, Analyze, and Map Addresses in R
 author: ~
-date: '2018-07-20'
-slug: locating-and-plotting-addresses-on-maps-in-r-and-python
+date: '2018-07-28'
+slug: addresses-and-maps
 categories: ['tutorials']
-tags: []
+tags: ['google', 'api', 'r', 'leaflet', 'maps', 'dataviz', 'machine-learning', 'geocode', 'googlesheets']
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning=F)
-# setwd("~/github/blog/")
+# setwd("~/github/blog/content/post")
 ```
 
 The goal of this tutorial is to do the following:
 
 1. Collect addresses (via Google Forms)
-2. Download to R (via Google Sheets)
+2. Download to R (via `googlesheets`)
 3. Geocode them (via `geocode`)
 4. Plot them (using `leaflet`)
-5. Get walking distance between them (via Google Maps api)
-6. Cluster them (`kmeans?`)
+5. Get driving distance between them (via `gmapsdistance`)
+6. Cluster them (`kmeans`)
+7. Making the `leaflet` plot fancy
 
-
-I use the [googlesheets]() API to connect to the google sheet of choice.
-[Tutorial](https://datascienceplus.com/how-to-use-googlesheets-to-connect-r-to-google-sheets/) for first-timers. Also, this [vignette](https://rawgit.com/jennybc/googlesheets/master/vignettes/basic-usage.html#get-a-google-sheet-to-practice-with)
-.
-
-```{r, message=FALSE, warning=FALSE}
-devtools::install_github("dkahle/ggmap") # for the register_google function
-install.load::install_load('googlesheets', 'dplyr', 'leaflet', 'magrittr', 'ggmap')
-```
-```{r sheets1, eval=FALSE}
-# Run this to authorize your google account
-gs_auth(new_user=TRUE)
-```
+## 1. Collect
+Perhaps in a future post I'll explore [googleformr](https://cran.r-project.org/web/packages/googleformr/index.html). For now, I create forms the old-school way.
 
 Create a Form:
+
 1. Visit drive.google.com
 2. Create a Form 
-3. Collect responses (hit up some random [fake address generator] for inspiration)
+3. Collect responses (google a random "fake address generator" for inspiration)
 4. Save the responses to a new sheet `fake_addresses`
 
 Steps in pretty picture form:
@@ -46,34 +37,52 @@ Steps in pretty picture form:
 ![](/img/20180720/go_to_responses.png)
 ![](/img/20180720/create_sheet.png)
 
+
+## 2. Connect and Download
+
+I use the [googlesheets](https://cran.r-project.org/web/packages/googlesheets/index.html) API to connect to the google sheet of choice.
+[Tutorial](https://datascienceplus.com/how-to-use-googlesheets-to-connect-r-to-google-sheets/) for first-timers. Also, this [vignette](https://rawgit.com/jennybc/googlesheets/master/vignettes/basic-usage.html#get-a-google-sheet-to-practice-with)
+.
+
+```{r, message=FALSE, warning=FALSE}
+devtools::install_github("dkahle/ggmap") # for the register_google function
+devtools::install_github("rodazuero/gmapsdistance")
+install.load::install_load('gmapsdistance', 'googlesheets', 'dplyr', 'leaflet', 'magrittr', 'ggmap', 'cluster', 'factoextra')
+```
+
+Run this to authorize access to your Google account. It's pretty nice!
+```{r sheets1, eval=FALSE}
+gs_auth(new_user=TRUE)
+```
+Identify your sheet name and pull the data. Write to disk to save time in the future.
 ```{r sheets, eval=FALSE}
 wb_name <- gs_title('fake_addresses')
 # Or, if published to web, enter the key after /d/ in the url:
 # wb_name <- gs_key('198ng981...')
 wb <- gs_read(wb_name)
 # Save it to csv (you could skip this)
-wb %>% write.csv('resources/20180720/addresses.csv')
+wb %>% write.csv('data/20180720/addresses.csv')
 ```
 
-Read it in and inspect
+Read it in, inspect, and clean.
 ```{r read}
-wb <- read.csv('resources/20180720/addresses.csv')
+wb <- read.csv('data/20180720/addresses.csv')
 wb %<>% select(-X, -Timestamp)
 colnames(wb) <- c('address', 'favorite_color', 'favorite_food')
 wb$address %<>% as.character() # geocode requires a character, not level
 wb %>% knitr::kable()
 ```
 
-# Geocode the addresses
-To use the `geocode` funciton, you may need to create a google maps API if you over-do your quota.
+## 3. Geocode the addresses
+To use the `geocode` funciton, you may need to create a google maps API if you over-do your quota (daily limit is 2500). See footnotes for API help.
 ```{r}
 # load the googlemaps api
-api_key = trimws(readChar('resources/google_maps_api', 1000))
+api_key = trimws(readChar('data/google_maps_api', 1000))
 register_google(key = api_key)
 substr(api_key, 1, 3)
 ```
 
-Use geocode each address.
+Use `geocode()` for each address. (This code was taken from somewhere, though I can't remember where.)
 ```{r, eval=FALSE}
 df <- wb
 df$lon <- 0
@@ -92,14 +101,15 @@ for(i in 1:nrow(df))
 df %>% knitr::kable()
 ```
 ```{r, eval=FALSE, echo=FALSE}
-# df %>% write.csv('resources/20180720/addresses2.csv')
+# df %>% write.csv('data/20180720/addresses2.csv')
 ```
 ```{r, echo=FALSE}
-df <- read.csv('resources/20180720/addresses2.csv')
+df <- read.csv('data/20180720/addresses2.csv')
+df %>% knitr::kable()
 ```
 
-## Plot in leaflet
-### Basic plot
+## 4. Plot in leaflet
+Lets visualize our people using `leaflet`.
 ```{r}
 leafMap <- df %>%
    leaflet() %>% 
@@ -107,44 +117,94 @@ leafMap <- df %>%
     addMarkers(~lon, ~lat)
 leafMap
 ```
-Try 2:
-```{r, echo=FALSE}
-library(htmlwidgets)
-library(htmltools)
-# dir.create("static/img/20180720/leaflet", showWarnings = FALSE)
-# saveWidget(leafMap, "static/img/20180720/leaflet/leafMap.html")
-# setwd(currentWD)
-# saveWidget(leafMap, file="/img/leafMap.html")
+We see we got one person all the way up in Troy.
+
+## 5. Get driving distance between points
+With `gmapsdistance` you can calculate the walking, driving, biking, and public transportation distance between two coordinates. (See [docs](https://github.com/rodazuero/gmapsdistance).)
+```{r}
+# This set.api.key is from gmapsdistance (as opposed to ggmap). You need to install the github version if you want `driving` to work as of this post. See https://github.com/rodazuero/gmapsdistance/issues/17
+set.api.key(api_key)
+
+# Get the distance between two locations
+df %<>% mutate(latlon = paste(lat, '+', lon, sep = ''))
+results = gmapsdistance(origin = df$latlon[1], destination = df$latlon[2], mode = 'driving', shape = 'long')
+results
 ```
-Iframe:
-<iframe src='/img/leafMap/index.html'></iframe>
+The results `Time` are the time in seconds it takes to go between the two points, and the `Distance` is in meters.
 
-<iframe src='/img/leafMap.html'></iframe>
+Now, if you want, you can use this to calculate the driving distance between all of your addresses. Or, use it to optimize a route. But we'll stop our use here. I just explored that for fun.
 
-# TODO: RENDER IMAGES AND LEAFLET PLOT
+## 6. Clustering people on the map
+Lets say you want to cluster your peoples into one of three groups. Pretty simple with `kmeans` clustering (or another clustering method).
 
-## Bugs I hit:
-I hit a lot of bugs when building this tutorial.
-
-First bug: Trying to do `blogdown::serve_site()`. I got the following `googlesheets` warning:
-> Error: oauth_listener() needs an interactive environment.
-
-Solution: don't do `gs_auth()` and `gs_title()`. Those only work in personal browsing. For public mode, use `gs_key()`.
-
-
-Second bug: (Right after the first). I got this bug:https://github.com/rstudio/blogdown/issues/130
-
-Proposed solution:
-```
-update.packages(ask = FALSE, checkBuilt = TRUE)
+```{r}
+mat <- df %>% select(lat, lon) %>% as.matrix()
+k <- kmeans(mat, centers=3)
+df$k_clust <- k$cluster
+df %>% select(lat, lon, k_clust) %>% knitr::kable()
 ```
 
-Then I see at the bottom: https://github.com/tidyverse/lubridate/issues/615, that this is actually a Mac issue with OS Sierra, so I [download R 3.5.1](https://cran.r-project.org/bin/macosx/). Then I discover I have to re-install all of my R packages.
+Now lets see these clusters in a map.
+```{r}
+# Function to color
+df$mcolor <- plyr::mapvalues(df$k_clust, from=c(1, 2, 3), 
+                             to=c('blue', 'orange', 'green'))
+# Create new markers
+icons <- awesomeIcons(markerColor = df$mcolor)
 
-Third bug trying to run via Rmarkdown
+leafMap <- df %>%
+  leaflet() %>% 
+  addTiles() %>%
+  addAwesomeMarkers(~lon, ~lat, icon=icons)
+leafMap
 ```
-Error in stop_for_content_type(req, expected = "application/atom+xml; charset=UTF-8") :
-```
-Then I give up when I find this: https://github.com/jennybc/googlesheets/issues/272. You probably need to publish the sheet to the web to use it in a script. So I'm going to just use a csv. And you thougt Data Science wasn't 90% package management?...sigh.
 
-And then I thought, I don't want to use google sheets every time I run this RMarkdown anyway, in case things break down the road. So I'm just going to download the file to csv...
+## 7. Making the plot all fancy
+I don't really like this default leaflet map, so lets up it. Also, lets visualize the favorite food and add some meaningful labels.
+
+Changing the icons:
+```{r}
+df$icons <- plyr::mapvalues(df$favorite_food, from=c("Peanuts", "Salmon", "Caviar"), 
+                             to=c('bus', 'bicycle', 'car'))
+
+icons <- awesomeIcons(markerColor = df$mcolor, 
+                      library = 'fa', #fontawesome (google the icons)
+                      icon = df$icons)
+
+df %>%
+  leaflet() %>% 
+  addTiles() %>%
+  addAwesomeMarkers(~lon, ~lat, icon=icons)
+```
+
+Changing the [basemap](https://rstudio.github.io/leaflet/basemaps.html) to make the colors 'pop' a little more:
+```{r}
+df %>%
+  leaflet() %>% 
+  addTiles() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers(~lon, ~lat, icon=icons)
+```
+(Other basemap examples here: https://leaflet-extras.github.io/leaflet-providers/preview/)
+
+Then, let's finish off with some pop-up labels (click to see the action):
+```{r}
+df %<>% mutate(
+ popup = paste(sep = "<br/>", 
+               paste("<b>Favorite Food:", favorite_food, "</b>"), 
+               paste("Favorite Color:", favorite_color), 
+               address)
+)
+
+df %>%
+  leaflet() %>% 
+  addTiles() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addAwesomeMarkers(~lon, ~lat, icon=icons,
+                    label = ~address,
+                    popup = ~popup) 
+```
+
+## Google maps API
+
+You don't have to use the API if you have less than 2500 calls per day. But if you want ot use `geocode` and `gmapsdistnace`, you have to enable `Distance Matrix API` and `Geocoding API` on the Google Maps API. It's fairly easy: just create an account and find those two boxes to click.

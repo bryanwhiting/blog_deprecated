@@ -1,0 +1,89 @@
+---
+title: Rmarkdown images, Leaflet and googlesheets on Blogdown
+author: ~
+date: '2018-07-28'
+slug: debugging-leaflet-and-googlesheets-on-blogdown
+categories: ['debugging']
+tags: ['hugo', 'r', 'rmarkdown', 'rmd', 'blogdown', 'googlesheets', 'leaflet']
+---
+
+The beauty of open source is "Oh, let me just download that package and I can do amazing things!". The reality is "ok, I downloaded it, and I got the 'hello world' example working. But now to actually get it to do what I want in the environment that I want takes like...now 30 hours? Just one more bug and I'll finally give up..."
+
+## Bugs I hit:
+
+I hit a lot of bugs when building my Leaflet tutorial. Things kind of amplify when trying to create a blog post rather than just coding locally. But I like RMarkdown, (it can do so much more than `Jupyter` for blogging), so I deal with it. Hopefully, soon, I'll be able to blog quicker and quicker.
+
+### Including images and iframes
+
+I was tempted to put images in like my own `data` folder in the root dir of my Hugo blog. But that's not where they belong. As per the blogdown docs, and some googling, and trial and error, everything needs to be in the `static/` folder.
+
+If you want to make reference to include an image in your RMarkdown file:
+
+```
+![](/img/20180720/create_sheet.png)
+```
+
+Note, this will incldue the error `(No image found at /img/20180720/create_sheet.png)` in the RMarkdown coding window (it won't be able to auto-preview). But if you're using `blogdown::serve_site()`, then you can see it update there. Note the preceding `/` in `/img`. Must have!
+
+If you want to use an iframe, where the `/img` folder is in `static/img`:
+
+```
+<iframe src='/img/leafMap.html'></iframe>
+```
+Don't forget the `/` in `/img`. (Not all markdown paths require that, such as GFM)
+
+## googlesheets bugs
+The `googlesheets` package and `rmarkdown` probably weren't made to be friends, because `googlesheets` requires authentication. That being said, it's a great package. But if you want to use in for `rmarkdown`, you have to have your sheets published publically.
+
+### Bug 1
+First bug: Trying to do `blogdown::serve_site()`. I got the following `googlesheets` warning:
+```
+Error: oauth_listener() needs an interactive environment.
+```
+
+Solution: don't do `gs_auth()` and `gs_title()`. Those only work in personal browsing. For public mode, use `gs_key()`.
+
+### Bug 2
+Second bug: (Right after the first). I got this bug: https://github.com/rstudio/blogdown/issues/130
+
+Proposed solution:
+```
+update.packages(ask = FALSE, checkBuilt = TRUE)
+```
+
+Then I see at the bottom: https://github.com/tidyverse/lubridate/issues/615, that this is actually a Mac issue with OS Sierra, so I [download R 3.5.1](https://cran.r-project.org/bin/macosx/). Then I discover I have to re-install all of my R packages. I do this, and ultimately realize I've now wasted 90 minutes. Should have just saved to csv
+
+### Bug 3
+Third bug trying to run `googlsheets` via `blogdown::serve_site()`:
+```
+Error in stop_for_content_type(req, expected = "application/atom+xml; charset=UTF-8") :
+```
+Then I give up when I find this: https://github.com/jennybc/googlesheets/issues/272. You probably need to publish the sheet to the web to use it in a script. So I'm going to just use a csv. And you thougt Data Science wasn't 90% package management?...sigh.
+
+And then I thought, I don't want to use google sheets every time I run this RMarkdown anyway, in case things break down the road. So I'm just going to download the file to csv...
+
+## Leaflet
+
+I tried just doing `leafMap` to render, and it would render during `blogdown::serve_site()`, but when I pushed it to my repo, nothing happened. I had the following code:
+
+```{r, eval=F}
+leafMap <- df %>%
+   leaflet() %>% 
+    addTiles() %>%
+    addMarkers(~lon, ~lat)
+leafMap
+```
+
+It didn't really seem to work when published to GitHub (then to Netlify). Then I saw this blog: https://owi.usgs.gov/blog/leaflet/, which recommended an `iframe` on `/img/leafMap/index.html` using the saveWidgets. But I learned that was deprecated. You can just do `/img/leafMap.html`.
+
+How to save out:
+
+```{r, eval=F}
+library(htmlwidgets)
+library(htmltools)
+saveWidget(leafMap, "static/img/20180720/leaflet/leafMap.html")
+```
+
+Once I figure that out, I went back to `blogdown::serve_site()`, and my first attempt actually worked this time, so I don't need the `iframe`. But using an `iframe` is probably _always_ going to work, and besides, it's a method you could use if you want to pre-save out all of your output so that everytime you do `blogdown::build_site()`, you don't have to re-compile everything.
+
+I'm still not sure exactly how `blogdown:;build_site()` works, but it seems like it re-runs all of the past `.rmd` files, which can start getting expensive later on. Better to just save out the results for the expensive stuff.

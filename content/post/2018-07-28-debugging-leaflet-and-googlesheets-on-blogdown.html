@@ -1,0 +1,66 @@
+---
+title: Rmarkdown images, Leaflet and googlesheets on Blogdown
+author: ~
+date: '2018-07-28'
+slug: debugging-leaflet-and-googlesheets-on-blogdown
+categories: ['debugging']
+tags: ['hugo', 'r', 'rmarkdown', 'rmd', 'blogdown', 'googlesheets', 'leaflet']
+---
+
+
+
+<p>The beauty of open source is “Oh, let me just download that package and I can do amazing things!”. The reality is “ok, I downloaded it, and I got the ‘hello world’ example working. But now to actually get it to do what I want in the environment that I want takes like…now 30 hours? Just one more bug and I’ll finally give up…”</p>
+<div id="bugs-i-hit" class="section level2">
+<h2>Bugs I hit:</h2>
+<p>I hit a lot of bugs when building my Leaflet tutorial. Things kind of amplify when trying to create a blog post rather than just coding locally. But I like RMarkdown, (it can do so much more than <code>Jupyter</code> for blogging), so I deal with it. Hopefully, soon, I’ll be able to blog quicker and quicker.</p>
+<div id="including-images-and-iframes" class="section level3">
+<h3>Including images and iframes</h3>
+<p>I was tempted to put images in like my own <code>data</code> folder in the root dir of my Hugo blog. But that’s not where they belong. As per the blogdown docs, and some googling, and trial and error, everything needs to be in the <code>static/</code> folder.</p>
+<p>If you want to make reference to include an image in your RMarkdown file:</p>
+<pre><code>![](/img/20180720/create_sheet.png)</code></pre>
+<p>Note, this will incldue the error <code>(No image found at /img/20180720/create_sheet.png)</code> in the RMarkdown coding window (it won’t be able to auto-preview). But if you’re using <code>blogdown::serve_site()</code>, then you can see it update there. Note the preceding <code>/</code> in <code>/img</code>. Must have!</p>
+<p>If you want to use an iframe, where the <code>/img</code> folder is in <code>static/img</code>:</p>
+<pre><code>&lt;iframe src=&#39;/img/leafMap.html&#39;&gt;&lt;/iframe&gt;</code></pre>
+<p>Don’t forget the <code>/</code> in <code>/img</code>. (Not all markdown paths require that, such as GFM)</p>
+</div>
+</div>
+<div id="googlesheets-bugs" class="section level2">
+<h2>googlesheets bugs</h2>
+<p>The <code>googlesheets</code> package and <code>rmarkdown</code> probably weren’t made to be friends, because <code>googlesheets</code> requires authentication. That being said, it’s a great package. But if you want to use in for <code>rmarkdown</code>, you have to have your sheets published publically.</p>
+<div id="bug-1" class="section level3">
+<h3>Bug 1</h3>
+<p>First bug: Trying to do <code>blogdown::serve_site()</code>. I got the following <code>googlesheets</code> warning:</p>
+<pre><code>Error: oauth_listener() needs an interactive environment.</code></pre>
+<p>Solution: don’t do <code>gs_auth()</code> and <code>gs_title()</code>. Those only work in personal browsing. For public mode, use <code>gs_key()</code>.</p>
+</div>
+<div id="bug-2" class="section level3">
+<h3>Bug 2</h3>
+<p>Second bug: (Right after the first). I got this bug: <a href="https://github.com/rstudio/blogdown/issues/130" class="uri">https://github.com/rstudio/blogdown/issues/130</a></p>
+<p>Proposed solution:</p>
+<pre><code>update.packages(ask = FALSE, checkBuilt = TRUE)</code></pre>
+<p>Then I see at the bottom: <a href="https://github.com/tidyverse/lubridate/issues/615" class="uri">https://github.com/tidyverse/lubridate/issues/615</a>, that this is actually a Mac issue with OS Sierra, so I <a href="https://cran.r-project.org/bin/macosx/">download R 3.5.1</a>. Then I discover I have to re-install all of my R packages. I do this, and ultimately realize I’ve now wasted 90 minutes. Should have just saved to csv</p>
+</div>
+<div id="bug-3" class="section level3">
+<h3>Bug 3</h3>
+<p>Third bug trying to run <code>googlsheets</code> via <code>blogdown::serve_site()</code>:</p>
+<pre><code>Error in stop_for_content_type(req, expected = &quot;application/atom+xml; charset=UTF-8&quot;) :</code></pre>
+<p>Then I give up when I find this: <a href="https://github.com/jennybc/googlesheets/issues/272" class="uri">https://github.com/jennybc/googlesheets/issues/272</a>. You probably need to publish the sheet to the web to use it in a script. So I’m going to just use a csv. And you thougt Data Science wasn’t 90% package management?…sigh.</p>
+<p>And then I thought, I don’t want to use google sheets every time I run this RMarkdown anyway, in case things break down the road. So I’m just going to download the file to csv…</p>
+</div>
+</div>
+<div id="leaflet" class="section level2">
+<h2>Leaflet</h2>
+<p>I tried just doing <code>leafMap</code> to render, and it would render during <code>blogdown::serve_site()</code>, but when I pushed it to my repo, nothing happened. I had the following code:</p>
+<pre class="r"><code>leafMap &lt;- df %&gt;%
+   leaflet() %&gt;% 
+    addTiles() %&gt;%
+    addMarkers(~lon, ~lat)
+leafMap</code></pre>
+<p>It didn’t really seem to work when published to GitHub (then to Netlify). Then I saw this blog: <a href="https://owi.usgs.gov/blog/leaflet/" class="uri">https://owi.usgs.gov/blog/leaflet/</a>, which recommended an <code>iframe</code> on <code>/img/leafMap/index.html</code> using the saveWidgets. But I learned that was deprecated. You can just do <code>/img/leafMap.html</code>.</p>
+<p>How to save out:</p>
+<pre class="r"><code>library(htmlwidgets)
+library(htmltools)
+saveWidget(leafMap, &quot;static/img/20180720/leaflet/leafMap.html&quot;)</code></pre>
+<p>Once I figure that out, I went back to <code>blogdown::serve_site()</code>, and my first attempt actually worked this time, so I don’t need the <code>iframe</code>. But using an <code>iframe</code> is probably <em>always</em> going to work, and besides, it’s a method you could use if you want to pre-save out all of your output so that everytime you do <code>blogdown::build_site()</code>, you don’t have to re-compile everything.</p>
+<p>I’m still not sure exactly how <code>blogdown:;build_site()</code> works, but it seems like it re-runs all of the past <code>.rmd</code> files, which can start getting expensive later on. Better to just save out the results for the expensive stuff.</p>
+</div>
