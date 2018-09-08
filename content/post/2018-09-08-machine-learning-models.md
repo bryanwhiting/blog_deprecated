@@ -1,0 +1,47 @@
+---
+title: Machine Learning models
+author: ~
+date: '2018-09-08'
+slug: machine-learning-models
+categories: []
+tags: []
+draft: true
+---
+
+## Concepts:
+
+* Bagging (boostrap aggregation): Randomly sample with replacement, and average the results.
+* Majority vote: The most commonly-occuring prediction.
+* Internal node: Where the splits occur.
+* Branches: Segments that connect the nodes.
+* Terminal node (leafs, regions): Where the observations end up. The average of the responses (or majority vote) is the prediction for future observations. 
+* Gini index: where $m$ is the leaf and $k$ is the class (0 or 1 for binary classification, but can be extedned for multiple classes). $\hat{p}_{mk}$ is the proportion of observations in leaf $m$, class $k$ that belong. Gini index will reduce if $\hat{p}_{mk}$ is close to 0 or 1. (Variance will be low). Worst-case variance = .25 (.5*.5). Best-case variance is 0 (all observations are of one class).
+
+\[
+G = \sum_{k \in K} \hat{p}_{mk} (1-\hat{p}_{mk})
+\]
+
+* Node purity: A node is pure if most of the observations come from one class. Gini index is a measure of purity.
+
+
+
+
+## Linear regression
+
+Variance-bias: Low variance.
+
+## Random forest
+
+Why?
+* Decision trees suffer from high variance
+
+How:
+* Randomly samples columns too (to de-correlate the trees).
+* Uses Bagging. Takes $b$ bootstrapped samples, fits a tree on each one, and averages the results.
+* For classification, the _majority vote_ is use.
+
+Concepts:
+* OOB (out-of-bag) observations are those _not_ selected during boostrapping. (For each tree). Use these observations (about 1/3) to explore. Keep track of each observation and whether it was bagged in a given tree. You estimate the prediction error across all the trees in which an observation was out-of-bag.
+
+Questions: 
+* For classification, each leaf has $n$ observations, and the mean of those observations is the prediction. Since each tree is constructed differently, the algorithm likely has to yield a score fore each tree. So the average for each leaf depends on $n$. My guess is that _majority vote_ is taking the 0-1 prediction from each tree (which would be a majority vote within a leaf), and then take the majority vote across the $b$ trees.

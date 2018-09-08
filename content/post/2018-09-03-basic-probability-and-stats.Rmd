@@ -1,0 +1,543 @@
+---
+title: Basic Probability and Stats
+author: ~
+date: '2018-09-03'
+slug: basic-probability-and-stats
+categories: []
+tags: []
+draft: true
+---
+
+```{r}
+install.load::install_load('ggplot2', 'reticulate', 'dplyr', 'pscl', 'Zelig')
+```
+
+
+## t-test
+
+One-way, two-way, and Pair [link](http://blog.minitab.com/blog/adventures-in-statistics-2/understanding-t-tests-1-sample-2-sample-and-paired-t-tests).
+
+### When to use:
+When you want to know if the statistic you've calculated is significantly different from the population.
+
+Assumptions of a t-test:
+
+1. Both groups are independent of each other
+1. Each observation is independent of each other
+2. $\bar{x}$ follows a normal distribution with mean $\mu$ and variance $\sigma$
+3. Both groups have the same variance
+4. $n$ is sufficiently large. (Someone said that 30 is the magic number, but that's completely relative.)
+
+\[
+t = \frac{\bar{x}-\mu}{\sigma/\sqrt{n}}
+\]
+
+$\bar{x}$ is the sample mean. You collect a sample of size $n$.
+
+where $\mu$ is the population parameter. That's what you're comparing against. You're testing to see if th
+
+### Hypothesis:
+
+The [null and alternative hypothesis](https://libguides.library.kent.edu/SPSS/OneSampletTest):
+
+* $H_o$: $\bar{x} = \mu$
+* $H_{a_1}$: $\bar{x} \ne \mu$ (two-sided t-test)
+* $H_{a_2}$: $\bar{x} \gt \mu$ (one-sided t-test, right)
+* $H_{a_3}$: $\bar{x} \lt \mu$ (one-sided t-test, left)
+
+Doing a two-sided t-test means you'll be checking if $\bar{x}$ is greater than or less than a value. You don't know which. The blue area is the 'rejection' region. So you first get your $\bar{x}$ and your $n$ from your data. Then get your $t$-value. Then you see where your $t$-value lies on the domain. 
+
+```{r}
+x <- seq(-4, 4, length.out = 1000 )
+df = 10
+dat <- data.frame(x = x, y = dt(x, df=df))
+
+obs_t_value = 2.6
+
+ggplot(dat, aes(x=x)) + 
+  stat_function(fun=dt, args=list(df=df)) + 
+  geom_area(data=dat[dat$x > qt(.975, df=df),], aes(x=x, y=y), fill='blue') + 
+  geom_vline(xintercept=qt(.975, df=df), color='grey') + 
+  geom_vline(xintercept=obs_t_value, color='green') + 
+  geom_area(data=dat[dat$x < qt(.025, df=df),], aes(x=x, y=y), fill='blue') + 
+  geom_vline(xintercept=qt(.025, df=df), color='grey') + 
+  theme_void()
+```
+
+So we got a t-value that's in the shaded area. Hooray. We 'reject' the null hypothesis. 
+
+```{r}
+ggplot(dat, aes(x=x)) + 
+  stat_function(fun=dt, args=list(df=df)) + 
+  geom_area(data=dat[dat$x > qt(.975, df=df),], aes(x=x, y=y), fill='blue') + 
+  geom_vline(xintercept=qt(.975, df=df), color='grey') + 
+  geom_vline(xintercept=obs_t_value, color='green') + 
+  geom_area(data=dat[dat$x > obs_t_value,], aes(x=x, y=y), fill='green') +
+  annotate(geom='text', label='p-value', x = obs_t_value + .5, y=.001) + 
+  geom_area(data=dat[dat$x < qt(.025, df=df),], aes(x=x, y=y), fill='blue') + 
+  geom_vline(xintercept=qt(.025, df=df), color='grey') + 
+  theme_void()
+```
+
+*INTERPRETATION OF A P-VALUE:*
+
+> The probability of getting a test statistic as extreme or more extreme than the one you observed.
+
+Literally, the p-value is just the amount of the area to the right of your test statistic. Nothing more. It's not the probability you reject the null hypothesis. It's not the probability you'll win the lottery. It's literally just this: you got some value for $t$, called $t_{obs}$. Assuming _some_ distribution for $t$, how much of the curve is shaded beyond $t_{obs}$? When doing a _hypothesis_ test, you assume some _hypothesis_ about $\bar{x}$.
+
+This interpretation of a $p$-value makes it easy to interpret in other areas. You have some distribution for your test-statistic (which in this case is $t$), and you observed some value for $t$ because of your data. And you just want to know how _special_ that value of $t$ is. How _rare_ it is. How _likely_ it is, given your assumption about the distribution of $t$. If you assume all cats are 10 pounds plus or minus 5 pounds, and you come across one that's 50, you now have an unlikely situation. You must decided if your belief about the world is sufficient. But, one outlier cat isn't sufficient. You probably go and collect a sample of cats. And if your sample mean is really big, then 
+
+
+
+
+When doing a one-sided t-test, you'll put the alpha all in one tail. That makes it easier to reject the null hypothesis when you find an extreme value. Since it's easier, people are pobably going to wonder why you chose to do a one-sided t-test in the first place. Here's a one-sided test to the right.
+```{r}
+ggplot(dat, aes(x=x)) + 
+  stat_function(fun=dt, args=list(df=df)) + 
+  geom_area(data=dat[dat$x > qt(.95, df=df),], aes(x=x, y=y), fill='blue') + 
+  geom_vline(xintercept=qt(.95, df=df), color='grey') +
+  theme_void()
+```
+
+The blue area is literally 5% of the curve in all three instances. So if you get a test-statistic that falls in that area, you'll reject the hypothesis. But don't cheat: if you did a one-sided test to the right, but got a test-statistic wayyyy to the left, you can't just flip the axis and then reject. That's called [p-hacking](https://projects.fivethirtyeight.com/p-hacking/). If all you're doing is searching for a p-value, you can always find one. More kudos to you if you get your results published and [widely disseminated via new channels](http://www.slate.com/articles/health_and_science/science/2016/01/amy_cuddy_s_power_pose_research_is_the_latest_example_of_scientific_overreach.html).
+
+
+
+
+## T-test of two groups (two-sample t-test)
+
+When you want to test if the means of two populations are different.
+
+\[
+t = \frac{\bar{x_1} - \bar{x_2}}{s_p\sqrt{2/n}}
+\]
+where 
+\[ 
+s_p = \sqrt{\frac{s^2_1 + s^2_2}{2}}
+\]
+Assumptions:
+
+* This test requires that both groups have the same sample size.
+* Two populations have the same population variance.
+
+Variants on the two-sample t-test:
+
+### Equal sample sizes, equal population variance.
+
+```{r}
+t.test(x = sleep$extra[sleep$group == 2], 
+       y = sleep$extra[sleep$group == 1],
+       var.equal = TRUE)
+```
+
+
+### Possibly Unequal sample sizes, unequal population variance (Welch t-test). 
+
+```{r}
+grp1 = sleep$extra[sleep$group == 1]
+grp2 = sleep$extra[sleep$group == 2]
+t.test(x = grp2, 
+       y = grp1,
+       var.equal = FALSE)
+```
+
+TODO: 
+* What are the dfs?
+
+## Simple linear regression
+
+Assumptions [1](http://r-statistics.co/Assumptions-of-Linear-Regression.html) [2](http://people.duke.edu/~rnau/testing.htm):
+
+* (L) Linearity and additivity of the relationship between Y and X
+* (I) Statistical independence of the errors (no autocorrelation for time series)
+* (N) Normality of the error distribution
+* (E) Homoscedasticity (equal/constant variance)
+
+Assumptions (I), (N), (E) are defined in this formula, saying that the errors are independently and identidically distributed as Normal with mean 0 and constant variance $\sigma^2$:
+
+\[
+\epsilon \stackrel{iid}\sim N(0, \sigma^2)
+\]
+
+Hypothesis for $\beta_{intercept}$:
+
+* $H_o$: $\beta_{intercept} \ne 0$.
+
+Hypothesis for $\beta_{grp2}$:
+
+* $H_o$: $\beta_{grp2} = 0$, or there is no significant difference between `grp1` and `grp2`.
+* $H_a$: $\beta_{grp2} \ne 0$, or there is a signficant difference between `grp1` and `grp2`.
+
+The test:
+```{r}
+summary(lm(extra ~ as.factor(group), data = sleep))
+```
+
+*Iterpretation of $\beta_{grp1}$:* [Link](https://stats.stackexchange.com/questions/187859/t-test-for-intercept)
+
+\[
+$t_{beta} = \frac{\beta_j - 0}{SE(\beta_j)}
+\]
+```{r}
+0.7500 / 0.6004
+# pop_var = sum((grp1 - mean(grp1))^2)/(length(grp1)-1)
+# .75/sqrt(pop_var/(length(grp1) -1))
+```
+
+I don't know that there's any other interpretation of it.
+
+*Iterpretation of $\beta_{grp2}$:*
+
+```{r}
+1.5800 / 0.8491
+```
+
+Notice the t-stat for `group2` is the same as the $t$-stat for the Welch t-test.
+
+Notice $\beta_{grp2} = 1.58$, meaning `grp2` is greater than `grp1` by `1.58`, and where `mean(grp1) = E(grp1) = \beta_{intercept} = 0.75$. Therefore, `E(grp2) = 1.58 + 0.75 = 2.33`, which we also know from the output of the $t$-test.
+
+
+What have we learned:
+
+* The coefficient of a factor level plus the intercept is the actual mean for that factor level.
+* The $t$-value of a coefficient corresponds to the $t$-test of whether the two groups are the same. 
+
+Interpretation:
+
+
+TODO: 
+* Residuals:  
+* Residual standard error: 
+* Degrees of freedom:
+* Multiple R-squared: The percentage of variation in Y explained by the Xs. (multiple to indicate multiple regressors)
+* Adjusted R-squared:
+* F-statistic on 1 and 18 DF: Whether the fit of your model compared to the reduced (intercept-only) model is better. [link](http://blog.minitab.com/blog/adventures-in-statistics-2/what-is-the-f-test-of-overall-significance-in-regression-analysis)
+* p-value:
+
+
+
+Formula for adjusted $R^2$ [link](http://thestatsgeek.com/2013/10/28/r-squared-and-adjusted-r-squared/):
+\[
+R_{adj} = 1 - \frac{(1-R^2)(n-1)}{n-k-1}
+\]
+
+How can adding a predictor flip the correlation?
+
+
+
+## Mann-Whitney U-test
+
+> (A Wilcoxon rank sum test with two groups)
+
+[Wiki](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test).
+
+* Doesn't require the assumption that $\bar{x}$ follows a normal distribution.
+* Non-parametric test
+
+How it works:
+
+* $H_o$: Both populations follow the same distribution.
+* $H_a$: The distributions are not equal
+
+```{r}
+wilcox.test(grp1, grp2)
+
+
+# Calculate ranks
+dat <- sleep %>% 
+  mutate(rank = rank(extra, ties.method = 'average')) %>%
+  arrange(extra) 
+
+sum_rank1 <- dat %>% filter(group == 1) %>% summarise(sum(rank)) %>% pull()
+W = sum_rank1 - length(grp1)*(length(grp1) + 1)/2 
+print(W)
+# Then get the t-value
+```
+
+
+
+
+## t-test of two proportions
+
+
+```{r}
+smokers  <- c( 83, 90, 129, 70 )
+patients <- c( 86, 93, 136, 82 )
+prop.test(smokers, patients)
+```
+
+Esoph data
+http://sphweb.bumc.bu.edu/otlt/MPH-Modules/BS/R/R6_CategoricalDataAnalysis/R6_CategoricalDataAnalysis6.html
+
+```{r}
+with(esoph, table(agegp, ncases))
+case.vector = with(esoph, tapply(ncases, agegp, sum))
+total.vector = with(esoph, tapply(ncontrols+ncases, agegp, sum))
+prop.test(case.vector, total.vector)
+```
+
+
+```{r}
+dat <- prussian %>% spread(key=corp, value=y)
+dat
+sapply(dat, function(x){c(mean(x), sd(x))})
+```
+
+
+## Kruskal wallace test
+
+## Power test
+
+## t-test for binomial data
+
+## Regression for count data
+
+Negative Binomial [ucla.edu](https://stats.idre.ucla.edu/r/dae/negative-binomial-regression/)
+```{r}
+mod <- zelig(y ~ year + as.factor(corp), data=prussian, model='negbin')
+summary(mod)
+```
+
+Poisson Binomial
+```{r}
+mod <- zelig(y ~ year + as.factor(corp), data=prussian, model='poisson')
+summary(mod)
+```
+
+## One-way ANOVA
+
+To test if the means of three or more groups are different, 
+[F-stat minitab](http://blog.minitab.com/blog/adventures-in-statistics-2/understanding-analysis-of-variance-anova-and-the-f-test).
+
+```{r}
+# AOV calls the linear model
+# https://www.statmethods.net/stats/anova.html
+summary(lm(y ~ corp, data=prussian))
+summary(aov(y ~ corp, data=prussian))
+```
+
+[link1 duke](https://www2.stat.duke.edu/courses/Spring16/sta643/slides/oneway.pdf), [link2 duke](https://sites.duke.edu/adhoc_boss/files/2013/03/Purpose-Assumptions-Hypotheses-One-Way.pdf),
+[link3 statmethods](https://www.statmethods.net/stats/anova.html).
+
+* $H_o$: Means of all groups are the same.
+* $H_a$: Means of at least one group is different.
+
+Learned:
+
+* The output of the one-way ANOVA is the same as the F-test on the regression.
+
+
+
+## Two-way anova
+
+* [Personality Project](http://personality-project.org/r/r.guide/r.anova.html#oneway)
+* [stdha tooth anova](http://www.sthda.com/english/wiki/two-way-anova-test-in-r)
+
+```{r}
+summary(lm(y ~ as.factor(year) + corp, data=prussian))
+summary(aov(y ~ as.factor(year) + corp, data=prussian))
+summary(aov(y ~ as.factor(year), data=prussian))
+```
+
+Learned:
+
+* The F-test on the two-way ANOVA isn't the same as the lm
+* Two-way anova interpretation: the levels of X are associated with significantly different tooth length.
+
+## Interactions
+
+Is there an interaction between two features? Does the level of the response change across different levels of another feature? If so, you should account for this in the model: the two features together combine to affect the response.
+
+Interaction plot:
+
+```{r}
+interaction.plot(x.factor = prussian$year, 
+                 trace.factor = prussian$corp, 
+                 response = prussian$y)
+
+# 
+interaction.plot(x.factor = ToothGrowth$supp, 
+                 trace.factor = ToothGrowth$dose,
+                 response = ToothGrowth$len)
+```
+
+
+## Prussian data:
+
+```{r}
+dat <- prussian %>% spread(key=corp, value=y)
+dat
+sapply(dat, function(x){c(mean(x), sd(x))})
+```
+
+Follow-up questions
+1. How many soldiers were in each corp?
+2. What are the different corps? Where were they stationed?
+3. How did the various horse kick deaths happen?
+4. What years was Prussia in war? (more horeskick deaths during times of war)
+
+
+# Learnings:
+
+1. Zelig can do all sorts of models
+1. I don't know if I can back-out the t-test for intercept. But the t-test for the simple linear regression coefficient is the same as a two-way t-test.
+1. Mann-whitney test ranks the two groups together, adjusts for ties by getting the average rank, and then sums the ranks for one group. Takes the difference from the total sum of ranks. That's your test statistic. Apparently it follows a normal distribution of sorts (adjusting for ties and everything), which allows you to calculate a p-value.
+1. Assumptions of a t-test are equal variance, that $\bar{x}$ follows a normal distribution. But you can assume unequal variance and different population sizes (Welch t-test).
+1. Mann-Whitney test doesn't require the assumption of normality, and still yields as good results.
+1. One-way ANOVA F stat is the same as a one-variable LM
+1. two-way anova tests each level, to see if it is different. This is not the same as the F-test of the similarly-parameterized linear model. The F-test of the linear model is a full-vs-reduced model comparison of all the features relative to just an intercept-only model. (TODO: how does this compare to the one-way anova? Why is the one-way anova the same?)
+1. Test for interactions in the two-way anova
+1. You can do full-vs-reduced tests to see if your linear model is a better fit.
+1. An interaction plot can be used to see if there is an interaction (go figure)
+
+
+
+
+# Probability
+
+## Checking if a coin is fair
+
+
+
+[Wiki](https://en.wikipedia.org/wiki/Checking_whether_a_coin_is_fair).
+
+
+* $H_o$: Coin is unbiased.
+* $H_a$: Coin is biased.
+
+### Frequentist
+
+If you flip a coin 20 times, what's the probability of getting 17 heads?  
+
+```{r}
+# The probability of 17 heads is .00108
+dbinom(x = 17, size = 20, prob = .5)
+
+# The sum of x = 1:20 equals 1
+sum(dbinom(x = 1:20, size = 20, prob = .5))
+
+# When would you get the sense that it's biased?
+prop.test(17, 20, .5)
+# Since the p-value is 0.003, we reject the null hypothesis and conclude that the head is likely biased.
+
+# Let's do a power analysis:
+qplot(x = 1:20, y = sapply(1:20, function(x) prop.test(x, 20, .5)$p.value)) +
+  ylab('P-value')
+```
+
+Unbiased: Do a t-test of proportions. [boston](http://sphweb.bumc.bu.edu/otlt/MPH-Modules/BS/SAS/SAS6-CategoricalData/SAS6-CategoricalData2.html)
+
+```{r}
+n = 100
+x = 48
+p = n/h
+p_0 = .5
+z_stat = function(p_hat, p_0, n){
+  stat = (p_hat - p_0)/sqrt((p_0*(1-p_0)/n))
+  return(stat)
+}
+1 - pnorm(z_stat(x/n, p_0, n))
+1 - pt(z_stat(x/n, p_0, n), df = 99)
+# One-way test
+prop.test(x, n, p=p_0, correct=FALSE)
+
+```
+
+Notes:
+
+* 
+
+
+### Bayesian
+
+
+
+
+[Stack Overflow: sequential updating](https://stats.stackexchange.com/questions/244396/bayesian-updating-coin-tossing-example), [link2](http://www.stats.ox.ac.uk/~steffen/teaching/bs2HT9/kalman.pdf)
+
+```{r}
+# pr_heads
+p_h = .5
+# f_h = h_f * p_f / p_h
+
+# Binomial distribution
+n = 10
+x = 1
+p0 = .5
+choose(n, x) * p0^x*(1-p0)^(n-x)
+dbinom(x, size=n, prob=p0)
+
+h_f = dbinom(x, size=n, prob=p0)
+
+post_prob <- function(n_trial, prF=.5, prHB = 1){
+  # probability Biased
+  prB = 1 - prF
+  prHF = dbinom(x=n_trial, size=n_trial, prob = prF)
+  # probability of x heads given fair is .5^n
+  prH  = prHF * prF + (prHB)^n_trial*prB
+  prFH = prHF * prF / prH
+  return(prFH)
+}
+# One trial
+post_prob(1, prHB = 1)
+# two-heads
+post_prob(2, prHB = 1)
+post_prob(2, prHB = .51)
+post_prob(2, prHB = .51)
+post_prob(50, prHB = .51)
+
+# If probability of heads given bias = 1, then prH will always be .5. And, therefore, the probability of being fair
+
+qplot(x = 1:100, y = post_prob(1:100, prHB = .51)) + 
+  ggtitle('The probability of a fair coin given x heads', 'assuming prHB = .51') + 
+  xlab('Number of heads') +
+  ylab('The probability of a fair coin given all heads') 
+
+qplot(x = 1:100, y = post_prob(1:100, prHB = .60)) + 
+  ggtitle('The probability of a fair coin given x heads', 'assuming prHB = .60') + 
+  xlab('Number of heads') +
+  ylab('The probability of a fair coin given all heads')
+
+# TODO: create different curves
+dat <- data.frame(x = 1:100)
+dat$h51 = post_prob(dat$x, prHB = .51)
+dat$h60 = post_prob(dat$x, prHB = .60)
+dat$h70 = post_prob(dat$x, prHB = .70)
+dat %>% gather(key, value, -x) %>%
+  ggplot(aes(x = x, y = value, color = key)) + 
+  geom_point()
+
+
+```
+
+Learned:
+
+* How to use bayes theorem
+* How to use binomial distribution to calculate the probability of X heads given N trials and p probability of head.
+* the posterior probability of
+
+[bayesian network, dirac delta](https://ro-che.info/articles/2016-06-14-predicting-coin-toss)
+
+Questions:
+
+* When do you stop?
+* TODO: What if you have 15 coins?
+* Probability of 
+
+
+
+## Learnings:
+
+1. We can use the binomial distribution to calculate the probability of X heads in N tosses.
+1. We can use bayes theorem to calculate the probability that we have a fair coin given all heads. but we need to supply the prHB (the probability of a heads given a biased coin).
+
+
+
+# future todo:
+- 1. TODO: calculate the probability of a fair coin given x heads
+- Do a one-way bayesian t-test of proportions on the posterior probability.
+- calculate probabilities (probability of heads, etc. biased coin)
+- basic theorems for conditional probability
+- power analysis for biased coin
+- Explore the prussian data, and prop.test. Figure out what it's doing.
+- Hypothesis test for negative binomial coefficients (at least one is different)

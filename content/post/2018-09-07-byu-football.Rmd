@@ -1,0 +1,121 @@
+---
+title: byu football
+author: ~
+date: '2018-09-07'
+slug: byu-football
+categories: []
+tags: []
+output:
+  bookdown::html_document2:
+    df_print: paged
+    code_folding: show
+    toc: true
+    toc_float: true
+    number_sections: true
+    theme: united
+    highlight: tango
+    fig_caption: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = F)
+install.load::install_load('tidyverse', 'magrittr', 'lubridate', 'summarytools')
+fp_data= '~/github/blog/data/201809-college-football'
+```
+
+Goal:
+
+* How is Kilani Sitake doing in his second season compared to past BYU coaches?
+* More challenging: how's he doing relative to all second-season coaches?
+
+```{r}
+df_in <- read.csv(file.path(fp_data, 'byu_seasons.csv'))
+```
+
+Some basic questions:
+* How many years do we have data on?
+* How many games per year (on average)?
+* How many home games vs. away?
+* Total number of wins and losses?
+* Total points for and against?
+
+```{r}
+# First I need to clean up the data
+# Get the score parse
+# Get the date parsed
+# Parse out the city, state
+# Parse out the season record
+# Get the cumulative season record
+# Get the two-season cumulative season record
+# Get the coaches's cumulative record
+
+# Clean the data:
+df <- df_in %>% mutate(
+  win = ifelse(winloss == 'W', 1, 0),
+  # Parse date
+  long_date = paste0(date, ', ', year),
+  short_date = parse_date_time(long_date, '%a, %B! %d, %Y'),
+  short_date = ymd(short_date), 
+  dow = weekdays(short_date),
+  # Parse other fields
+  byu_score = str_extract(score, '^[0-9]*') %>% as.numeric(),
+  opp_score = str_extract(score, '[0-9]*$') %>% as.numeric(),
+  spread = byu_score - opp_score,
+  city = str_extract(location, '^[a-zA-Z]*'),
+  state = str_extract(location, '[a-zA-Z]*$')
+  
+  # Clean up coach
+  #coach = str_replace(coach, fixed('.'), '') %>% str_replace(fixed(' '), '') %>% tolower() %>% as.character()
+  
+  #seas_w = str_extract(record, '^[0-9]+'),
+  #seas_l = str_extract(record, '[0-9]+$')
+)
+head(df)
+# Assert that the first column really is the byu score.
+stopifnot(df %>% filter(byu_score < opp_score, win == 1) %>% count() %>% pull() == 0)
+```
+
+# Explore the data
+```{r}
+# How many games?
+freq(df$win)
+
+# Group by coach:
+coach_summaries <- df %>% group_by(coach) %>% 
+  summarize(start = min(year), end = max(year), ngames = n(), W = sum(win)) %>%
+  mutate(L = ngames - W) %>%
+  mutate(freq = W/(W + L), 
+         nyears = end - start + 1) %>%
+  arrange(desc(start))
+coach_summaries
+```
+
+
+```{r}
+# What's their score over time?
+df %>% 
+  group_by(year) %>%
+  summarize(sprd_avg = mean(spread),
+            count = n()) %>%
+  ggplot(aes(x = year, y = sprd_avg)) + 
+  geom_vline(xintercept = coach_summaries$start, color = 'lightgrey') +
+  geom_hline(yintercept = 0) + 
+  geom_point() + 
+  geom_smooth() + 
+  theme_light() + 
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) + 
+  #geom_text(x = coach_summaries$start, y = -30, )
+  annotate('text', x=coach_summaries$start, y = -25, hjust = -.02,
+           label = coach_summaries$coach, angle = 30, size = 2) + 
+  ggtitle("BYU just isn't killin' it like they used to",
+          'Average point spread per game, by year')
+
+```
+
+
+
+
