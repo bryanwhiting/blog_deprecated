@@ -1,0 +1,1501 @@
+---
+title: byu football
+author: ~
+date: '2018-09-07'
+slug: byu-football
+categories: ['analysis']
+tags: ['football', 'sabermetrics', 'byu', 'caret', 'r', 'ggplot2', 'skimr']
+output:
+  bookdown::html_document2:
+    df_print: paged
+    code_folding: show
+    toc: true
+    toc_float: true
+    number_sections: true
+    theme: united
+    highlight: tango
+    fig_caption: true
+---
+
+
+
+<p>Goal of this post. Answer some interesting questions about BYU football. Dive into different modeling approaches. I don’t explain my thinking below, but some of the charts might be cool.</p>
+<p>Some questions of interest</p>
+<ul>
+<li>How is Kilani Sitake doing in his second season compared to past BYU coaches?</li>
+<li>More challenging: how’s he doing relative to all second-season coaches?</li>
+</ul>
+<pre class="r"><code>df_in &lt;- read.csv(file.path(fp_data, &#39;byu_seasons.csv&#39;)) %&gt;% distinct()</code></pre>
+<p>Some basic questions: * How many years do we have data on? * How many games per year (on average)? * How many home games vs. away? * Total number of wins and losses? * Total points for and against?</p>
+<pre class="r"><code># First I need to clean up the data
+# Get the score parse
+# Get the date parsed
+# Parse out the city, state
+# Parse out the season record
+# Get the cumulative season record
+# Get the two-season cumulative season record
+# Get the coaches&#39;s cumulative record
+
+# Clean the data:
+df &lt;- df_in %&gt;% mutate(
+  win = ifelse(winloss == &#39;W&#39;, 1, 0),
+  # Parse date
+  long_date = paste0(date, &#39;, &#39;, year),
+  short_date = parse_date_time(long_date, &#39;%a, %B! %d, %Y&#39;),
+  short_date = ymd(short_date), 
+  dow = weekdays(short_date),
+  # Parse other fields
+  byu_score = str_extract(score, &#39;^[0-9]*&#39;) %&gt;% as.numeric(),
+  opp_score = str_extract(score, &#39;[0-9]*$&#39;) %&gt;% as.numeric(),
+  spread = byu_score - opp_score,
+  city = str_extract(location, &#39;^[a-zA-Z]*&#39;),
+  state = str_extract(location, &#39;[a-zA-Z]*$&#39;),
+  
+  # Clean up coach
+  coach = trimws(coach),
+  #coach = str_replace(coach, fixed(&#39;.&#39;), &#39;&#39;) %&gt;% str_replace(fixed(&#39; &#39;), &#39;&#39;) %&gt;% tolower() %&gt;% as.character()
+  
+  #seas_w = str_extract(record, &#39;^[0-9]+&#39;),
+  #seas_l = str_extract(record, &#39;[0-9]+$&#39;)
+  # Home or away
+  home = ifelse(city == &#39;Provo&#39;, 1, 0) %&gt;% as.factor()
+)
+head(df)</code></pre>
+<pre><code>##   winloss             date  score                 opponent
+## 1       L   Sat, October 7 3 - 42                  Utah St
+## 2       L  Sat, October 14 0 - 49                     Utah
+## 3       L  Tue, October 24 0 - 47 Colorado School of Mines
+## 4       W Tue, November 14  7 - 0                  Wyoming
+## 5       L Sat, November 25 0 - 33              Colorado St
+## 6       L Thu, November 30 0 - 13                  Wyoming
+##             location year      record              coach
+## 1          Provo, UT 1922 1-5 (0.167) Alvin G. Twitchell
+## 2 Salt Lake City, UT 1922 1-5 (0.167) Alvin G. Twitchell
+## 3          Provo, UT 1922 1-5 (0.167) Alvin G. Twitchell
+## 4          Provo, UT 1922 1-5 (0.167) Alvin G. Twitchell
+## 5   Fort Collins, CO 1922 1-5 (0.167) Alvin G. Twitchell
+## 6        Laramie, WY 1922 1-5 (0.167) Alvin G. Twitchell
+##                           conference win              long_date short_date
+## 1 Rocky Mountain Athletic Conference   0   Sat, October 7, 1922 1922-10-07
+## 2 Rocky Mountain Athletic Conference   0  Sat, October 14, 1922 1922-10-14
+## 3 Rocky Mountain Athletic Conference   0  Tue, October 24, 1922 1922-10-24
+## 4 Rocky Mountain Athletic Conference   1 Tue, November 14, 1922 1922-11-14
+## 5 Rocky Mountain Athletic Conference   0 Sat, November 25, 1922 1922-11-25
+## 6 Rocky Mountain Athletic Conference   0 Thu, November 30, 1922 1922-11-30
+##        dow byu_score opp_score spread    city state home
+## 1 Saturday         3        42    -39   Provo    UT    1
+## 2 Saturday         0        49    -49    Salt    UT    0
+## 3  Tuesday         0        47    -47   Provo    UT    1
+## 4  Tuesday         7         0      7   Provo    UT    1
+## 5 Saturday         0        33    -33    Fort    CO    0
+## 6 Thursday         0        13    -13 Laramie    WY    0</code></pre>
+<pre class="r"><code># Assert that the first column really is the byu score.
+stopifnot(df %&gt;% filter(byu_score &lt; opp_score, win == 1) %&gt;% count() %&gt;% pull() == 0)</code></pre>
+<div id="explore-the-data" class="section level1">
+<h1>Explore the data</h1>
+<pre class="r"><code># How many games?
+freq(df$win)</code></pre>
+<pre><code>## Frequencies   
+## df$win     
+## Type: Numeric   
+## 
+##               Freq   % Valid   % Valid Cum.   % Total   % Total Cum.
+## ----------- ------ --------- -------------- --------- --------------
+##           0    453     44.28          44.28     44.28          44.28
+##           1    570     55.72         100.00     55.72         100.00
+##        &lt;NA&gt;      0                               0.00         100.00
+##       Total   1023    100.00         100.00    100.00         100.00</code></pre>
+<pre class="r"><code># Group by coach:
+coach_summaries &lt;- df %&gt;% group_by(coach) %&gt;% 
+  summarize(start = min(year), end = max(year), ngames = n(), W = sum(win)) %&gt;%
+  mutate(L = ngames - W) %&gt;%
+  mutate(freq = W/(W + L), 
+         nyears = end - start + 1) %&gt;%
+  arrange(desc(start))
+coach_summaries</code></pre>
+<pre><code>## # A tibble: 14 x 8
+##    coach              start   end ngames     W     L  freq nyears
+##    &lt;chr&gt;              &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 Kalani Sitake       2016  2018     38    14    24 0.368      3
+##  2 Bronco Mendenhall   2005  2015    142    99    43 0.697     11
+##  3 Gary Crowton        2001  2004     48    25    23 0.521      4
+##  4 LaVell Edwards      1972  2000    361   257   104 0.712     29
+##  5 Tommy Hudspeth      1964  1971     82    39    43 0.476      8
+##  6 Hal Mitchell        1961  1963     30     8    22 0.267      3
+##  7 Floyd               1959  1960     21     6    15 0.286      2
+##  8 Harold W.           1956  1958     30    13    17 0.433      3
+##  9 Charles L.          1949  1955     70    18    52 0.257      7
+## 10 W. Floyd Millet     1942  1942      7     2     5 0.286      1
+## 11 Edwin R.            1937  1948     74    34    40 0.459     12
+## 12 G. Ottinger         1928  1936     81    44    37 0.543      9
+## 13 Charles J. Hart     1925  1927     20     6    14 0.3        3
+## 14 Alvin G. Twitchell  1922  1924     19     5    14 0.263      3</code></pre>
+<pre class="r"><code># What&#39;s their score over time?
+df %&gt;% 
+  group_by(year) %&gt;%
+  summarize(sprd_avg = mean(spread),
+            count = n()) %&gt;%
+  ggplot(aes(x = year, y = sprd_avg)) + 
+  geom_vline(xintercept = coach_summaries$start, color = &#39;lightgrey&#39;) +
+  geom_hline(yintercept = 0) + 
+  geom_point() + 
+  geom_smooth() + 
+  theme_light() + 
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank()) + 
+  #geom_text(x = coach_summaries$start, y = -30, )
+  annotate(&#39;text&#39;, x=coach_summaries$start, y = -25, hjust = -.02,
+           label = coach_summaries$coach, angle = 30, size = 2) + 
+  ggtitle(&quot;BYU just isn&#39;t killin&#39; it like they used to&quot;,
+          &#39;Average point spread per game, by year&#39;)</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="feature-engineering" class="section level1">
+<h1>Feature engineering</h1>
+<pre class="r"><code># Home or away
+# Time zone
+# Cumulative wins
+# rolling spread
+df_fe &lt;- df %&gt;% 
+  arrange(short_date) %&gt;% 
+  group_by(coach) %&gt;% 
+  mutate(
+    win_l1 = lag(win, n=1L, default=NA),
+    win_l2 = lag(win, n=2L, default=NA),
+    win_l3 = lag(win, n=2L, default=NA),
+    win3sum = rollsum(x=win, k=3, align=&#39;right&#39;, fill=NA),
+    win5sum = rollsum(x=win, k=5, align=&#39;right&#39;, fill=NA),
+    game_number = row_number(),
+    cum_win = cumsum(win),
+    cum_win_pct = cum_win/game_number,
+    # Last spread
+    spread_l1 = lag(spread, n=1L, default=NA),
+    spread_l2 = lag(spread, n=2L, default=NA),
+    spread_l3 = lag(spread, n=3L, default=NA),
+    spread_ma6 = rollmean(x=spread, k=6, align = &#39;right&#39;, fill=NA)
+  ) %&gt;%
+  ungroup()
+
+df_fe$win3sum = as.factor(df_fe$win3sum)
+df_fe$win5sum = as.factor(df_fe$win5sum)</code></pre>
+<p>Questions: - What’s the starting win pct for however many games Kilani Sitake has played? (first 14 games?)</p>
+<pre class="r"><code># How many games has Kalani Sitake had?
+n_games &lt;- df %&gt;% 
+  filter(coach == &#39;Kalani Sitake&#39;, short_date &lt; Sys.Date()) %&gt;% 
+  count() %&gt;% 
+  pull()
+
+last_coaches = c(&#39;LaVell Edwards&#39;, &#39;Gary Crowton&#39;, &#39;Bronco Mendenhall&#39;, &#39;Kalani Sitake&#39;)
+
+df_fe %&gt;% 
+  filter(coach %in% last_coaches) %&gt;%
+  filter(game_number &lt; n_games) %&gt;%
+  select(coach, game_number, cum_win_pct) %&gt;%
+  ggplot(aes(x = game_number, y = cum_win_pct, color = coach)) +
+  geom_point() + 
+  geom_smooth(se=FALSE) +
+  ggtitle(&#39;Kalani Sitake is warming up, just like LaVell Edwards&#39;,
+          sprintf(&#39;Win %% for first %s games&#39;, n_games)) + 
+  xlab(&#39;Game Number&#39;) + 
+  ylab(&#39;Win Percentage&#39;) + 
+  theme(legend.position=&#39;right&#39;)</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<div id="explore" class="section level2">
+<h2>Explore</h2>
+<pre class="r"><code>ggplot(df, aes(x = as.factor(home), y = spread)) + 
+  geom_boxplot() + 
+  ggtitle(&#39;Spread by Home&#39;)</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code># T-test
+t.test(df$spread[df$home == 1], df$spread[df$home == 0])</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  df$spread[df$home == 1] and df$spread[df$home == 0]
+## t = 4.5277, df = 695.44, p-value = 7.016e-06
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  3.603005 9.120408
+## sample estimates:
+## mean of x mean of y 
+##  8.344214  1.982507</code></pre>
+<pre class="r"><code>ggplot(df, aes(x = spread)) + 
+  geom_histogram(aes(y = stat(density)), bins=40) + 
+  geom_density() + 
+  ggtitle(&#39;Histogram of Spread&#39;)</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+</div>
+<div id="explore-data" class="section level2">
+<h2>Explore data</h2>
+<pre class="r"><code>skimr::skim(df)</code></pre>
+<pre><code>## Skim summary statistics
+##  n obs: 1023 
+##  n variables: 19 
+## 
+## ── Variable type:character ────────────────────────────────────────────────────────
+##   variable missing complete    n min max empty n_unique
+##       city       0     1023 1023   0  15     5      134
+##      coach       0     1023 1023   5  18     0       14
+##        dow       0     1023 1023   6   9     0        7
+##  long_date       0     1023 1023  20  23     0     1022
+##      state       0     1023 1023   0   9     9       40
+## 
+## ── Variable type:Date ─────────────────────────────────────────────────────────────
+##    variable missing complete    n        min        max     median
+##  short_date       0     1023 1023 1922-10-07 2018-11-24 1978-11-18
+##  n_unique
+##      1022
+## 
+## ── Variable type:factor ───────────────────────────────────────────────────────────
+##    variable missing complete    n n_unique
+##  conference       0     1023 1023        5
+##        date       0     1023 1023      228
+##        home       0     1023 1023        2
+##    location       0     1023 1023      152
+##    opponent       0     1023 1023      127
+##      record       0     1023 1023       56
+##       score       0     1023 1023      678
+##     winloss       0     1023 1023        4
+##                              top_counts ordered
+##  WAC: 439, Sky: 203, Mou: 149, Roc: 129   FALSE
+##      Sat: 14, Sat: 14, Sat: 13, Sat: 13   FALSE
+##                   0: 686, 1: 337, NA: 0   FALSE
+##    Pro: 337, LaV: 104, Sal: 49, Log: 33   FALSE
+##      Uta: 93, Uta: 88, Wyo: 78, Col: 69   FALSE
+##      10-: 65, 11-: 65, 8-5: 65, 9-4: 65   FALSE
+##         0 -: 19, 0 -: 7, 0 -: 6, 10 : 6   FALSE
+##            W: 570, L: 415, T: 27,  : 11   FALSE
+## 
+## ── Variable type:integer ──────────────────────────────────────────────────────────
+##  variable missing complete    n    mean    sd   p0  p25  p50  p75 p100
+##      year       0     1023 1023 1975.36 27.07 1922 1954 1978 1998 2018
+##      hist
+##  ▅▃▆▆▇▇▇▇
+## 
+## ── Variable type:numeric ──────────────────────────────────────────────────────────
+##   variable missing complete    n  mean    sd  p0 p25 p50 p75 p100     hist
+##  byu_score       0     1023 1023 23.78 16.35   0  10  21  35   83 ▇▇▇▅▃▂▁▁
+##  opp_score       0     1023 1023 19.7  13.61   0   8  18  28   72 ▇▇▇▅▂▁▁▁
+##     spread       0     1023 1023  4.08 21.64 -54 -10   3  20   76 ▁▂▅▇▆▂▁▁
+##        win       0     1023 1023  0.56  0.5    0   0   1   1    1 ▆▁▁▁▁▁▁▇</code></pre>
+</div>
+<div id="build-a-model" class="section level2">
+<h2>Build a model</h2>
+<pre class="r"><code># other ways
+library(caret)
+
+df2 = df_fe %&gt;% 
+  select(win, spread_l1, spread_l2, spread_l3, home, win3sum, win5sum) 
+
+# Remove missing rows:
+df2$na = as.numeric(rowSums(is.na(df2)) &gt;= 1)
+df2 %&lt;&gt;% filter(na == 0) %&gt;% select(-na)
+
+# One-hot encode 
+dummies_model &lt;- dummyVars(win ~ ., data=df2)
+df3 = predict(dummies_model, df2) %&gt;% data.frame()
+df3$win = as.factor(df2$win)
+
+# latt
+X = df3 %&gt;% select(-win)
+Y = df3$win
+featurePlot(x = X %&gt;% select(starts_with(&#39;spread&#39;)), y = Y, &#39;box&#39;)</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>featurePlot(x = X %&gt;% select(-starts_with(&#39;spread&#39;)), y = Y, &#39;box&#39;)</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<p>On average, cougars score about 6 points higher when playing from home.</p>
+<pre class="r"><code># Is there any difference coming off a win?
+print(with(df_fe, table(home, win)))</code></pre>
+<pre><code>##     win
+## home   0   1
+##    0 333 353
+##    1 120 217</code></pre>
+<pre class="r"><code>print(chisq.test(df_fe$home, df_fe$win))</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+## 
+## data:  df_fe$home and df_fe$win
+## X-squared = 14.802, df = 1, p-value = 0.0001194</code></pre>
+<pre class="r"><code>ch2 &lt;- function(var){
+  x = df_fe[var] %&gt;% as.matrix()
+  y = df_fe[&#39;win&#39;] %&gt;% as.matrix()
+  print(var)
+  print(table(x, y))
+  print(chisq.test(x, y))
+}
+
+for(var in c(&#39;win_l1&#39;, &#39;win_l2&#39;, &#39;home&#39;)){
+  ch2(var)
+}</code></pre>
+<pre><code>## [1] &quot;win_l1&quot;
+##    y
+## x     0   1
+##   0 228 214
+##   1 218 349
+## 
+##  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+## 
+## data:  x and y
+## X-squared = 16.848, df = 1, p-value = 4.05e-05
+## 
+## [1] &quot;win_l2&quot;
+##    y
+## x     0   1
+##   0 229 206
+##   1 207 353
+## 
+##  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+## 
+## data:  x and y
+## X-squared = 23.816, df = 1, p-value = 1.06e-06
+## 
+## [1] &quot;home&quot;
+##    y
+## x     0   1
+##   0 333 353
+##   1 120 217
+## 
+##  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+## 
+## data:  x and y
+## X-squared = 14.802, df = 1, p-value = 0.0001194</code></pre>
+<pre class="r"><code># Is spread different coming off a win?
+qplot(y = spread, x = as.factor(win_l1), data=df_fe, geom=&#39;boxplot&#39;)</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>idx = df_fe$win_l1 == 1
+t.test(df_fe$spread[idx], df_fe$spread[idx == FALSE])</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  df_fe$spread[idx] and df_fe$spread[idx == FALSE]
+## t = 4.7471, df = 960.98, p-value = 2.377e-06
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  3.770171 9.084035
+## sample estimates:
+## mean of x mean of y 
+## 7.0017637 0.5746606</code></pre>
+<pre class="r"><code>qplot(y = spread, x = as.factor(win_l2), data=df_fe, geom=&#39;boxplot&#39;) + ggtitle(&#39;Had a win 2 games ago&#39;)</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<pre class="r"><code>idx = df_fe$win_l2 == 1
+t.test(df_fe$spread[idx], df_fe$spread[idx == FALSE])</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  df_fe$spread[idx] and df_fe$spread[idx == FALSE]
+## t = 5.6912, df = 938.83, p-value = 1.685e-08
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##   5.043125 10.351662
+## sample estimates:
+##  mean of x  mean of y 
+## 7.74107143 0.04367816</code></pre>
+<p>Conclusion:</p>
+<ul>
+<li>On average, Cougars score 6.4 points higher when coming off a win.</li>
+<li>And they score about 7.75 points higher when they had a win 2 games ago.</li>
+</ul>
+<p>Is there an interaction between home and win_l1? In other words, are they even more likely to win given they are playing at home and coming off a win?</p>
+<pre class="r"><code>lm(spread ~ home*win_l1, data = df_fe) %&gt;%
+  summary()</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = spread ~ home * win_l1, data = df_fe)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -59.829 -14.509  -1.037  13.963  64.171 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    -2.422      1.276  -1.898 0.058024 .  
+## home1           7.931      2.076   3.820 0.000142 ***
+## win_l1          7.459      1.655   4.506 7.38e-06 ***
+## home1:win_l1   -1.139      2.855  -0.399 0.690115    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 21.16 on 1005 degrees of freedom
+##   (14 observations deleted due to missingness)
+## Multiple R-squared:  0.04695,    Adjusted R-squared:  0.0441 
+## F-statistic:  16.5 on 3 and 1005 DF,  p-value: 1.796e-10</code></pre>
+<pre class="r"><code>glm(win ~ home * win_l1, family=&#39;binomial&#39;, data = df_fe) %&gt;%
+  summary()</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = win ~ home * win_l1, family = &quot;binomial&quot;, data = df_fe)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.5676  -1.3139   0.8322   1.0468   1.3139  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)  -0.31531    0.12211  -2.582 0.009815 ** 
+## home1         0.66617    0.19901   3.347 0.000816 ***
+## win_l1        0.63055    0.15838   3.981 6.85e-05 ***
+## home1:win_l1 -0.09903    0.28149  -0.352 0.724992    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1385.2  on 1008  degrees of freedom
+## Residual deviance: 1348.0  on 1005  degrees of freedom
+##   (14 observations deleted due to missingness)
+## AIC: 1356
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<pre class="r"><code># T-test
+idx = df_fe$home == 1 &amp; df_fe$win_l1 == 1
+with(df_fe, table(home, win_l1, win))</code></pre>
+<pre><code>## , , win = 0
+## 
+##     win_l1
+## home   0   1
+##    0 159 170
+##    1  69  48
+## 
+## , , win = 1
+## 
+##     win_l1
+## home   0   1
+##    0 116 233
+##    1  98 116</code></pre>
+<p>There is no interaction between home1 and win_l1.</p>
+</div>
+</div>
+<div id="build-a-simple-model-to-predict-whether-kalani-sitake-will-win-his-next-game" class="section level1">
+<h1>Build a simple model to predict whether Kalani Sitake will win his next game</h1>
+<p>Predict using guesses and simple calculations:</p>
+<ol style="list-style-type: decimal">
+<li>Assign a random probability is 50%.</li>
+<li>Calculate the overall BYU win percentage, and offer that as the probability.</li>
+<li>Calculate a 5-game rolling win-percentage as of the last game, and carry that forward for all future predictions.</li>
+<li>Calculate a 5-game rolling win percentage on real data, then carry that prediction forward.</li>
+</ol>
+<p>Predict using a model:</p>
+<ol style="list-style-type: decimal">
+<li>Logistic regression using all of the features we have. (how does this predict the next win? You’d have to focus on lag-only features.)</li>
+<li>Bayesian logit hierarchical model where p depends on p-1.</li>
+<li>Build an ARIMA model on the spread</li>
+<li>Build a regression model on the spread, and if spread &gt; 0.</li>
+</ol>
+<div id="simple-models" class="section level2">
+<h2>Simple models</h2>
+<pre class="r"><code># Carry forward spread of last 6 games.
+# Remove 
+df_usable_feats &lt;- df_fe %&gt;% 
+  select(dow, spread, home, win_l1, win_l2, win_l3, win3sum, 
+         win5sum, spread_l1, spread_l2, spread_l3, spread_ma6, 
+         short_date)
+df_train &lt;- df_usable_feats %&gt;% 
+  filter(short_date &lt; Sys.Date())
+df_pred &lt;- df_usable_feats %&gt;% 
+  filter(short_date &gt; Sys.Date()) 
+
+df_ma6 &lt;- df_train %&gt;% select(spread, spread_ma6) 
+# Visualize
+df_ma6 %&gt;% 
+  #mutate(pos = as.factor(ifelse(spread_ma6 &gt; 0, 1, 0))) %&gt;%
+  ggplot(data = ., aes(x = 1:nrow(df_ma6), y = spread_ma6)) +
+  geom_point() + 
+  geom_smooth() + 
+  ggtitle(&#39;Moving average of spread of prior 6 games&#39;)</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Cary forward the moving average.</p>
+<ol style="list-style-type: decimal">
+<li>Calculate the moving average of the last 6 points (done).</li>
+<li>Carry that forward (i = i + 1)</li>
+<li>Calculate the moving average of new data</li>
+</ol>
+<pre class="r"><code>new_data = df_ma6
+# Here&#39;s how you&#39;d do the prediction going forward more than one game. See, this needs to be a dynamic prediction where your X updates with the predicted Y.
+for(i in 1:10){
+  end = tail(new_data, 6)
+  pred = end$spread_ma6[6]
+  new_ma6 = mean(c(pred, head(end, 5)$spread))
+  new_row = data.frame(spread = pred, spread_ma6 = new_ma6)
+  new_data = rbind(new_data, new_row)
+}</code></pre>
+<p>How do I evaluate the accuracy of this approach? I can take the lead of this spread and see how it calculates over time.</p>
+<pre class="r"><code># But the prediction for just the _next_ game can be as easy as taking the lead. You can&#39;t take two leads to predict two games ahead because the predictions must be dynamic.
+errs &lt;- df_train %&gt;%
+  mutate(
+    pred_sprdma6 = lead(spread_ma6, n=1L, default=NA),
+    diff = pred_sprdma6 - spread
+  ) %&gt;%
+  select(short_date, spread, pred_sprdma6, diff) 
+
+errs %&gt;%
+  ggplot(., aes(x = short_date, y = diff)) + 
+  geom_point() + 
+  geom_smooth() + 
+  ggtitle(&#39;This prediction method creates perfectly random errors&#39;)</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(errs, aes(x = diff)) + geom_density()</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+<pre class="r"><code># Mean squared error:
+MSE_ma = mean(errs$diff^2, na.rm = T)
+MSE_ma</code></pre>
+<pre><code>## [1] 319.8642</code></pre>
+<p>Using the lag of the spread of the last 6 games creates perfectly random noise.</p>
+</div>
+<div id="method-2-linear-regression" class="section level2">
+<h2>Method 2: Linear regression</h2>
+<p>Let’s start simple regression.</p>
+<pre class="r"><code># Can&#39;t use future information
+mod1 &lt;- lm(spread ~ home + spread_l1 + spread_l2 + spread_ma6, data = df_train)
+mod2 &lt;- lm(spread ~ home + spread_l1 + spread_ma6, data = df_train)
+anova(mod2, mod1) # This tells me mod1 is better. The significant difference indicates that the feature spread_l2 does matter.</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: spread ~ home + spread_l1 + spread_ma6
+## Model 2: spread ~ home + spread_l1 + spread_l2 + spread_ma6
+##   Res.Df    RSS Df Sum of Sq      F   Pr(&gt;F)    
+## 1    949 289803                                 
+## 2    948 272323  1     17480 60.851 1.62e-14 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>df_train$pred_lm1 &lt;- predict(mod1, df_train)
+
+
+# Prediction error:
+MSE_lm = with(df_train, mean((pred_lm1 - spread)^2, na.rm = T))
+c(MSE_ma, MSE_lm)</code></pre>
+<pre><code>## [1] 319.8642 285.7534</code></pre>
+<p>Let’s do a CARET random forest, with cleaned data.</p>
+<pre class="r"><code># Prepare the data
+# Split train, valid
+
+# Simplify data
+df_train$pred_lm2 &lt;- predict(mod2, df_train)
+df_caret &lt;- df_train %&gt;% select(-short_date, pred_lm1, pred_lm2)
+
+# Dummy vars
+dummy_model = dummyVars(spread ~ ., data = df_caret)
+df_caret &lt;- predict(dummy_model, newdata=df_caret) %&gt;% as.data.frame()
+
+# The only missing data is lagged data.
+fill_na_model &lt;- preProcess(df_caret, method=&#39;medianImpute&#39;)
+df_caret &lt;- predict(fill_na_model, df_caret)
+anyNA(df_caret)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code># Center and scale the data
+cent_scale_model &lt;- preProcess(df_caret, method=c(&#39;center&#39;, &#39;scale&#39;))
+df_caret &lt;- predict(cent_scale_model, df_caret)
+
+# Add the Y
+df_caret$spread = df_train$spread
+
+# Train the model
+mod &lt;- train(spread ~ ., data=df_caret, method=&#39;lm&#39;)
+summary(mod)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = .outcome ~ ., data = dat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -60.693  -7.930   0.267   7.063  50.771 
+## 
+## Coefficients: (3 not defined because of singularities)
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    4.0782     0.3904  10.447  &lt; 2e-16 ***
+## dowFriday      3.0389     2.3187   1.311 0.190291    
+## dowMonday      0.7555     0.7832   0.965 0.334949    
+## dowSaturday    3.8698     2.7703   1.397 0.162757    
+## dowSunday      0.2041     0.5540   0.368 0.712640    
+## dowThursday    2.1076     1.5368   1.371 0.170560    
+## dowTuesday     0.9329     0.6895   1.353 0.176399    
+## dowWednesday       NA         NA      NA       NA    
+## home.0         3.1694     1.2155   2.608 0.009255 ** 
+## home.1             NA         NA      NA       NA    
+## win_l1       -11.4544     0.7776 -14.731  &lt; 2e-16 ***
+## win_l2       -11.3968     0.8033 -14.188  &lt; 2e-16 ***
+## win_l3             NA         NA      NA       NA    
+## win3sum.0    -16.7710     1.3716 -12.227  &lt; 2e-16 ***
+## win3sum.1    -10.1554     1.6903  -6.008 2.63e-09 ***
+## win3sum.2      2.8167     1.7485   1.611 0.107512    
+## win3sum.3     14.5412     1.6528   8.798  &lt; 2e-16 ***
+## win5sum.0      2.3317     0.7239   3.221 0.001319 ** 
+## win5sum.1      2.1600     0.9948   2.171 0.030141 *  
+## win5sum.2      0.8718     1.1121   0.784 0.433262    
+## win5sum.3     -0.4901     1.1486  -0.427 0.669694    
+## win5sum.4     -2.5516     1.2759  -2.000 0.045779 *  
+## win5sum.5     -3.5444     1.1172  -3.173 0.001557 ** 
+## spread_l1      2.1795     1.2284   1.774 0.076344 .  
+## spread_l2      2.8893     2.0291   1.424 0.154771    
+## spread_l3     -2.5872     0.5336  -4.848 1.44e-06 ***
+## spread_ma6   -10.1372     4.2065  -2.410 0.016139 *  
+## pred_lm1      19.3311     5.0657   3.816 0.000144 ***
+## pred_lm2      -0.7629     7.5641  -0.101 0.919678    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 12.49 on 997 degrees of freedom
+## Multiple R-squared:  0.6754, Adjusted R-squared:  0.6672 
+## F-statistic: 82.96 on 25 and 997 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>varImp(mod)</code></pre>
+<pre><code>## lm variable importance
+## 
+##   only 20 most important variables shown (out of 25)
+## 
+##             Overall
+## win_l1      100.000
+## win_l2       96.287
+## win3sum.0    82.889
+## win3sum.3    59.449
+## win3sum.1    40.377
+## spread_l3    32.449
+## pred_lm1     25.394
+## win5sum.0    21.327
+## win5sum.5    20.996
+## home.0       17.134
+## spread_ma6   15.783
+## win5sum.1    14.152
+## win5sum.4    12.981
+## spread_l1    11.437
+## win3sum.2    10.322
+## spread_l2     9.044
+## dowSaturday   8.859
+## dowThursday   8.685
+## dowTuesday    8.558
+## dowFriday     8.269</code></pre>
+<pre class="r"><code># LINE: linear relatiionship, independent, normally distributed, 
+hist(residuals(mod), 100)</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>plot(residuals(mod))</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+<pre class="r"><code># New prediction:
+df_train$pred_lm2 &lt;- predict(mod, df_caret)
+MSE_lm2 = with(df_train, mean((pred_lm2 - spread)^2, na.rm = F))
+c(MSE_ma, MSE_lm, MSE_lm2)</code></pre>
+<pre><code>## [1] 319.8642 285.7534 151.9280</code></pre>
+<p>Add interactions</p>
+<pre class="r"><code># Train the model
+mod &lt;- train(spread ~ (.)^2, data=df_caret, method=&#39;lm&#39;)
+summary(mod)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = .outcome ~ ., data = dat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -35.755  -7.151   0.000   6.518  60.372 
+## 
+## Coefficients: (223 not defined because of singularities)
+##                             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                  10.4127    12.5811   0.828  0.40811    
+## dowFriday                    20.4958    17.5074   1.171  0.24206    
+## dowMonday                    -1.8406     2.2339  -0.824  0.41020    
+## dowSaturday                  25.0099    21.1531   1.182  0.23741    
+## dowSunday                    -1.1214     1.2390  -0.905  0.36566    
+## dowThursday                  -4.9562     4.3537  -1.138  0.25528    
+## dowTuesday                    0.9159     1.4404   0.636  0.52503    
+## dowWednesday                      NA         NA      NA       NA    
+## home.0                      -12.2134    29.8480  -0.409  0.68251    
+## home.1                            NA         NA      NA       NA    
+## win_l1                       -5.7637     2.4729  -2.331  0.02000 *  
+## win_l2                      -14.6649     3.1097  -4.716 2.82e-06 ***
+## win_l3                            NA         NA      NA       NA    
+## win3sum.0                    -9.0285     6.5454  -1.379  0.16815    
+## win3sum.1                    -9.5031     8.5212  -1.115  0.26507    
+## win3sum.2                     3.4923    17.6737   0.198  0.84341    
+## win3sum.3                    11.6329    35.7432   0.325  0.74492    
+## win5sum.0                    28.3096    16.6360   1.702  0.08918 .  
+## win5sum.1                    45.4219    28.5414   1.591  0.11189    
+## win5sum.2                    53.4060    33.3481   1.601  0.10965    
+## win5sum.3                    50.6832    31.7873   1.594  0.11121    
+## win5sum.4                    53.4604    35.0272   1.526  0.12732    
+## win5sum.5                    37.8681    29.9364   1.265  0.20624    
+## spread_l1                   -12.6632    31.9606  -0.396  0.69205    
+## spread_l2                   -40.9026    15.7182  -2.602  0.00942 ** 
+## spread_l3                    -1.6964     0.7605  -2.231  0.02597 *  
+## spread_ma6                   46.2168   125.7122   0.368  0.71323    
+## pred_lm1                    -89.4519    38.9033  -2.299  0.02173 *  
+## pred_lm2                     76.2543   110.0247   0.693  0.48846    
+## `dowFriday:dowMonday`             NA         NA      NA       NA    
+## `dowFriday:dowSaturday`           NA         NA      NA       NA    
+## `dowFriday:dowSunday`             NA         NA      NA       NA    
+## `dowFriday:dowThursday`           NA         NA      NA       NA    
+## `dowFriday:dowTuesday`            NA         NA      NA       NA    
+## `dowFriday:dowWednesday`          NA         NA      NA       NA    
+## `dowFriday:home.0`           79.3287    51.7428   1.533  0.12562    
+## `dowFriday:home.1`                NA         NA      NA       NA    
+## `dowFriday:win_l1`            4.0305     3.0611   1.317  0.18831    
+## `dowFriday:win_l2`            4.2152     4.0246   1.047  0.29523    
+## `dowFriday:win_l3`                NA         NA      NA       NA    
+## `dowFriday:win3sum.0`         2.8361     4.4981   0.631  0.52853    
+## `dowFriday:win3sum.1`         7.3790     6.6910   1.103  0.27042    
+## `dowFriday:win3sum.2`        -1.9138     6.2056  -0.308  0.75786    
+## `dowFriday:win3sum.3`        -0.8641     4.9035  -0.176  0.86016    
+## `dowFriday:win5sum.0`      -122.1755    77.7859  -1.571  0.11664    
+## `dowFriday:win5sum.1`      -205.6065   132.9279  -1.547  0.12230    
+## `dowFriday:win5sum.2`      -241.1519   157.2320  -1.534  0.12547    
+## `dowFriday:win5sum.3`      -245.1321   158.8426  -1.543  0.12315    
+## `dowFriday:win5sum.4`      -251.1496   164.5996  -1.526  0.12743    
+## `dowFriday:win5sum.5`      -187.3685   122.0355  -1.535  0.12507    
+## `dowFriday:spread_l1`        98.4607    66.6300   1.478  0.13986    
+## `dowFriday:spread_l2`       118.4513    75.0131   1.579  0.11470    
+## `dowFriday:spread_l3`        -1.0110     1.2641  -0.800  0.42405    
+## `dowFriday:spread_ma6`     -365.2735   245.9154  -1.485  0.13782    
+## `dowFriday:pred_lm1`        290.3454   185.7233   1.563  0.11835    
+## `dowFriday:pred_lm2`         -8.9207    27.3782  -0.326  0.74463    
+## `dowMonday:dowSaturday`           NA         NA      NA       NA    
+## `dowMonday:dowSunday`             NA         NA      NA       NA    
+## `dowMonday:dowThursday`           NA         NA      NA       NA    
+## `dowMonday:dowTuesday`            NA         NA      NA       NA    
+## `dowMonday:dowWednesday`          NA         NA      NA       NA    
+## `dowMonday:home.0`            2.1911     1.7015   1.288  0.19818    
+## `dowMonday:home.1`                NA         NA      NA       NA    
+## `dowMonday:win_l1`            0.3995     2.2485   0.178  0.85904    
+## `dowMonday:win_l2`            3.4497     1.6801   2.053  0.04035 *  
+## `dowMonday:win_l3`                NA         NA      NA       NA    
+## `dowMonday:win3sum.0`         1.2011     1.4559   0.825  0.40960    
+## `dowMonday:win3sum.1`         1.5109     2.4535   0.616  0.53817    
+## `dowMonday:win3sum.2`             NA         NA      NA       NA    
+## `dowMonday:win3sum.3`             NA         NA      NA       NA    
+## `dowMonday:win5sum.0`             NA         NA      NA       NA    
+## `dowMonday:win5sum.1`        -0.1103     1.3799  -0.080  0.93628    
+## `dowMonday:win5sum.2`             NA         NA      NA       NA    
+## `dowMonday:win5sum.3`         0.3469     1.5622   0.222  0.82431    
+## `dowMonday:win5sum.4`             NA         NA      NA       NA    
+## `dowMonday:win5sum.5`             NA         NA      NA       NA    
+## `dowMonday:spread_l1`         2.1830     2.2271   0.980  0.32728    
+## `dowMonday:spread_l2`             NA         NA      NA       NA    
+## `dowMonday:spread_l3`             NA         NA      NA       NA    
+## `dowMonday:spread_ma6`            NA         NA      NA       NA    
+## `dowMonday:pred_lm1`              NA         NA      NA       NA    
+## `dowMonday:pred_lm2`              NA         NA      NA       NA    
+## `dowSaturday:dowSunday`           NA         NA      NA       NA    
+## `dowSaturday:dowThursday`         NA         NA      NA       NA    
+## `dowSaturday:dowTuesday`          NA         NA      NA       NA    
+## `dowSaturday:dowWednesday`        NA         NA      NA       NA    
+## `dowSaturday:home.0`         93.8460    62.1395   1.510  0.13136    
+## `dowSaturday:home.1`              NA         NA      NA       NA    
+## `dowSaturday:win_l1`          4.6130     3.5837   1.287  0.19837    
+## `dowSaturday:win_l2`          4.0305     4.7668   0.846  0.39805    
+## `dowSaturday:win_l3`              NA         NA      NA       NA    
+## `dowSaturday:win3sum.0`       1.9570     3.1096   0.629  0.52929    
+## `dowSaturday:win3sum.1`       7.5313     5.1745   1.455  0.14591    
+## `dowSaturday:win3sum.2`      -2.2568     3.7210  -0.606  0.54435    
+## `dowSaturday:win3sum.3`           NA         NA      NA       NA    
+## `dowSaturday:win5sum.0`    -146.6493    94.4183  -1.553  0.12076    
+## `dowSaturday:win5sum.1`    -247.0785   161.3586  -1.531  0.12609    
+## `dowSaturday:win5sum.2`    -290.4490   190.8822  -1.522  0.12848    
+## `dowSaturday:win5sum.3`    -295.0510   192.8339  -1.530  0.12637    
+## `dowSaturday:win5sum.4`    -302.8471   199.8215  -1.516  0.13000    
+## `dowSaturday:win5sum.5`    -225.6571   148.1538  -1.523  0.12810    
+## `dowSaturday:spread_l1`     113.6264    80.7669   1.407  0.15984    
+## `dowSaturday:spread_l2`     134.1891    93.1240   1.441  0.14997    
+## `dowSaturday:spread_l3`      -1.3271     1.4006  -0.947  0.34366    
+## `dowSaturday:spread_ma6`   -422.9748   297.9304  -1.420  0.15606    
+## `dowSaturday:pred_lm1`      327.9146   230.5870   1.422  0.15537    
+## `dowSaturday:pred_lm2`            NA         NA      NA       NA    
+## `dowSunday:dowThursday`           NA         NA      NA       NA    
+## `dowSunday:dowTuesday`            NA         NA      NA       NA    
+## `dowSunday:dowWednesday`          NA         NA      NA       NA    
+## `dowSunday:home.0`            1.4047     0.8623   1.629  0.10369    
+## `dowSunday:home.1`                NA         NA      NA       NA    
+## `dowSunday:win_l1`                NA         NA      NA       NA    
+## `dowSunday:win_l2`           -0.5475     0.8310  -0.659  0.51014    
+## `dowSunday:win_l3`                NA         NA      NA       NA    
+## `dowSunday:win3sum.0`             NA         NA      NA       NA    
+## `dowSunday:win3sum.1`             NA         NA      NA       NA    
+## `dowSunday:win3sum.2`             NA         NA      NA       NA    
+## `dowSunday:win3sum.3`             NA         NA      NA       NA    
+## `dowSunday:win5sum.0`             NA         NA      NA       NA    
+## `dowSunday:win5sum.1`             NA         NA      NA       NA    
+## `dowSunday:win5sum.2`             NA         NA      NA       NA    
+## `dowSunday:win5sum.3`             NA         NA      NA       NA    
+## `dowSunday:win5sum.4`             NA         NA      NA       NA    
+## `dowSunday:win5sum.5`             NA         NA      NA       NA    
+## `dowSunday:spread_l1`             NA         NA      NA       NA    
+## `dowSunday:spread_l2`             NA         NA      NA       NA    
+## `dowSunday:spread_l3`             NA         NA      NA       NA    
+## `dowSunday:spread_ma6`            NA         NA      NA       NA    
+## `dowSunday:pred_lm1`              NA         NA      NA       NA    
+## `dowSunday:pred_lm2`              NA         NA      NA       NA    
+## `dowThursday:dowTuesday`          NA         NA      NA       NA    
+## `dowThursday:dowWednesday`        NA         NA      NA       NA    
+## `dowThursday:home.0`          3.2268     1.8658   1.729  0.08410 .  
+## `dowThursday:home.1`              NA         NA      NA       NA    
+## `dowThursday:win_l1`          2.7411     2.0268   1.352  0.17661    
+## `dowThursday:win_l2`          3.2910     2.6090   1.261  0.20751    
+## `dowThursday:win_l3`              NA         NA      NA       NA    
+## `dowThursday:win3sum.0`           NA         NA      NA       NA    
+## `dowThursday:win3sum.1`       3.8403     2.4618   1.560  0.11915    
+## `dowThursday:win3sum.2`      -1.5792     1.9292  -0.819  0.41326    
+## `dowThursday:win3sum.3`           NA         NA      NA       NA    
+## `dowThursday:win5sum.0`           NA         NA      NA       NA    
+## `dowThursday:win5sum.1`           NA         NA      NA       NA    
+## `dowThursday:win5sum.2`           NA         NA      NA       NA    
+## `dowThursday:win5sum.3`           NA         NA      NA       NA    
+## `dowThursday:win5sum.4`           NA         NA      NA       NA    
+## `dowThursday:win5sum.5`           NA         NA      NA       NA    
+## `dowThursday:spread_l1`           NA         NA      NA       NA    
+## `dowThursday:spread_l2`           NA         NA      NA       NA    
+## `dowThursday:spread_l3`           NA         NA      NA       NA    
+## `dowThursday:spread_ma6`          NA         NA      NA       NA    
+## `dowThursday:pred_lm1`            NA         NA      NA       NA    
+## `dowThursday:pred_lm2`            NA         NA      NA       NA    
+## `dowTuesday:dowWednesday`         NA         NA      NA       NA    
+## `dowTuesday:home.0`               NA         NA      NA       NA    
+## `dowTuesday:home.1`               NA         NA      NA       NA    
+## `dowTuesday:win_l1`               NA         NA      NA       NA    
+## `dowTuesday:win_l2`               NA         NA      NA       NA    
+## `dowTuesday:win_l3`               NA         NA      NA       NA    
+## `dowTuesday:win3sum.0`            NA         NA      NA       NA    
+## `dowTuesday:win3sum.1`            NA         NA      NA       NA    
+## `dowTuesday:win3sum.2`            NA         NA      NA       NA    
+## `dowTuesday:win3sum.3`            NA         NA      NA       NA    
+## `dowTuesday:win5sum.0`            NA         NA      NA       NA    
+## `dowTuesday:win5sum.1`            NA         NA      NA       NA    
+## `dowTuesday:win5sum.2`            NA         NA      NA       NA    
+## `dowTuesday:win5sum.3`            NA         NA      NA       NA    
+## `dowTuesday:win5sum.4`            NA         NA      NA       NA    
+## `dowTuesday:win5sum.5`            NA         NA      NA       NA    
+## `dowTuesday:spread_l1`            NA         NA      NA       NA    
+## `dowTuesday:spread_l2`            NA         NA      NA       NA    
+## `dowTuesday:spread_l3`            NA         NA      NA       NA    
+## `dowTuesday:spread_ma6`           NA         NA      NA       NA    
+## `dowTuesday:pred_lm1`             NA         NA      NA       NA    
+## `dowTuesday:pred_lm2`             NA         NA      NA       NA    
+## `dowWednesday:home.0`             NA         NA      NA       NA    
+## `dowWednesday:home.1`             NA         NA      NA       NA    
+## `dowWednesday:win_l1`             NA         NA      NA       NA    
+## `dowWednesday:win_l2`             NA         NA      NA       NA    
+## `dowWednesday:win_l3`             NA         NA      NA       NA    
+## `dowWednesday:win3sum.0`          NA         NA      NA       NA    
+## `dowWednesday:win3sum.1`          NA         NA      NA       NA    
+## `dowWednesday:win3sum.2`          NA         NA      NA       NA    
+## `dowWednesday:win3sum.3`          NA         NA      NA       NA    
+## `dowWednesday:win5sum.0`          NA         NA      NA       NA    
+## `dowWednesday:win5sum.1`          NA         NA      NA       NA    
+## `dowWednesday:win5sum.2`          NA         NA      NA       NA    
+## `dowWednesday:win5sum.3`          NA         NA      NA       NA    
+## `dowWednesday:win5sum.4`          NA         NA      NA       NA    
+## `dowWednesday:win5sum.5`          NA         NA      NA       NA    
+## `dowWednesday:spread_l1`          NA         NA      NA       NA    
+## `dowWednesday:spread_l2`          NA         NA      NA       NA    
+## `dowWednesday:spread_l3`          NA         NA      NA       NA    
+## `dowWednesday:spread_ma6`         NA         NA      NA       NA    
+## `dowWednesday:pred_lm1`           NA         NA      NA       NA    
+## `dowWednesday:pred_lm2`           NA         NA      NA       NA    
+## `home.0:home.1`                   NA         NA      NA       NA    
+## `home.0:win_l1`               2.4567     2.9899   0.822  0.41150    
+## `home.0:win_l2`              10.0581     6.2977   1.597  0.11062    
+## `home.0:win_l3`                   NA         NA      NA       NA    
+## `home.0:win3sum.0`            7.0943     4.1823   1.696  0.09020 .  
+## `home.0:win3sum.1`            4.3779     3.4466   1.270  0.20436    
+## `home.0:win3sum.2`            0.3908     3.9059   0.100  0.92032    
+## `home.0:win3sum.3`            2.2886    23.8599   0.096  0.92361    
+## `home.0:win5sum.0`           -4.6315     5.8191  -0.796  0.42631    
+## `home.0:win5sum.1`           -0.1539     7.2129  -0.021  0.98298    
+## `home.0:win5sum.2`           -1.6151     3.8293  -0.422  0.67330    
+## `home.0:win5sum.3`           20.9775    14.4501   1.452  0.14695    
+## `home.0:win5sum.4`           -7.8346     6.1432  -1.275  0.20255    
+## `home.0:win5sum.5`           -6.3797     4.6130  -1.383  0.16704    
+## `home.0:spread_l1`           11.2753     4.9151   2.294  0.02203 *  
+## `home.0:spread_l2`          -10.3046     8.0717  -1.277  0.20209    
+## `home.0:spread_l3`           -5.3844    10.5074  -0.512  0.60847    
+## `home.0:spread_ma6`         -40.7485    18.0463  -2.258  0.02420 *  
+## `home.0:pred_lm1`           -27.8141    20.0697  -1.386  0.16615    
+## `home.0:pred_lm2`            70.7173    32.4068   2.182  0.02937 *  
+## `home.1:win_l1`                   NA         NA      NA       NA    
+## `home.1:win_l2`                   NA         NA      NA       NA    
+## `home.1:win_l3`                   NA         NA      NA       NA    
+## `home.1:win3sum.0`                NA         NA      NA       NA    
+## `home.1:win3sum.1`                NA         NA      NA       NA    
+## `home.1:win3sum.2`                NA         NA      NA       NA    
+## `home.1:win3sum.3`                NA         NA      NA       NA    
+## `home.1:win5sum.0`                NA         NA      NA       NA    
+## `home.1:win5sum.1`                NA         NA      NA       NA    
+## `home.1:win5sum.2`                NA         NA      NA       NA    
+## `home.1:win5sum.3`                NA         NA      NA       NA    
+## `home.1:win5sum.4`                NA         NA      NA       NA    
+## `home.1:win5sum.5`                NA         NA      NA       NA    
+## `home.1:spread_l1`                NA         NA      NA       NA    
+## `home.1:spread_l2`                NA         NA      NA       NA    
+## `home.1:spread_l3`                NA         NA      NA       NA    
+## `home.1:spread_ma6`               NA         NA      NA       NA    
+## `home.1:pred_lm1`                 NA         NA      NA       NA    
+## `home.1:pred_lm2`                 NA         NA      NA       NA    
+## `win_l1:win_l2`              -0.8356     1.8313  -0.456  0.64831    
+## `win_l1:win_l3`                   NA         NA      NA       NA    
+## `win_l1:win3sum.0`                NA         NA      NA       NA    
+## `win_l1:win3sum.1`          -11.0835     4.6219  -2.398  0.01670 *  
+## `win_l1:win3sum.2`           -9.1904     4.5942  -2.000  0.04578 *  
+## `win_l1:win3sum.3`                NA         NA      NA       NA    
+## `win_l1:win5sum.0`                NA         NA      NA       NA    
+## `win_l1:win5sum.1`            1.7727     3.3815   0.524  0.60027    
+## `win_l1:win5sum.2`            0.8764     3.7212   0.236  0.81386    
+## `win_l1:win5sum.3`            0.7744     3.6999   0.209  0.83426    
+## `win_l1:win5sum.4`           -0.8740     3.9004  -0.224  0.82275    
+## `win_l1:win5sum.5`                NA         NA      NA       NA    
+## `win_l1:spread_l1`            4.3330     3.3604   1.289  0.19760    
+## `win_l1:spread_l2`            4.4516    11.5423   0.386  0.69983    
+## `win_l1:spread_l3`            1.0339     1.1516   0.898  0.36956    
+## `win_l1:spread_ma6`         -14.2091    11.8561  -1.198  0.23107    
+## `win_l1:pred_lm1`            11.6173    28.5899   0.406  0.68459    
+## `win_l1:pred_lm2`            -1.3719    31.3227  -0.044  0.96507    
+## `win_l2:win_l3`                   NA         NA      NA       NA    
+## `win_l2:win3sum.0`                NA         NA      NA       NA    
+## `win_l2:win3sum.1`                NA         NA      NA       NA    
+## `win_l2:win3sum.2`                NA         NA      NA       NA    
+## `win_l2:win3sum.3`                NA         NA      NA       NA    
+## `win_l2:win5sum.0`                NA         NA      NA       NA    
+## `win_l2:win5sum.1`            3.1961     4.8961   0.653  0.51407    
+## `win_l2:win5sum.2`            3.2078     5.6727   0.565  0.57190    
+## `win_l2:win5sum.3`            3.2218     5.7815   0.557  0.57750    
+## `win_l2:win5sum.4`            1.6272     6.0773   0.268  0.78896    
+## `win_l2:win5sum.5`                NA         NA      NA       NA    
+## `win_l2:spread_l1`            8.4551     6.0685   1.393  0.16391    
+## `win_l2:spread_l2`           -8.8648    12.2898  -0.721  0.47092    
+## `win_l2:spread_l3`            0.6515     1.1881   0.548  0.58359    
+## `win_l2:spread_ma6`         -32.2253    22.3924  -1.439  0.15049    
+## `win_l2:pred_lm1`           -28.5848    30.7846  -0.929  0.35339    
+## `win_l2:pred_lm2`            64.7024    41.3914   1.563  0.11839    
+## `win_l3:win3sum.0`                NA         NA      NA       NA    
+## `win_l3:win3sum.1`                NA         NA      NA       NA    
+## `win_l3:win3sum.2`                NA         NA      NA       NA    
+## `win_l3:win3sum.3`                NA         NA      NA       NA    
+## `win_l3:win5sum.0`                NA         NA      NA       NA    
+## `win_l3:win5sum.1`                NA         NA      NA       NA    
+## `win_l3:win5sum.2`                NA         NA      NA       NA    
+## `win_l3:win5sum.3`                NA         NA      NA       NA    
+## `win_l3:win5sum.4`                NA         NA      NA       NA    
+## `win_l3:win5sum.5`                NA         NA      NA       NA    
+## `win_l3:spread_l1`                NA         NA      NA       NA    
+## `win_l3:spread_l2`                NA         NA      NA       NA    
+## `win_l3:spread_l3`                NA         NA      NA       NA    
+## `win_l3:spread_ma6`               NA         NA      NA       NA    
+## `win_l3:pred_lm1`                 NA         NA      NA       NA    
+## `win_l3:pred_lm2`                 NA         NA      NA       NA    
+## `win3sum.0:win3sum.1`             NA         NA      NA       NA    
+## `win3sum.0:win3sum.2`             NA         NA      NA       NA    
+## `win3sum.0:win3sum.3`             NA         NA      NA       NA    
+## `win3sum.0:win5sum.0`             NA         NA      NA       NA    
+## `win3sum.0:win5sum.1`         0.2768     2.7857   0.099  0.92086    
+## `win3sum.0:win5sum.2`        -0.8213     4.2758  -0.192  0.84772    
+## `win3sum.0:win5sum.3`             NA         NA      NA       NA    
+## `win3sum.0:win5sum.4`             NA         NA      NA       NA    
+## `win3sum.0:win5sum.5`             NA         NA      NA       NA    
+## `win3sum.0:spread_l1`         4.0094     4.8962   0.819  0.41309    
+## `win3sum.0:spread_l2`        -6.1464    35.7162  -0.172  0.86341    
+## `win3sum.0:spread_l3`         1.9453     1.7378   1.119  0.26331    
+## `win3sum.0:spread_ma6`      -24.6065    55.5988  -0.443  0.65819    
+## `win3sum.0:pred_lm1`        -17.5612    88.7524  -0.198  0.84320    
+## `win3sum.0:pred_lm2`         41.2320   143.5209   0.287  0.77396    
+## `win3sum.1:win3sum.2`             NA         NA      NA       NA    
+## `win3sum.1:win3sum.3`             NA         NA      NA       NA    
+## `win3sum.1:win5sum.0`             NA         NA      NA       NA    
+## `win3sum.1:win5sum.1`             NA         NA      NA       NA    
+## `win3sum.1:win5sum.2`        -1.4796     2.6724  -0.554  0.57997    
+## `win3sum.1:win5sum.3`        -0.7204    16.6107  -0.043  0.96542    
+## `win3sum.1:win5sum.4`             NA         NA      NA       NA    
+## `win3sum.1:win5sum.5`             NA         NA      NA       NA    
+## `win3sum.1:spread_l1`         0.7632     6.9324   0.110  0.91236    
+## `win3sum.1:spread_l2`        -3.5058    46.7918  -0.075  0.94029    
+## `win3sum.1:spread_l3`         2.5700     1.6201   1.586  0.11304    
+## `win3sum.1:spread_ma6`      -13.4204    73.5253  -0.183  0.85521    
+## `win3sum.1:pred_lm1`        -18.3920   116.1167  -0.158  0.87419    
+## `win3sum.1:pred_lm2`         30.6446   187.5300   0.163  0.87023    
+## `win3sum.2:win3sum.3`             NA         NA      NA       NA    
+## `win3sum.2:win5sum.0`             NA         NA      NA       NA    
+## `win3sum.2:win5sum.1`             NA         NA      NA       NA    
+## `win3sum.2:win5sum.2`             NA         NA      NA       NA    
+## `win3sum.2:win5sum.3`         1.4815    16.9275   0.088  0.93028    
+## `win3sum.2:win5sum.4`         1.0723    17.4963   0.061  0.95115    
+## `win3sum.2:win5sum.5`             NA         NA      NA       NA    
+## `win3sum.2:spread_l1`       -21.3917    10.8903  -1.964  0.04983 *  
+## `win3sum.2:spread_l2`       -72.1463    50.8433  -1.419  0.15627    
+## `win3sum.2:spread_l3`         2.4006     1.0680   2.248  0.02485 *  
+## `win3sum.2:spread_ma6`       51.0044    86.9638   0.587  0.55770    
+## `win3sum.2:pred_lm1`       -189.1835   125.9554  -1.502  0.13348    
+## `win3sum.2:pred_lm2`        173.0551   188.6720   0.917  0.35929    
+## `win3sum.3:win5sum.0`             NA         NA      NA       NA    
+## `win3sum.3:win5sum.1`             NA         NA      NA       NA    
+## `win3sum.3:win5sum.2`             NA         NA      NA       NA    
+## `win3sum.3:win5sum.3`             NA         NA      NA       NA    
+## `win3sum.3:win5sum.4`             NA         NA      NA       NA    
+## `win3sum.3:win5sum.5`             NA         NA      NA       NA    
+## `win3sum.3:spread_l1`        -7.0731    20.1717  -0.351  0.72594    
+## `win3sum.3:spread_l2`             NA         NA      NA       NA    
+## `win3sum.3:spread_l3`             NA         NA      NA       NA    
+## `win3sum.3:spread_ma6`            NA         NA      NA       NA    
+## `win3sum.3:pred_lm1`              NA         NA      NA       NA    
+## `win3sum.3:pred_lm2`              NA         NA      NA       NA    
+## `win5sum.0:win5sum.1`             NA         NA      NA       NA    
+## `win5sum.0:win5sum.2`             NA         NA      NA       NA    
+## `win5sum.0:win5sum.3`             NA         NA      NA       NA    
+## `win5sum.0:win5sum.4`             NA         NA      NA       NA    
+## `win5sum.0:win5sum.5`             NA         NA      NA       NA    
+## `win5sum.0:spread_l1`        -0.8969     4.2245  -0.212  0.83192    
+## `win5sum.0:spread_l2`         4.0998     6.9136   0.593  0.55333    
+## `win5sum.0:spread_l3`        -2.1079     3.0872  -0.683  0.49494    
+## `win5sum.0:spread_ma6`        6.4172    18.2565   0.352  0.72530    
+## `win5sum.0:pred_lm1`         11.0366    17.5743   0.628  0.53018    
+## `win5sum.0:pred_lm2`        -16.0861    32.5239  -0.495  0.62102    
+## `win5sum.1:win5sum.2`             NA         NA      NA       NA    
+## `win5sum.1:win5sum.3`             NA         NA      NA       NA    
+## `win5sum.1:win5sum.4`             NA         NA      NA       NA    
+## `win5sum.1:win5sum.5`             NA         NA      NA       NA    
+## `win5sum.1:spread_l1`         3.6974     7.5040   0.493  0.62234    
+## `win5sum.1:spread_l2`         0.8287     6.5055   0.127  0.89867    
+## `win5sum.1:spread_l3`        -4.5421     5.0987  -0.891  0.37328    
+## `win5sum.1:spread_ma6`      -18.6877    28.9302  -0.646  0.51848    
+## `win5sum.1:pred_lm1`          5.4551    16.8231   0.324  0.74582    
+## `win5sum.1:pred_lm2`         14.1488    33.2322   0.426  0.67040    
+## `win5sum.2:win5sum.3`             NA         NA      NA       NA    
+## `win5sum.2:win5sum.4`             NA         NA      NA       NA    
+## `win5sum.2:win5sum.5`             NA         NA      NA       NA    
+## `win5sum.2:spread_l1`         6.0226     4.6446   1.297  0.19509    
+## `win5sum.2:spread_l2`         6.8654     6.1498   1.116  0.26459    
+## `win5sum.2:spread_l3`        -4.7784     6.0841  -0.785  0.43244    
+## `win5sum.2:spread_ma6`      -21.6050    19.0596  -1.134  0.25731    
+## `win5sum.2:pred_lm1`         19.7684    15.9591   1.239  0.21581    
+## `win5sum.2:pred_lm2`         -0.7009    26.7989  -0.026  0.97914    
+## `win5sum.3:win5sum.4`             NA         NA      NA       NA    
+## `win5sum.3:win5sum.5`             NA         NA      NA       NA    
+## `win5sum.3:spread_l1`        34.6017    15.7536   2.196  0.02833 *  
+## `win5sum.3:spread_l2`        36.4316    25.6396   1.421  0.15571    
+## `win5sum.3:spread_l3`        -4.4867     6.2487  -0.718  0.47294    
+## `win5sum.3:spread_ma6`     -130.2553    58.6621  -2.220  0.02666 *  
+## `win5sum.3:pred_lm1`         96.1833    63.5751   1.513  0.13068    
+## `win5sum.3:pred_lm2`          8.4566    63.8655   0.132  0.89469    
+## `win5sum.4:win5sum.5`             NA         NA      NA       NA    
+## `win5sum.4:spread_l1`         0.1538     1.3097   0.117  0.90654    
+## `win5sum.4:spread_l2`        -0.9196     1.3323  -0.690  0.49021    
+## `win5sum.4:spread_l3`        -2.9785     6.5514  -0.455  0.64948    
+## `win5sum.4:spread_ma6`        1.3976     1.8909   0.739  0.46004    
+## `win5sum.4:pred_lm1`              NA         NA      NA       NA    
+## `win5sum.4:pred_lm2`              NA         NA      NA       NA    
+## `win5sum.5:spread_l1`             NA         NA      NA       NA    
+## `win5sum.5:spread_l2`             NA         NA      NA       NA    
+## `win5sum.5:spread_l3`        -2.7642     4.9678  -0.556  0.57807    
+## `win5sum.5:spread_ma6`            NA         NA      NA       NA    
+## `win5sum.5:pred_lm1`              NA         NA      NA       NA    
+## `win5sum.5:pred_lm2`              NA         NA      NA       NA    
+## `spread_l1:spread_l2`        -3.2517    14.4581  -0.225  0.82211    
+## `spread_l1:spread_l3`        -7.1901    11.1135  -0.647  0.51783    
+## `spread_l1:spread_ma6`        1.5455     3.3158   0.466  0.64127    
+## `spread_l1:pred_lm1`        -16.8576    35.9807  -0.469  0.63954    
+## `spread_l1:pred_lm2`         18.3667    43.5011   0.422  0.67298    
+## `spread_l2:spread_l3`        -4.9639    10.9077  -0.455  0.64917    
+## `spread_l2:spread_ma6`       -3.0580     2.7844  -1.098  0.27241    
+## `spread_l2:pred_lm1`          1.3941     2.6038   0.535  0.59251    
+## `spread_l2:pred_lm2`              NA         NA      NA       NA    
+## `spread_l3:spread_ma6`       24.2560    41.6351   0.583  0.56033    
+## `spread_l3:pred_lm1`        -11.7290    26.8147  -0.437  0.66193    
+## `spread_l3:pred_lm2`         -9.2207    40.4549  -0.228  0.81976    
+## `spread_ma6:pred_lm1`         2.2727     1.2421   1.830  0.06765 .  
+## `spread_ma6:pred_lm2`             NA         NA      NA       NA    
+## `pred_lm1:pred_lm2`               NA         NA      NA       NA    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 12.18 on 839 degrees of freedom
+## Multiple R-squared:   0.74,  Adjusted R-squared:  0.6833 
+## F-statistic: 13.05 on 183 and 839 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>varImp(mod)</code></pre>
+<pre><code>## lm variable importance
+## 
+##   only 20 most important variables shown (out of 183)
+## 
+##                        Overall
+## win_l2                  100.00
+## spread_l2                54.98
+## `win_l1:win3sum.1`       50.63
+## win_l1                   49.19
+## pred_lm1                 48.52
+## `home.0:spread_l1`       48.41
+## `home.0:spread_ma6`      47.64
+## `win3sum.2:spread_l3`    47.42
+## spread_l3                47.06
+## `win5sum.3:spread_ma6`   46.84
+## `win5sum.3:spread_l1`    46.33
+## `home.0:pred_lm2`        46.03
+## `dowMonday:win_l2`       43.28
+## `win_l1:win3sum.2`       42.16
+## `win3sum.2:spread_l1`    41.39
+## `spread_ma6:pred_lm1`    38.52
+## `dowThursday:home.0`     36.38
+## win5sum.0                35.79
+## `home.0:win3sum.0`       35.68
+## `dowSunday:home.0`       34.24</code></pre>
+<pre class="r"><code>hist(resid(mod))</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre class="r"><code>plot(resid(mod))</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+<pre class="r"><code>df_train$pred_lm3 &lt;- predict(mod, df_caret)
+MSE_lm3 = with(df_train, mean((pred_lm3 - spread)^2, na.rm = F))
+mod3 &lt;- mod
+c(MSE_ma, MSE_lm, MSE_lm2, MSE_lm3) # Getting better?</code></pre>
+<pre><code>## [1] 319.8642 285.7534 151.9280 121.6810</code></pre>
+<pre class="r"><code>ctrl &lt;- rfeControl(functions = lmFuncs,
+                   method = &quot;cv&quot;,
+                   repeats = 5,
+                   verbose = FALSE)
+
+lmProfile &lt;- rfe(spread ~ ., data = df_caret,
+                 sizes = c(1:28), 
+                 rfeControl = ctrl)
+
+print(lmProfile)</code></pre>
+<pre><code>## 
+## Recursive feature selection
+## 
+## Outer resampling method: Cross-Validated (10 fold) 
+## 
+## Resampling performance over subset size:
+## 
+##  Variables  RMSE Rsquared    MAE RMSESD RsquaredSD  MAESD Selected
+##          1 17.62   0.3366 14.030  1.310    0.08690 1.0463         
+##          2 17.12   0.3739 13.624  1.110    0.07458 0.7155         
+##          3 16.60   0.4116 13.141  1.280    0.07163 0.9455         
+##          4 16.23   0.4369 12.743  1.417    0.08256 0.9521         
+##          5 15.55   0.4840 12.136  1.172    0.07256 0.8184         
+##          6 14.36   0.5581 11.070  1.724    0.09659 1.3587         
+##          7 13.01   0.6403 10.001  1.201    0.04765 0.7309         
+##          8 13.09   0.6361 10.036  1.212    0.05178 0.7167         
+##          9 13.10   0.6353 10.029  1.224    0.05314 0.6967         
+##         10 13.14   0.6330 10.072  1.154    0.04938 0.6545         
+##         11 13.17   0.6320 10.092  1.116    0.04940 0.6800         
+##         12 13.15   0.6330 10.098  1.173    0.05295 0.6897         
+##         13 13.20   0.6301 10.137  1.114    0.05105 0.6539         
+##         14 13.16   0.6321 10.130  1.079    0.04962 0.6019         
+##         15 13.10   0.6351 10.088  1.033    0.04826 0.5388         
+##         16 13.02   0.6397 10.016  1.060    0.04838 0.5787         
+##         17 12.96   0.6435  9.955  1.101    0.04962 0.5962         
+##         18 12.92   0.6453  9.933  1.111    0.04885 0.6201         
+##         19 12.77   0.6533  9.836  1.091    0.04650 0.5739         
+##         20 12.76   0.6539  9.833  1.093    0.04533 0.5949        *
+##         21 12.77   0.6534  9.843  1.078    0.04528 0.5778         
+##         22 12.77   0.6538  9.848  1.092    0.04608 0.6139         
+##         23 12.77   0.6537  9.837  1.110    0.04710 0.6047         
+##         24 12.77   0.6539  9.838  1.112    0.04729 0.6112         
+##         25 12.77   0.6540  9.836  1.111    0.04726 0.6113         
+##         26 12.77   0.6540  9.836  1.111    0.04726 0.6113         
+##         27 12.77   0.6540  9.836  1.111    0.04726 0.6113         
+##         28 12.77   0.6540  9.836  1.111    0.04726 0.6113         
+## 
+## The top 5 variables (out of 20):
+##    pred_lm1, win3sum.0, win3sum.3, win_l1, win_l2</code></pre>
+<pre class="r"><code>print(lmProfile$bestSubset)</code></pre>
+<pre><code>## [1] 20</code></pre>
+<pre class="r"><code># best fit
+keep_coef &lt;- names(coef(lmProfile$fit))
+keep_coef &lt;- keep_coef[2:length(keep_coef)]
+keep_coef</code></pre>
+<pre><code>##  [1] &quot;pred_lm1&quot;    &quot;win3sum.0&quot;   &quot;win3sum.3&quot;   &quot;win_l1&quot;      &quot;win_l2&quot;     
+##  [6] &quot;win3sum.1&quot;   &quot;spread_ma6&quot;  &quot;dowSaturday&quot; &quot;win5sum.5&quot;   &quot;win3sum.2&quot;  
+## [11] &quot;home.0&quot;      &quot;spread_l2&quot;   &quot;dowFriday&quot;   &quot;pred_lm2&quot;    &quot;win5sum.4&quot;  
+## [16] &quot;spread_l3&quot;   &quot;win5sum.0&quot;   &quot;spread_l1&quot;   &quot;win5sum.1&quot;   &quot;dowThursday&quot;</code></pre>
+<p>Build a model on just top features</p>
+<pre class="r"><code># Train the model
+tmp &lt;- df_caret %&gt;% select(c(&#39;spread&#39;, keep_coef))
+mod &lt;- train(spread ~ (.)^2, data=tmp, method=&#39;lm&#39;)
+summary(mod)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = .outcome ~ ., data = dat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -35.806  -7.316   0.121   6.777  58.207 
+## 
+## Coefficients: (56 not defined because of singularities)
+##                             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                  7.26413    3.54171   2.051 0.040564 *  
+## pred_lm1                   -26.21247   26.12697  -1.003 0.316009    
+## win3sum.0                   -7.23996    3.41252  -2.122 0.034155 *  
+## win3sum.3                   13.65471    2.60368   5.244 1.97e-07 ***
+## win_l1                      -6.18795    1.88994  -3.274 0.001102 ** 
+## win_l2                     -12.83551    1.03228 -12.434  &lt; 2e-16 ***
+## win3sum.1                   -6.50565    2.52758  -2.574 0.010222 *  
+## spread_ma6                  17.61255   20.28738   0.868 0.385551    
+## dowSaturday                 -2.67749    2.20005  -1.217 0.223929    
+## win5sum.5                   -4.40428    1.92370  -2.289 0.022291 *  
+## win3sum.2                    6.35988    2.54196   2.502 0.012534 *  
+## home.0                      -3.48136    5.72879  -0.608 0.543549    
+## spread_l2                  -14.90767   10.44260  -1.428 0.153772    
+## dowFriday                   -2.34836    1.86003  -1.263 0.207094    
+## pred_lm2                    28.84969   38.44870   0.750 0.453252    
+## win5sum.4                   -1.72592    1.00091  -1.724 0.085000 .  
+## spread_l3                   -2.48775    0.66291  -3.753 0.000187 ***
+## win5sum.0                    4.52033    1.32056   3.423 0.000648 ***
+## spread_l1                   -4.37616    5.18369  -0.844 0.398780    
+## win5sum.1                    2.26526    1.65664   1.367 0.171859    
+## dowThursday                 -1.74069    1.31474  -1.324 0.185860    
+## `pred_lm1:win3sum.0`        14.31596   18.31409   0.782 0.434609    
+## `pred_lm1:win3sum.3`       110.84020   41.94410   2.643 0.008376 ** 
+## `pred_lm1:win_l1`           12.81523   20.73561   0.618 0.536718    
+## `pred_lm1:win_l2`          -24.79654   15.58174  -1.591 0.111887    
+## `pred_lm1:win3sum.1`        28.50422   19.81497   1.439 0.150647    
+## `pred_lm1:spread_ma6`     -168.05847  314.97437  -0.534 0.593781    
+## `pred_lm1:dowSaturday`     245.68253  115.68006   2.124 0.033968 *  
+## `pred_lm1:win5sum.5`        -5.55151   17.99978  -0.308 0.757836    
+## `pred_lm1:win3sum.2`              NA         NA      NA       NA    
+## `pred_lm1:home.0`            6.56956   22.42415   0.293 0.769616    
+## `pred_lm1:spread_l2`         1.39002    2.57598   0.540 0.589605    
+## `pred_lm1:dowFriday`       211.85330   95.56911   2.217 0.026898 *  
+## `pred_lm1:pred_lm2`          5.88772    9.44369   0.623 0.533149    
+## `pred_lm1:win5sum.4`        -3.57727    3.44357  -1.039 0.299175    
+## `pred_lm1:spread_l3`       -22.90171   13.38353  -1.711 0.087404 .  
+## `pred_lm1:win5sum.0`         6.95451   13.03261   0.534 0.593738    
+## `pred_lm1:spread_l1`              NA         NA      NA       NA    
+## `pred_lm1:win5sum.1`        -0.70148   11.45557  -0.061 0.951186    
+## `pred_lm1:dowThursday`      -4.47536    5.89533  -0.759 0.447977    
+## `win3sum.0:win3sum.3`             NA         NA      NA       NA    
+## `win3sum.0:win_l1`                NA         NA      NA       NA    
+## `win3sum.0:win_l2`                NA         NA      NA       NA    
+## `win3sum.0:win3sum.1`             NA         NA      NA       NA    
+## `win3sum.0:spread_ma6`     -22.42886   10.75679  -2.085 0.037353 *  
+## `win3sum.0:dowSaturday`     -1.22883    3.68918  -0.333 0.739147    
+## `win3sum.0:win5sum.5`             NA         NA      NA       NA    
+## `win3sum.0:win3sum.2`             NA         NA      NA       NA    
+## `win3sum.0:home.0`           5.30646    3.51099   1.511 0.131054    
+## `win3sum.0:spread_l2`        4.64187    7.37150   0.630 0.529053    
+## `win3sum.0:dowFriday`        0.10323    2.57434   0.040 0.968022    
+## `win3sum.0:pred_lm2`         4.28056   25.84710   0.166 0.868502    
+## `win3sum.0:win5sum.4`             NA         NA      NA       NA    
+## `win3sum.0:spread_l3`        0.30742    1.20644   0.255 0.798926    
+## `win3sum.0:win5sum.0`             NA         NA      NA       NA    
+## `win3sum.0:spread_l1`        2.55490    3.34140   0.765 0.444706    
+## `win3sum.0:win5sum.1`       -0.07514    0.64924  -0.116 0.907889    
+## `win3sum.0:dowThursday`     -2.23550    1.95625  -1.143 0.253460    
+## `win3sum.3:win_l1`                NA         NA      NA       NA    
+## `win3sum.3:win_l2`                NA         NA      NA       NA    
+## `win3sum.3:win3sum.1`             NA         NA      NA       NA    
+## `win3sum.3:spread_ma6`      36.29682   29.75466   1.220 0.222845    
+## `win3sum.3:dowSaturday`     -0.17243    4.52621  -0.038 0.969620    
+## `win3sum.3:win5sum.5`             NA         NA      NA       NA    
+## `win3sum.3:win3sum.2`             NA         NA      NA       NA    
+## `win3sum.3:home.0`         -14.78482    9.94789  -1.486 0.137582    
+## `win3sum.3:spread_l2`       40.81598   16.90070   2.415 0.015939 *  
+## `win3sum.3:dowFriday`       -1.32679    3.06278  -0.433 0.664979    
+## `win3sum.3:pred_lm2`      -160.42734   70.51231  -2.275 0.023139 *  
+## `win3sum.3:win5sum.4`        0.60752    0.90647   0.670 0.502908    
+## `win3sum.3:spread_l3`       -2.20280    0.94179  -2.339 0.019565 *  
+## `win3sum.3:win5sum.0`             NA         NA      NA       NA    
+## `win3sum.3:spread_l1`      -16.22721    8.00243  -2.028 0.042887 *  
+## `win3sum.3:win5sum.1`             NA         NA      NA       NA    
+## `win3sum.3:dowThursday`      0.11490    1.64084   0.070 0.944189    
+## `win_l1:win_l2`             -0.94229    1.67520  -0.562 0.573927    
+## `win_l1:win3sum.1`          -9.85277    2.37306  -4.152 3.62e-05 ***
+## `win_l1:spread_ma6`        -20.02686    9.42057  -2.126 0.033796 *  
+## `win_l1:dowSaturday`         0.12809    3.10182   0.041 0.967071    
+## `win_l1:win5sum.5`                NA         NA      NA       NA    
+## `win_l1:win3sum.2`          -8.32265    2.19847  -3.786 0.000164 ***
+## `win_l1:home.0`              4.03801    2.69105   1.501 0.133841    
+## `win_l1:spread_l2`           5.31270    8.37521   0.634 0.526028    
+## `win_l1:dowFriday`           0.47310    2.67860   0.177 0.859848    
+## `win_l1:pred_lm2`            2.53822   24.76103   0.103 0.918377    
+## `win_l1:win5sum.4`          -1.50613    1.26255  -1.193 0.233227    
+## `win_l1:spread_l3`           0.96825    1.12560   0.860 0.389912    
+## `win_l1:win5sum.0`                NA         NA      NA       NA    
+## `win_l1:spread_l1`           5.54785    2.67310   2.075 0.038240 *  
+## `win_l1:win5sum.1`           1.01229    1.18259   0.856 0.392235    
+## `win_l1:dowThursday`        -0.13058    1.84761  -0.071 0.943671    
+## `win_l2:win3sum.1`                NA         NA      NA       NA    
+## `win_l2:spread_ma6`        -24.22576   14.83270  -1.633 0.102775    
+## `win_l2:dowSaturday`        -0.40139    2.60149  -0.154 0.877415    
+## `win_l2:win5sum.5`                NA         NA      NA       NA    
+## `win_l2:win3sum.2`                NA         NA      NA       NA    
+## `win_l2:home.0`              7.93603    3.91003   2.030 0.042696 *  
+## `win_l2:spread_l2`          -7.41066    6.14474  -1.206 0.228140    
+## `win_l2:dowFriday`           0.69546    2.27586   0.306 0.759997    
+## `win_l2:pred_lm2`           52.46631   21.21721   2.473 0.013596 *  
+## `win_l2:win5sum.4`          -1.57127    1.24292  -1.264 0.206506    
+## `win_l2:spread_l3`           0.92016    1.13752   0.809 0.418780    
+## `win_l2:win5sum.0`                NA         NA      NA       NA    
+## `win_l2:spread_l1`           6.16936    4.15197   1.486 0.137672    
+## `win_l2:win5sum.1`           0.57950    1.10260   0.526 0.599316    
+## `win_l2:dowThursday`         0.78524    1.60127   0.490 0.623984    
+## `win3sum.1:spread_ma6`     -13.30803   10.69918  -1.244 0.213895    
+## `win3sum.1:dowSaturday`     -0.36702    3.69288  -0.099 0.920855    
+## `win3sum.1:win5sum.5`             NA         NA      NA       NA    
+## `win3sum.1:win3sum.2`             NA         NA      NA       NA    
+## `win3sum.1:home.0`           2.10310    2.72319   0.772 0.440150    
+## `win3sum.1:spread_l2`       11.70778    8.01415   1.461 0.144408    
+## `win3sum.1:dowFriday`        0.70526    1.94955   0.362 0.717621    
+## `win3sum.1:pred_lm2`       -20.83197   24.77555  -0.841 0.400676    
+## `win3sum.1:win5sum.4`             NA         NA      NA       NA    
+## `win3sum.1:spread_l3`       -0.05564    0.84413  -0.066 0.947460    
+## `win3sum.1:win5sum.0`             NA         NA      NA       NA    
+## `win3sum.1:spread_l1`       -0.08684    4.05813  -0.021 0.982931    
+## `win3sum.1:win5sum.1`             NA         NA      NA       NA    
+## `win3sum.1:dowThursday`     -0.69297    1.38122  -0.502 0.615999    
+## `spread_ma6:dowSaturday`   178.03130   85.34130   2.086 0.037260 *  
+## `spread_ma6:win5sum.5`       1.02190    5.02637   0.203 0.838942    
+## `spread_ma6:win3sum.2`            NA         NA      NA       NA    
+## `spread_ma6:home.0`         -4.81077   25.09517  -0.192 0.848021    
+## `spread_ma6:spread_l2`     -23.21914  127.07087  -0.183 0.855056    
+## `spread_ma6:dowFriday`     140.33776   69.53591   2.018 0.043877 *  
+## `spread_ma6:pred_lm2`      194.16235  362.17228   0.536 0.592023    
+## `spread_ma6:win5sum.4`       3.28721    4.11595   0.799 0.424711    
+## `spread_ma6:spread_l3`      51.06949   25.52435   2.001 0.045723 *  
+## `spread_ma6:win5sum.0`       6.64543   16.82561   0.395 0.692970    
+## `spread_ma6:spread_l1`            NA         NA      NA       NA    
+## `spread_ma6:win5sum.1`      13.56124   19.06360   0.711 0.477047    
+## `spread_ma6:dowThursday`     1.21691    7.40072   0.164 0.869430    
+## `dowSaturday:win5sum.5`      1.05699    1.83956   0.575 0.565717    
+## `dowSaturday:win3sum.2`      0.43485    3.07481   0.141 0.887567    
+## `dowSaturday:home.0`       -67.54271   30.50675  -2.214 0.027086 *  
+## `dowSaturday:spread_l2`     99.74743   46.83638   2.130 0.033477 *  
+## `dowSaturday:dowFriday`           NA         NA      NA       NA    
+## `dowSaturday:pred_lm2`    -461.99383  213.19365  -2.167 0.030505 *  
+## `dowSaturday:win5sum.4`     -0.86369    2.26050  -0.382 0.702497    
+## `dowSaturday:spread_l3`      7.25118    5.07340   1.429 0.153291    
+## `dowSaturday:win5sum.0`     -2.78915    1.46986  -1.898 0.058085 .  
+## `dowSaturday:spread_l1`    -45.20367   20.89905  -2.163 0.030817 *  
+## `dowSaturday:win5sum.1`     -1.40282    1.92440  -0.729 0.466221    
+## `dowSaturday:dowThursday`         NA         NA      NA       NA    
+## `win5sum.5:win3sum.2`             NA         NA      NA       NA    
+## `win5sum.5:home.0`          -1.24037    2.32803  -0.533 0.594309    
+## `win5sum.5:spread_l2`       -0.37504    7.19589  -0.052 0.958446    
+## `win5sum.5:dowFriday`        0.93128    1.66040   0.561 0.575028    
+## `win5sum.5:pred_lm2`         3.69853   22.85579   0.162 0.871485    
+## `win5sum.5:win5sum.4`             NA         NA      NA       NA    
+## `win5sum.5:spread_l3`        0.85193    1.07766   0.791 0.429432    
+## `win5sum.5:win5sum.0`             NA         NA      NA       NA    
+## `win5sum.5:spread_l1`             NA         NA      NA       NA    
+## `win5sum.5:win5sum.1`             NA         NA      NA       NA    
+## `win5sum.5:dowThursday`           NA         NA      NA       NA    
+## `win3sum.2:home.0`           0.80492    3.05282   0.264 0.792100    
+## `win3sum.2:spread_l2`             NA         NA      NA       NA    
+## `win3sum.2:dowFriday`             NA         NA      NA       NA    
+## `win3sum.2:pred_lm2`              NA         NA      NA       NA    
+## `win3sum.2:win5sum.4`             NA         NA      NA       NA    
+## `win3sum.2:spread_l3`             NA         NA      NA       NA    
+## `win3sum.2:win5sum.0`             NA         NA      NA       NA    
+## `win3sum.2:spread_l1`       -7.24071    4.37873  -1.654 0.098569 .  
+## `win3sum.2:win5sum.1`             NA         NA      NA       NA    
+## `win3sum.2:dowThursday`           NA         NA      NA       NA    
+## `home.0:spread_l2`          -9.49169    5.23839  -1.812 0.070340 .  
+## `home.0:dowFriday`         -55.66655   24.92330  -2.234 0.025769 *  
+## `home.0:pred_lm2`           10.07998   27.77028   0.363 0.716710    
+## `home.0:win5sum.4`          -1.43364    1.17162  -1.224 0.221419    
+## `home.0:spread_l3`         -11.81741    7.12410  -1.659 0.097519 .  
+## `home.0:win5sum.0`          -1.57261    5.32776  -0.295 0.767933    
+## `home.0:spread_l1`           4.21757    3.15683   1.336 0.181895    
+## `home.0:win5sum.1`          -3.20487    5.34530  -0.600 0.548951    
+## `home.0:dowThursday`        -1.25048    1.98872  -0.629 0.529656    
+## `spread_l2:dowFriday`       85.64587   38.70002   2.213 0.027152 *  
+## `spread_l2:pred_lm2`       -42.42540   32.74479  -1.296 0.195445    
+## `spread_l2:win5sum.4`       -0.13859    1.62860  -0.085 0.932203    
+## `spread_l2:spread_l3`       -9.77583    5.45561  -1.792 0.073499 .  
+## `spread_l2:win5sum.0`        2.77127    5.15377   0.538 0.590910    
+## `spread_l2:spread_l1`       -9.56119    9.49156  -1.007 0.314054    
+## `spread_l2:win5sum.1`       -0.77226    4.59911  -0.168 0.866690    
+## `spread_l2:dowThursday`     -2.47835    2.58917  -0.957 0.338732    
+## `dowFriday:pred_lm2`      -386.39930  175.00701  -2.208 0.027512 *  
+## `dowFriday:win5sum.4`       -0.25814    1.95782  -0.132 0.895132    
+## `dowFriday:spread_l3`        6.15827    4.22526   1.457 0.145344    
+## `dowFriday:win5sum.0`       -2.69043    1.32295  -2.034 0.042290 *  
+## `dowFriday:spread_l1`      -35.34643   16.99468  -2.080 0.037832 *  
+## `dowFriday:win5sum.1`       -1.58583    1.65880  -0.956 0.339331    
+## `dowFriday:dowThursday`           NA         NA      NA       NA    
+## `pred_lm2:win5sum.4`              NA         NA      NA       NA    
+## `pred_lm2:spread_l3`       -20.58552   32.15686  -0.640 0.522238    
+## `pred_lm2:win5sum.0`       -12.73456   28.62876  -0.445 0.656563    
+## `pred_lm2:spread_l1`              NA         NA      NA       NA    
+## `pred_lm2:win5sum.1`       -10.38504   24.91295  -0.417 0.676889    
+## `pred_lm2:dowThursday`            NA         NA      NA       NA    
+## `win5sum.4:spread_l3`        1.79884    0.91426   1.968 0.049439 *  
+## `win5sum.4:win5sum.0`             NA         NA      NA       NA    
+## `win5sum.4:spread_l1`             NA         NA      NA       NA    
+## `win5sum.4:win5sum.1`             NA         NA      NA       NA    
+## `win5sum.4:dowThursday`     -1.88044    1.48728  -1.264 0.206443    
+## `spread_l3:win5sum.0`        0.19317    1.05192   0.184 0.854345    
+## `spread_l3:spread_l1`      -14.12197    6.77307  -2.085 0.037359 *  
+## `spread_l3:win5sum.1`       -0.55424    0.89981  -0.616 0.538085    
+## `spread_l3:dowThursday`      4.63204    2.82087   1.642 0.100940    
+## `win5sum.0:spread_l1`       -0.96918    4.01939  -0.241 0.809515    
+## `win5sum.0:win5sum.1`             NA         NA      NA       NA    
+## `win5sum.0:dowThursday`           NA         NA      NA       NA    
+## `spread_l1:win5sum.1`       -4.75836    5.11526  -0.930 0.352512    
+## `spread_l1:dowThursday`           NA         NA      NA       NA    
+## `win5sum.1:dowThursday`     -0.13849    1.21142  -0.114 0.909011    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 12.2 on 868 degrees of freedom
+## Multiple R-squared:  0.7301, Adjusted R-squared:  0.6823 
+## F-statistic: 15.25 on 154 and 868 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>varImp(mod)</code></pre>
+<pre><code>## lm variable importance
+## 
+##   only 20 most important variables shown (out of 154)
+## 
+##                       Overall
+## win_l2                 100.00
+## win3sum.3               42.08
+## `win_l1:win3sum.1`      33.28
+## `win_l1:win3sum.2`      30.33
+## spread_l3               30.06
+## win5sum.0               27.40
+## win_l1                  26.20
+## `pred_lm1:win3sum.3`    21.12
+## win3sum.1               20.56
+## win3sum.2               19.98
+## `win_l2:pred_lm2`       19.75
+## `win3sum.3:spread_l2`   19.28
+## `win3sum.3:spread_l3`   18.67
+## win5sum.5               18.27
+## `win3sum.3:pred_lm2`    18.16
+## `home.0:dowFriday`      17.82
+## `pred_lm1:dowFriday`    17.69
+## `dowSaturday:home.0`    17.66
+## `spread_l2:dowFriday`   17.66
+## `dowFriday:pred_lm2`    17.62</code></pre>
+<pre class="r"><code>hist(resid(mod))</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<pre class="r"><code>plot(resid(mod))</code></pre>
+<p><img src="/post/2018-09-07-byu-football_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
+<pre class="r"><code>df_train$pred_lm4 &lt;- predict(mod, tmp)
+MSE_lm4 = with(df_train, mean((pred_lm4 - spread)^2, na.rm = F))
+c(MSE_ma, MSE_lm, MSE_lm2, MSE_lm3, MSE_lm4) # Getting better? Nope!</code></pre>
+<pre><code>## [1] 319.8642 285.7534 151.9280 121.6810 126.2895</code></pre>
+<p>Predict on the new data and see how we’ll do this season! (You can only predict the next game.)</p>
+<pre class="r"><code># To do this, you&#39;d have to do all the feature pre-processing
+df_res &lt;- df_fe %&gt;% filter(short_date &lt; Sys.Date())
+df_res$pred &lt;- df_train$pred_lm3
+
+# How often do I predict the correct winner (regardless of spread)
+df_res %&gt;% mutate(pred_ind = pred &gt; 0,
+                  sprd_ind = spread &gt; 0) %&gt;%
+  count(pred_ind, sprd_ind)</code></pre>
+<pre><code>## # A tibble: 4 x 3
+##   pred_ind sprd_ind     n
+##   &lt;lgl&gt;    &lt;lgl&gt;    &lt;int&gt;
+## 1 FALSE    FALSE      440
+## 2 FALSE    TRUE        12
+## 3 TRUE     FALSE       13
+## 4 TRUE     TRUE       558</code></pre>
+</div>
+</div>
+<div id="future-work" class="section level1">
+<h1>Future work</h1>
+<ul>
+<li>You can only predict one game ahead, right?</li>
+<li>You have to engineer two sets of features. One set of features that includes the results of the current game, and another set that’s purely historical. But both generated the same way. Then feed the contemporaneous features into your model to do the prediction on the next week.</li>
+<li>Explain your predictions: Find the top features and use them to give a rationale. “they’re coming off 3 losses”, they do X better when they come off of three losses.</li>
+<li>Remove the games for a season or two, and see how well the model performs on the season.</li>
+<li>Try a simpler model, see how well it predicts</li>
+<li>Try a random forest, see how well it predicts</li>
+<li>Try XGBoost?</li>
+<li>Try the bayesian hierarchical.</li>
+</ul>
+</div>
+<div id="learnigns" class="section level1">
+<h1>Learnigns:</h1>
+<ul>
+<li>Create a unique id for every observation</li>
+<li>Sort it if it makes sense (time series) O(nlogn)</li>
+</ul>
+</div>

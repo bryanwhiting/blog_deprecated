@@ -3,8 +3,8 @@ title: byu football
 author: ~
 date: '2018-09-07'
 slug: byu-football
-categories: []
-tags: []
+categories: ['analysis']
+tags: ['football', 'sabermetrics', 'byu', 'caret', 'r', 'ggplot2', 'skimr']
 output:
   bookdown::html_document2:
     df_print: paged
@@ -20,17 +20,19 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = F)
-install.load::install_load('tidyverse', 'magrittr', 'lubridate', 'summarytools')
+install.load::install_load('tidyverse', 'magrittr', 'lubridate', 'summarytools', 'zoo')
 fp_data= '~/github/blog/data/201809-college-football'
 ```
 
-Goal:
+Goal of this post. Answer some interesting questions about BYU football. Dive into different modeling approaches. I don't explain my thinking below, but some of the charts might be cool.
+
+Some questions of interest
 
 * How is Kilani Sitake doing in his second season compared to past BYU coaches?
 * More challenging: how's he doing relative to all second-season coaches?
 
 ```{r}
-df_in <- read.csv(file.path(fp_data, 'byu_seasons.csv'))
+df_in <- read.csv(file.path(fp_data, 'byu_seasons.csv')) %>% distinct()
 ```
 
 Some basic questions:
@@ -63,13 +65,16 @@ df <- df_in %>% mutate(
   opp_score = str_extract(score, '[0-9]*$') %>% as.numeric(),
   spread = byu_score - opp_score,
   city = str_extract(location, '^[a-zA-Z]*'),
-  state = str_extract(location, '[a-zA-Z]*$')
+  state = str_extract(location, '[a-zA-Z]*$'),
   
   # Clean up coach
+  coach = trimws(coach),
   #coach = str_replace(coach, fixed('.'), '') %>% str_replace(fixed(' '), '') %>% tolower() %>% as.character()
   
   #seas_w = str_extract(record, '^[0-9]+'),
   #seas_l = str_extract(record, '[0-9]+$')
+  # Home or away
+  home = ifelse(city == 'Provo', 1, 0) %>% as.factor()
 )
 head(df)
 # Assert that the first column really is the byu score.
@@ -117,5 +122,366 @@ df %>%
 ```
 
 
+# Feature engineering
+```{r}
+# Home or away
+# Time zone
+# Cumulative wins
+# rolling spread
+df_fe <- df %>% 
+  arrange(short_date) %>% 
+  group_by(coach) %>% 
+  mutate(
+    win_l1 = lag(win, n=1L, default=NA),
+    win_l2 = lag(win, n=2L, default=NA),
+    win_l3 = lag(win, n=2L, default=NA),
+    win3sum = rollsum(x=win, k=3, align='right', fill=NA),
+    win5sum = rollsum(x=win, k=5, align='right', fill=NA),
+    game_number = row_number(),
+    cum_win = cumsum(win),
+    cum_win_pct = cum_win/game_number,
+    # Last spread
+    spread_l1 = lag(spread, n=1L, default=NA),
+    spread_l2 = lag(spread, n=2L, default=NA),
+    spread_l3 = lag(spread, n=3L, default=NA),
+    spread_ma6 = rollmean(x=spread, k=6, align = 'right', fill=NA)
+  ) %>%
+  ungroup()
 
+df_fe$win3sum = as.factor(df_fe$win3sum)
+df_fe$win5sum = as.factor(df_fe$win5sum)
+```
+
+Questions:
+- What's the starting win pct for however many games Kilani Sitake has played? (first 14 games?)
+
+```{r}
+
+# How many games has Kalani Sitake had?
+n_games <- df %>% 
+  filter(coach == 'Kalani Sitake', short_date < Sys.Date()) %>% 
+  count() %>% 
+  pull()
+
+last_coaches = c('LaVell Edwards', 'Gary Crowton', 'Bronco Mendenhall', 'Kalani Sitake')
+
+df_fe %>% 
+  filter(coach %in% last_coaches) %>%
+  filter(game_number < n_games) %>%
+  select(coach, game_number, cum_win_pct) %>%
+  ggplot(aes(x = game_number, y = cum_win_pct, color = coach)) +
+  geom_point() + 
+  geom_smooth(se=FALSE) +
+  ggtitle('Kalani Sitake is warming up, just like LaVell Edwards',
+          sprintf('Win %% for first %s games', n_games)) + 
+  xlab('Game Number') + 
+  ylab('Win Percentage') + 
+  theme(legend.position='right')
+```
+
+## Explore
+
+```{r}
+ggplot(df, aes(x = as.factor(home), y = spread)) + 
+  geom_boxplot() + 
+  ggtitle('Spread by Home')
+# T-test
+t.test(df$spread[df$home == 1], df$spread[df$home == 0])
+
+ggplot(df, aes(x = spread)) + 
+  geom_histogram(aes(y = stat(density)), bins=40) + 
+  geom_density() + 
+  ggtitle('Histogram of Spread')
+```
+
+## Explore data
+```{r}
+skimr::skim(df)
+```
+
+## Build a model
+```{r}
+# other ways
+library(caret)
+
+df2 = df_fe %>% 
+  select(win, spread_l1, spread_l2, spread_l3, home, win3sum, win5sum) 
+
+# Remove missing rows:
+df2$na = as.numeric(rowSums(is.na(df2)) >= 1)
+df2 %<>% filter(na == 0) %>% select(-na)
+
+# One-hot encode 
+dummies_model <- dummyVars(win ~ ., data=df2)
+df3 = predict(dummies_model, df2) %>% data.frame()
+df3$win = as.factor(df2$win)
+
+# latt
+X = df3 %>% select(-win)
+Y = df3$win
+featurePlot(x = X %>% select(starts_with('spread')), y = Y, 'box')
+featurePlot(x = X %>% select(-starts_with('spread')), y = Y, 'box')
+```
+
+On average, cougars score about 6 points higher when playing from home.
+
+```{r}
+# Is there any difference coming off a win?
+print(with(df_fe, table(home, win)))
+print(chisq.test(df_fe$home, df_fe$win))
+
+ch2 <- function(var){
+  x = df_fe[var] %>% as.matrix()
+  y = df_fe['win'] %>% as.matrix()
+  print(var)
+  print(table(x, y))
+  print(chisq.test(x, y))
+}
+
+for(var in c('win_l1', 'win_l2', 'home')){
+  ch2(var)
+}
+
+# Is spread different coming off a win?
+qplot(y = spread, x = as.factor(win_l1), data=df_fe, geom='boxplot')
+idx = df_fe$win_l1 == 1
+t.test(df_fe$spread[idx], df_fe$spread[idx == FALSE])
+
+qplot(y = spread, x = as.factor(win_l2), data=df_fe, geom='boxplot') + ggtitle('Had a win 2 games ago')
+idx = df_fe$win_l2 == 1
+t.test(df_fe$spread[idx], df_fe$spread[idx == FALSE])
+
+```
+
+Conclusion:
+
+- On average, Cougars score 6.4 points higher when coming off a win.
+- And they score about 7.75 points higher when they had a win 2 games ago.
+
+Is there an interaction between home and win_l1? In other words, are they even more likely to win given they are playing at home and coming off a win?
+```{r}
+lm(spread ~ home*win_l1, data = df_fe) %>%
+  summary()
+glm(win ~ home * win_l1, family='binomial', data = df_fe) %>%
+  summary()
+# T-test
+idx = df_fe$home == 1 & df_fe$win_l1 == 1
+with(df_fe, table(home, win_l1, win))
+
+```
+There is no interaction between home1 and win_l1.
+
+# Build a simple model to predict whether Kalani Sitake will win his next game
+
+Predict using guesses and simple calculations:
+
+1. Assign a random probability is 50%.
+1. Calculate the overall BYU win percentage, and offer that as the probability.
+1. Calculate a 5-game rolling win-percentage as of the last game, and carry that forward for all future predictions.
+1. Calculate a 5-game rolling win percentage on real data, then carry that prediction forward.
+
+Predict using a model:
+
+1. Logistic regression using all of the features we have. (how does this predict the next win? You'd have to focus on lag-only features.)
+1. Bayesian logit hierarchical model where p depends on p-1.
+1. Build an ARIMA model on the spread
+1. Build a regression model on the spread, and if spread > 0.
+
+
+## Simple models
+
+```{r}
+# Carry forward spread of last 6 games.
+# Remove 
+df_usable_feats <- df_fe %>% 
+  select(dow, spread, home, win_l1, win_l2, win_l3, win3sum, 
+         win5sum, spread_l1, spread_l2, spread_l3, spread_ma6, 
+         short_date)
+df_train <- df_usable_feats %>% 
+  filter(short_date < Sys.Date())
+df_pred <- df_usable_feats %>% 
+  filter(short_date > Sys.Date()) 
+
+df_ma6 <- df_train %>% select(spread, spread_ma6) 
+# Visualize
+df_ma6 %>% 
+  #mutate(pos = as.factor(ifelse(spread_ma6 > 0, 1, 0))) %>%
+  ggplot(data = ., aes(x = 1:nrow(df_ma6), y = spread_ma6)) +
+  geom_point() + 
+  geom_smooth() + 
+  ggtitle('Moving average of spread of prior 6 games')
+```
+
+Cary forward the moving average.
+
+1. Calculate the moving average of the last 6 points (done).
+2. Carry that forward (i = i + 1)
+3. Calculate the moving average of new data
+
+```{r}
+new_data = df_ma6
+# Here's how you'd do the prediction going forward more than one game. See, this needs to be a dynamic prediction where your X updates with the predicted Y.
+for(i in 1:10){
+  end = tail(new_data, 6)
+  pred = end$spread_ma6[6]
+  new_ma6 = mean(c(pred, head(end, 5)$spread))
+  new_row = data.frame(spread = pred, spread_ma6 = new_ma6)
+  new_data = rbind(new_data, new_row)
+}
+```
+
+How do I evaluate the accuracy of this approach? I can take the lead of this spread and see how it calculates over time.
+```{r}
+# But the prediction for just the _next_ game can be as easy as taking the lead. You can't take two leads to predict two games ahead because the predictions must be dynamic.
+errs <- df_train %>%
+  mutate(
+    pred_sprdma6 = lead(spread_ma6, n=1L, default=NA),
+    diff = pred_sprdma6 - spread
+  ) %>%
+  select(short_date, spread, pred_sprdma6, diff) 
+
+errs %>%
+  ggplot(., aes(x = short_date, y = diff)) + 
+  geom_point() + 
+  geom_smooth() + 
+  ggtitle('This prediction method creates perfectly random errors')
+
+ggplot(errs, aes(x = diff)) + geom_density()
+
+# Mean squared error:
+MSE_ma = mean(errs$diff^2, na.rm = T)
+MSE_ma
+```
+Using the lag of the spread of the last 6 games creates perfectly random noise.
+
+## Method 2: Linear regression
+
+Let's start simple regression.
+```{r}
+# Can't use future information
+mod1 <- lm(spread ~ home + spread_l1 + spread_l2 + spread_ma6, data = df_train)
+mod2 <- lm(spread ~ home + spread_l1 + spread_ma6, data = df_train)
+anova(mod2, mod1) # This tells me mod1 is better. The significant difference indicates that the feature spread_l2 does matter.
+df_train$pred_lm1 <- predict(mod1, df_train)
+
+
+# Prediction error:
+MSE_lm = with(df_train, mean((pred_lm1 - spread)^2, na.rm = T))
+c(MSE_ma, MSE_lm)
+```
+
+Let's do a CARET random forest, with cleaned data.
+```{r}
+# Prepare the data
+# Split train, valid
+
+# Simplify data
+df_train$pred_lm2 <- predict(mod2, df_train)
+df_caret <- df_train %>% select(-short_date, pred_lm1, pred_lm2)
+
+# Dummy vars
+dummy_model = dummyVars(spread ~ ., data = df_caret)
+df_caret <- predict(dummy_model, newdata=df_caret) %>% as.data.frame()
+
+# The only missing data is lagged data.
+fill_na_model <- preProcess(df_caret, method='medianImpute')
+df_caret <- predict(fill_na_model, df_caret)
+anyNA(df_caret)
+
+# Center and scale the data
+cent_scale_model <- preProcess(df_caret, method=c('center', 'scale'))
+df_caret <- predict(cent_scale_model, df_caret)
+
+# Add the Y
+df_caret$spread = df_train$spread
+
+# Train the model
+mod <- train(spread ~ ., data=df_caret, method='lm')
+summary(mod)
+varImp(mod)
+
+# LINE: linear relatiionship, independent, normally distributed, 
+hist(residuals(mod), 100)
+plot(residuals(mod))
+
+# New prediction:
+df_train$pred_lm2 <- predict(mod, df_caret)
+MSE_lm2 = with(df_train, mean((pred_lm2 - spread)^2, na.rm = F))
+c(MSE_ma, MSE_lm, MSE_lm2)
+```
+
+Add interactions
+```{r}
+# Train the model
+mod <- train(spread ~ (.)^2, data=df_caret, method='lm')
+summary(mod)
+varImp(mod)
+hist(resid(mod))
+plot(resid(mod))
+df_train$pred_lm3 <- predict(mod, df_caret)
+MSE_lm3 = with(df_train, mean((pred_lm3 - spread)^2, na.rm = F))
+mod3 <- mod
+c(MSE_ma, MSE_lm, MSE_lm2, MSE_lm3) # Getting better?
+```
+
+```{r}
+ctrl <- rfeControl(functions = lmFuncs,
+                   method = "cv",
+                   repeats = 5,
+                   verbose = FALSE)
+
+lmProfile <- rfe(spread ~ ., data = df_caret,
+                 sizes = c(1:28), 
+                 rfeControl = ctrl)
+
+print(lmProfile)
+print(lmProfile$bestSubset)
+# best fit
+keep_coef <- names(coef(lmProfile$fit))
+keep_coef <- keep_coef[2:length(keep_coef)]
+keep_coef
+```
+Build a model on just top features
+```{r}
+# Train the model
+tmp <- df_caret %>% select(c('spread', keep_coef))
+mod <- train(spread ~ (.)^2, data=tmp, method='lm')
+summary(mod)
+varImp(mod)
+hist(resid(mod))
+plot(resid(mod))
+df_train$pred_lm4 <- predict(mod, tmp)
+MSE_lm4 = with(df_train, mean((pred_lm4 - spread)^2, na.rm = F))
+c(MSE_ma, MSE_lm, MSE_lm2, MSE_lm3, MSE_lm4) # Getting better? Nope!
+```
+
+Predict on the new data and see how we'll do this season! (You can only predict the next game.)
+```{r}
+# To do this, you'd have to do all the feature pre-processing
+df_res <- df_fe %>% filter(short_date < Sys.Date())
+df_res$pred <- df_train$pred_lm3
+
+# How often do I predict the correct winner (regardless of spread)
+df_res %>% mutate(pred_ind = pred > 0,
+                  sprd_ind = spread > 0) %>%
+  count(pred_ind, sprd_ind)
+
+```
+
+# Future work
+
+- You can only predict one game ahead, right?
+- You have to engineer two sets of features. One set of features that includes the results of the current game, and another set that's purely historical. But both generated the same way. Then feed the contemporaneous features into your model to do the prediction on the next week.
+- Explain your predictions: Find the top features and use them to give a rationale. "they're coming off 3 losses", they do X better when they come off of three losses.
+- Remove the games for a season or two, and see how well the model performs on the season.
+- Try a simpler model, see how well it predicts
+- Try a random forest, see how well it predicts
+- Try XGBoost?
+- Try the bayesian hierarchical.
+
+
+# Learnigns:
+
+- Create a unique id for every observation
+- Sort it if it makes sense (time series) O(nlogn)
 

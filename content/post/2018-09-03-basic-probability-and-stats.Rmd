@@ -9,8 +9,10 @@ draft: true
 ---
 
 ```{r}
-install.load::install_load('ggplot2', 'reticulate', 'dplyr', 'pscl', 'Zelig')
+install.load::install_load('ggplot2', 'reticulate', 'dplyr', 'pscl', 'Zelig', 'tidyverse')
 ```
+
+This post is a messy hodgepodge of my notes on inferential methods in statistics. Hopefully it's useful enough to help you become aware of what's out there. I gave up halfway through. I did it for me, not for you, but thought I'd share regardless.
 
 
 ## t-test
@@ -88,8 +90,6 @@ Literally, the p-value is just the amount of the area to the right of your test 
 This interpretation of a $p$-value makes it easy to interpret in other areas. You have some distribution for your test-statistic (which in this case is $t$), and you observed some value for $t$ because of your data. And you just want to know how _special_ that value of $t$ is. How _rare_ it is. How _likely_ it is, given your assumption about the distribution of $t$. If you assume all cats are 10 pounds plus or minus 5 pounds, and you come across one that's 50, you now have an unlikely situation. You must decided if your belief about the world is sufficient. But, one outlier cat isn't sufficient. You probably go and collect a sample of cats. And if your sample mean is really big, then 
 
 
-
-
 When doing a one-sided t-test, you'll put the alpha all in one tail. That makes it easier to reject the null hypothesis when you find an extreme value. Since it's easier, people are pobably going to wonder why you chose to do a one-sided t-test in the first place. Here's a one-sided test to the right.
 ```{r}
 ggplot(dat, aes(x=x)) + 
@@ -100,8 +100,6 @@ ggplot(dat, aes(x=x)) +
 ```
 
 The blue area is literally 5% of the curve in all three instances. So if you get a test-statistic that falls in that area, you'll reject the hypothesis. But don't cheat: if you did a one-sided test to the right, but got a test-statistic wayyyy to the left, you can't just flip the axis and then reject. That's called [p-hacking](https://projects.fivethirtyeight.com/p-hacking/). If all you're doing is searching for a p-value, you can always find one. More kudos to you if you get your results published and [widely disseminated via new channels](http://www.slate.com/articles/health_and_science/science/2016/01/amy_cuddy_s_power_pose_research_is_the_latest_example_of_scientific_overreach.html).
-
-
 
 
 ## T-test of two groups (two-sample t-test)
@@ -242,7 +240,6 @@ How it works:
 ```{r}
 wilcox.test(grp1, grp2)
 
-
 # Calculate ranks
 dat <- sleep %>% 
   mutate(rank = rank(extra, ties.method = 'average')) %>%
@@ -253,7 +250,6 @@ W = sum_rank1 - length(grp1)*(length(grp1) + 1)/2
 print(W)
 # Then get the t-value
 ```
-
 
 
 
@@ -430,7 +426,7 @@ Unbiased: Do a t-test of proportions. [boston](http://sphweb.bumc.bu.edu/otlt/MP
 ```{r}
 n = 100
 x = 48
-p = n/h
+p = x/n
 p_0 = .5
 z_stat = function(p_hat, p_0, n){
   stat = (p_hat - p_0)/sqrt((p_0*(1-p_0)/n))

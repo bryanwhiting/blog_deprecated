@@ -1,14 +1,16 @@
 ---
-title: Machine Learning models
+title: Machine Learning Model Notes
 author: ~
 date: '2018-09-08'
 slug: machine-learning-models
-categories: []
-tags: []
-draft: true
+categories: ['notes']
+tags: ['machine-learning']
+draft: false
 ---
 
-## Concepts:
+Here are some notes on machine learning models.
+
+## Concepts Behind Decision Trees
 
 * Bagging (boostrap aggregation): Randomly sample with replacement, and average the results.
 * Majority vote: The most commonly-occuring prediction.
@@ -23,7 +25,14 @@ G = \sum_{k \in K} \hat{p}_{mk} (1-\hat{p}_{mk})
 
 * Node purity: A node is pure if most of the observations come from one class. Gini index is a measure of purity.
 
+```{r}
+library(ggplot2)
+df = data.frame(p = seq(0, 1, length=100))
 
+ggplot(df) + 
+  geom_point(aes(x = p, y = p*(1-p), color='blue')) + 
+  geom_point(aes(x = p, y = -p*log(p)))
+```
 
 
 ## Linear regression
@@ -41,7 +50,9 @@ How:
 * For classification, the _majority vote_ is use.
 
 Concepts:
+
 * OOB (out-of-bag) observations are those _not_ selected during boostrapping. (For each tree). Use these observations (about 1/3) to explore. Keep track of each observation and whether it was bagged in a given tree. You estimate the prediction error across all the trees in which an observation was out-of-bag.
 
-Questions: 
+Questions I have:
+
 * For classification, each leaf has $n$ observations, and the mean of those observations is the prediction. Since each tree is constructed differently, the algorithm likely has to yield a score fore each tree. So the average for each leaf depends on $n$. My guess is that _majority vote_ is taking the 0-1 prediction from each tree (which would be a majority vote within a leaf), and then take the majority vote across the $b$ trees.

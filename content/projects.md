@@ -12,3 +12,13 @@ Some projects I've worked on. Some are complete, some are in progress. If it's r
 |[Comparing GLMs, hurdle models, and zero-inflated models to detect discrepancies in banking overdrafts](https://github.com/bryanwhiting/banking_overdrafts/blob/master/overdraft-GLMs.pdf)|A regulatory framework to detect behavioral differences in overdraft fees between low-income and high-income users|Complete|
 |[the garden](https://github.com/bryanwhiting/the-garden)|A meditative planning tool| Beta|
 
+
+
+Things I think are cool:
+
+Big data visualization
+
+* http://deck.gl/#/ 
+* Geospacial data viz: https://eng.uber.com/keplergl/ 
+* Datashader: http://datashader.org/
+
