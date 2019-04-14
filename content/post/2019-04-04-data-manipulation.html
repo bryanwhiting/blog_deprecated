@@ -1,3 +1,11 @@
+---
+title: "Dplyr vs Datatable"
+author: "~"
+date: "2019-04-04"
+categories: ['code']
+tags: ['r', 'dplyr', 'datatable']
+---
+
 
 
 <p>In the world of data science in R, the battle between <code>dplyr</code> and <code>datatable</code> is real. Here I compare their performance against base r commands for some common tasks. Who will be the winner on speed and simplicity?</p>
@@ -27,19 +35,19 @@ m &lt;- as_tibble(mtcars)</code></pre>
 ) </code></pre>
 <pre><code>## Unit: microseconds
 ##                                                              expr      min
-##                                            M[, sum(hp), by = cyl] 1250.095
-##                   mtcars %&gt;% group_by(cyl) %&gt;% summarise(sum(hp)) 1421.774
-##  aggregate(x = mtcars$hp, by = list(cyl = mtcars$cyl), FUN = sum) 1062.357
-##                     aggregate(hp ~ cyl, data = mtcars, FUN = sum) 1273.405
-##              tapply(X = mtcars$hp, INDEX = mtcars$cyl, FUN = sum)  212.296
-##              plyr::ddply(mtcars, &quot;cyl&quot;, plyr::summarise, sum(hp)) 2850.789
+##                                            M[, sum(hp), by = cyl]  984.308
+##                   mtcars %&gt;% group_by(cyl) %&gt;% summarise(sum(hp)) 1395.253
+##  aggregate(x = mtcars$hp, by = list(cyl = mtcars$cyl), FUN = sum)  953.034
+##                     aggregate(hp ~ cyl, data = mtcars, FUN = sum) 1210.410
+##              tapply(X = mtcars$hp, INDEX = mtcars$cyl, FUN = sum)  207.599
+##              plyr::ddply(mtcars, &quot;cyl&quot;, plyr::summarise, sum(hp)) 2580.687
 ##         lq      mean   median       uq       max neval
-##  1789.6100 2868.0188 2027.403 2800.345 14292.134   100
-##  2171.2115 3251.4408 2562.387 3486.941 21780.202   100
-##  1294.0710 1923.8358 1503.148 1973.255 10892.554   100
-##  1576.3270 2059.6320 1826.026 2168.173  9973.643   100
-##   286.2315  412.3453  330.076  380.189  5252.458   100
-##  3215.6765 5476.4864 3741.046 5071.443 39509.473   100</code></pre>
+##  1451.6960 2065.5977 1655.470 1912.101 20003.058   100
+##  1965.7315 2795.7730 2171.311 2528.985 17896.043   100
+##  1141.5000 1342.8060 1252.845 1335.886  3748.162   100
+##  1374.5885 1582.7563 1485.008 1619.644  3317.021   100
+##   257.8225  297.2278  285.102  310.905  1260.213   100
+##  2907.2670 3935.3080 3197.389 3669.062 30506.079   100</code></pre>
 <p>Conclusion:</p>
 <ul>
 <li>tapply is wicked fast on this small dataset.</li>
@@ -159,13 +167,13 @@ microbenchmark(
   pl()
 )</code></pre>
 <pre><code>## Unit: microseconds
-##  expr      min       lq      mean   median        uq       max neval
-##  dt() 1737.625 4029.345 38951.400 6708.512 21940.658 551761.12   100
-##  dp() 2135.247 3073.887  9454.328 3890.052  5383.641 205072.17   100
-##  ag() 2045.741 2679.749  5484.039 3250.157  5014.798  50200.46   100
-##  la()  660.218  868.579  1747.333 1028.905  1549.566  30199.90   100
-##  sa()  713.612  936.077  1945.686 1067.004  1706.214  13276.46   100
-##  pl() 3992.123 5460.128 14215.211 7300.542 12649.015 121489.84   100</code></pre>
+##  expr      min        lq      mean   median       uq       max neval
+##  dt() 1840.965 2365.6115 3625.6795 2955.488 3683.574 29689.690   100
+##  dp() 2194.468 2361.0175 3018.3744 2573.593 3057.261 24208.547   100
+##  ag() 1882.167 2076.0035 2538.4617 2264.648 2643.394 13054.272   100
+##  la()  578.740  696.0965  843.8617  744.078  834.230  6411.912   100
+##  sa()  603.055  720.3955  911.7546  778.282  873.011  6693.510   100
+##  pl() 3527.191 3918.8410 4696.1208 4272.321 4886.168 24423.534   100</code></pre>
 <p>Conclusion:</p>
 <ul>
 <li>Tapply breaks down when you start introducing additional groups. Not easy to read.</li>
