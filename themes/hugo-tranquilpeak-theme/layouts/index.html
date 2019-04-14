@@ -1,6 +1,6 @@
 <style>
 .twitter {
-    float: right;
+    float: center;
 }
 </style>
 
@@ -15,15 +15,22 @@
                {{ if eq .Params.covermeta "out" }}hasCoverMetaOut{{ else }}hasCoverMetaIn{{ end }}
                {{ with .Params.coverCaption }}hasCoverCaption{{ end }}">
         <section class="postShorten-group main-content-wrap">
+          <h2>Recent Articles I've Read</h2>
+          <div class="twitter">
+          <a class="twitter-timeline" data-height="300" data-width="600" href="https://twitter.com/BryanWhiting?ref_src=twsrc%5Etfw">Tweets by BryanWhiting</a> 
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+          </div>
+          <h2>Recent Posts</h2>
           {{ $paginator := .Paginate (where .Data.Pages "Type" "post") }}
           {{ range $paginator.Pages }}
             {{ .Render "summary" }}
           {{ end }}
           {{ partial "pagination.html" . }}
       </div>
-        </section>
-        {{ partial "footer.html" . }}
-      </div>
+      
+      </section>
+      {{ partial "footer.html" . }}
+      </section>
     </div>
 {{ partial "foot.html" . }}
 
