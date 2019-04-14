@@ -29,7 +29,7 @@ library(magrittr)
 ```
 ```{r}
 # Find the URL of the data you want to scrape
-url <- 'https://www.truecar.com/used-cars-for-sale/listings/ford/edge/location-90210/year-2015-max/?trimSlug=sel-awd'
+url <- 'https://www.truecar.com/used-cars-for-sale/listings/ford/edge/'
 read_html(url)
 ```
 

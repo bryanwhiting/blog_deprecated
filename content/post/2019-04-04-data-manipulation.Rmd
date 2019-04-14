@@ -1,0 +1,119 @@
+---
+title: "Dplyr vs Datatable"
+author: "~"
+date: "2019-04-04"
+categories: ['code']
+tags: ['r', 'dplyr', 'datatable']
+---
+
+In the world of data science in R, the battle between `dplyr` and `datatable` is real. Here I compare their performance against base r commands for some common tasks. Who will be the winner on speed and simplicity?
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+install.load::install_load('dplyr', 'data.table', 'microbenchmark')
+```
+
+# Make random datasets
+```{r}
+set.seed(71)
+size1 <- 4*10^6
+size2 <- size1 * 0.1
+df1 <- data.frame(id=paste0("SERVICE_", 1:size1), value=rnorm(size1), stringsAsFactors=FALSE)
+df2 <- data.frame(id=paste0("SERVICE_", sample(1:size1, size2)), value=rnorm(size2), stringsAsFactors=FALSE)
+
+dt1 <- data.table(df1)
+dt2 <- data.table(df2)
+
+# mtcars data
+M <- data.table(mtcars)
+m <- as_tibble(mtcars)
+```
+
+
+Group by sum
+```{r}
+microbenchmark(
+  times=100L,
+  M[, sum(hp), by=cyl],
+  mtcars %>% group_by(cyl) %>% summarise(sum(hp)),
+  aggregate(x=mtcars$hp, by=list(cyl=mtcars$cyl), FUN=sum),
+  aggregate(hp ~ cyl, data=mtcars, FUN=sum),
+  tapply(X=mtcars$hp, INDEX=mtcars$cyl, FUN=sum),
+  plyr::ddply(mtcars, 'cyl', plyr::summarise, sum(hp))
+) 
+
+```
+Conclusion:
+
+* tapply is wicked fast on this small dataset.
+* how does this scale as mtcars increase in size?
+
+# Only look at data.table, apply, and dplyr.
+https://www.r-bloggers.com/using-apply-sapply-lapply-in-r/
+
+Double group by, sum of two column
+```{r}
+M[order(cyl, vs), lapply(.SD, sum, na.rm = T), by=.(cyl, vs), .SDcols=c('mpg', 'disp')]
+M[order(cyl, vs), .(sum_mpg=sum(mpg), sum_disp=sum(disp)), by=.(cyl, vs)]
+
+m %>% group_by(cyl, vs) %>% select(mpg, disp) %>% summarise_all(.funs=sum)
+m %>% group_by(cyl, vs) %>% summarise(sum(mpg), sum(disp))
+
+aggregate(cbind(mpg, disp) ~ cyl + vs, FUN=sum, data = mtcars)
+with(mtcars, aggregate(list(sum_mpg=mpg, sum_disp=disp), by = list(cyl=cyl, vs=vs), FUN=sum))
+
+# two variables groups, tapply breaks down into three-by-two (not pretty)
+with(mtcars, tapply(X=mpg, INDEX=list(cyl, vs), FUN=sum))
+with(mtcars, tapply(X=disp, INDEX=list(cyl, vs), FUN=sum))
+# You could combine them using lapply/sapply. 
+with(mtcars, lapply(list(disp=disp, mpg=mpg), function(x) tapply(X=x, INDEX=list(cyl=cyl, vs=vs), FUN=sum)))
+with(mtcars, sapply(list(disp=disp, mpg=mpg), function(x) tapply(X=x, INDEX=list(cyl=cyl, vs=vs), FUN=sum)))
+
+# Plyr
+plyr::ddply(mtcars, plyr::.(cyl, vs), plyr::summarise, sum_mpg = sum(mpg), sum_disp=sum(disp))
+
+dt <- function() M[order(cyl, vs), .(sum_mpg=sum(mpg), sum_disp=sum(disp)), by=c('cyl', 'vs')]
+dp <- function() m %>% group_by(cyl, vs) %>% summarise(sum(mpg), sum(disp))
+ag <- function() aggregate(cbind(mpg, disp) ~ cyl + vs, FUN=sum, data = mtcars)
+la <- function() with(mtcars, lapply(list(disp=disp, mpg=mpg), function(x) tapply(X=x, INDEX=list(cyl=cyl, vs=vs), FUN=sum)))
+sa <- function() with(mtcars, sapply(list(disp=disp, mpg=mpg), function(x) tapply(X=x, INDEX=list(cyl=cyl, vs=vs), FUN=sum)))
+pl <- function()  plyr::ddply(mtcars, plyr::.(cyl, vs), plyr::summarise, sum_mpg = sum(mpg), sum_disp=sum(disp))
+
+# Compare speeds of top approaches
+microbenchmark(
+  times=100L,
+  dt(),
+  dp(),
+  ag(),
+  la(),
+  sa(),
+  pl()
+)
+
+```
+Conclusion:
+
+* Tapply breaks down when you start introducing additional groups. Not easy to read.
+* For tapply, it seems you ahve to do two statements, or you could use lapply (which returns a list), or you could use sapply and feed lapply.
+* sapply removes the labels, so you'd have to keep track of the indexing yourself.
+* plyr seems like Hadley's early work of love (2011). But he re-worked the package into `dplyr`, which is now 100x easier to use.
+
+# Filter and summarize
+Get the mean of one and sum of the other by group
+
+```{r}
+M[cyl > 4, .(summ=sum(mpg), sumd=sum(disp)), by=.(cyl, vs)]
+mtcars %>% filter(cyl > 4) %>% group_by(cyl, vs) %>% summarise(sum(mpg), sum(disp))
+aggregate(cbind(mpg, disp) ~ cyl + vs, FUN=sum, data = mtcars, subset=(cyl > 4))
+with(mtcars[which(mtcars$cyl > 4),], lapply(list(mpg, disp), function(x) tapply(x, INDEX=list(cyl, vs), sum)))
+```
+
+# Compare dplyr vs datatable to do strings of tasks:
+
+1. filter/subset
+1. mutate
+1. join (merge)
+1. group by
+1. summarize
+1. order
+1. reshape

@@ -1,0 +1,220 @@
+
+
+<p>In the world of data science in R, the battle between <code>dplyr</code> and <code>datatable</code> is real. Here I compare their performance against base r commands for some common tasks. Who will be the winner on speed and simplicity?</p>
+<div id="make-random-datasets" class="section level1">
+<h1>Make random datasets</h1>
+<pre class="r"><code>set.seed(71)
+size1 &lt;- 4*10^6
+size2 &lt;- size1 * 0.1
+df1 &lt;- data.frame(id=paste0(&quot;SERVICE_&quot;, 1:size1), value=rnorm(size1), stringsAsFactors=FALSE)
+df2 &lt;- data.frame(id=paste0(&quot;SERVICE_&quot;, sample(1:size1, size2)), value=rnorm(size2), stringsAsFactors=FALSE)
+
+dt1 &lt;- data.table(df1)
+dt2 &lt;- data.table(df2)
+
+# mtcars data
+M &lt;- data.table(mtcars)
+m &lt;- as_tibble(mtcars)</code></pre>
+<p>Group by sum</p>
+<pre class="r"><code>microbenchmark(
+  times=100L,
+  M[, sum(hp), by=cyl],
+  mtcars %&gt;% group_by(cyl) %&gt;% summarise(sum(hp)),
+  aggregate(x=mtcars$hp, by=list(cyl=mtcars$cyl), FUN=sum),
+  aggregate(hp ~ cyl, data=mtcars, FUN=sum),
+  tapply(X=mtcars$hp, INDEX=mtcars$cyl, FUN=sum),
+  plyr::ddply(mtcars, &#39;cyl&#39;, plyr::summarise, sum(hp))
+) </code></pre>
+<pre><code>## Unit: microseconds
+##                                                              expr      min
+##                                            M[, sum(hp), by = cyl] 1250.095
+##                   mtcars %&gt;% group_by(cyl) %&gt;% summarise(sum(hp)) 1421.774
+##  aggregate(x = mtcars$hp, by = list(cyl = mtcars$cyl), FUN = sum) 1062.357
+##                     aggregate(hp ~ cyl, data = mtcars, FUN = sum) 1273.405
+##              tapply(X = mtcars$hp, INDEX = mtcars$cyl, FUN = sum)  212.296
+##              plyr::ddply(mtcars, &quot;cyl&quot;, plyr::summarise, sum(hp)) 2850.789
+##         lq      mean   median       uq       max neval
+##  1789.6100 2868.0188 2027.403 2800.345 14292.134   100
+##  2171.2115 3251.4408 2562.387 3486.941 21780.202   100
+##  1294.0710 1923.8358 1503.148 1973.255 10892.554   100
+##  1576.3270 2059.6320 1826.026 2168.173  9973.643   100
+##   286.2315  412.3453  330.076  380.189  5252.458   100
+##  3215.6765 5476.4864 3741.046 5071.443 39509.473   100</code></pre>
+<p>Conclusion:</p>
+<ul>
+<li>tapply is wicked fast on this small dataset.</li>
+<li>how does this scale as mtcars increase in size?</li>
+</ul>
+</div>
+<div id="only-look-at-data.table-apply-and-dplyr." class="section level1">
+<h1>Only look at data.table, apply, and dplyr.</h1>
+<p><a href="https://www.r-bloggers.com/using-apply-sapply-lapply-in-r/" class="uri">https://www.r-bloggers.com/using-apply-sapply-lapply-in-r/</a></p>
+<p>Double group by, sum of two column</p>
+<pre class="r"><code>M[order(cyl, vs), lapply(.SD, sum, na.rm = T), by=.(cyl, vs), .SDcols=c(&#39;mpg&#39;, &#39;disp&#39;)]</code></pre>
+<pre><code>##    cyl vs   mpg   disp
+## 1:   4  0  26.0  120.3
+## 2:   4  1 267.3 1036.2
+## 3:   6  0  61.7  465.0
+## 4:   6  1  76.5  818.2
+## 5:   8  0 211.4 4943.4</code></pre>
+<pre class="r"><code>M[order(cyl, vs), .(sum_mpg=sum(mpg), sum_disp=sum(disp)), by=.(cyl, vs)]</code></pre>
+<pre><code>##    cyl vs sum_mpg sum_disp
+## 1:   4  0    26.0    120.3
+## 2:   4  1   267.3   1036.2
+## 3:   6  0    61.7    465.0
+## 4:   6  1    76.5    818.2
+## 5:   8  0   211.4   4943.4</code></pre>
+<pre class="r"><code>m %&gt;% group_by(cyl, vs) %&gt;% select(mpg, disp) %&gt;% summarise_all(.funs=sum)</code></pre>
+<pre><code>## Adding missing grouping variables: `cyl`, `vs`</code></pre>
+<pre><code>## # A tibble: 5 x 4
+## # Groups:   cyl [?]
+##     cyl    vs   mpg  disp
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     4     0  26    120.
+## 2     4     1 267.  1036.
+## 3     6     0  61.7  465 
+## 4     6     1  76.5  818.
+## 5     8     0 211.  4943.</code></pre>
+<pre class="r"><code>m %&gt;% group_by(cyl, vs) %&gt;% summarise(sum(mpg), sum(disp))</code></pre>
+<pre><code>## # A tibble: 5 x 4
+## # Groups:   cyl [?]
+##     cyl    vs `sum(mpg)` `sum(disp)`
+##   &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;
+## 1     4     0       26          120.
+## 2     4     1      267.        1036.
+## 3     6     0       61.7        465 
+## 4     6     1       76.5        818.
+## 5     8     0      211.        4943.</code></pre>
+<pre class="r"><code>aggregate(cbind(mpg, disp) ~ cyl + vs, FUN=sum, data = mtcars)</code></pre>
+<pre><code>##   cyl vs   mpg   disp
+## 1   4  0  26.0  120.3
+## 2   6  0  61.7  465.0
+## 3   8  0 211.4 4943.4
+## 4   4  1 267.3 1036.2
+## 5   6  1  76.5  818.2</code></pre>
+<pre class="r"><code>with(mtcars, aggregate(list(sum_mpg=mpg, sum_disp=disp), by = list(cyl=cyl, vs=vs), FUN=sum))</code></pre>
+<pre><code>##   cyl vs sum_mpg sum_disp
+## 1   4  0    26.0    120.3
+## 2   6  0    61.7    465.0
+## 3   8  0   211.4   4943.4
+## 4   4  1   267.3   1036.2
+## 5   6  1    76.5    818.2</code></pre>
+<pre class="r"><code># two variables groups, tapply breaks down into three-by-two (not pretty)
+with(mtcars, tapply(X=mpg, INDEX=list(cyl, vs), FUN=sum))</code></pre>
+<pre><code>##       0     1
+## 4  26.0 267.3
+## 6  61.7  76.5
+## 8 211.4    NA</code></pre>
+<pre class="r"><code>with(mtcars, tapply(X=disp, INDEX=list(cyl, vs), FUN=sum))</code></pre>
+<pre><code>##        0      1
+## 4  120.3 1036.2
+## 6  465.0  818.2
+## 8 4943.4     NA</code></pre>
+<pre class="r"><code># You could combine them using lapply/sapply. 
+with(mtcars, lapply(list(disp=disp, mpg=mpg), function(x) tapply(X=x, INDEX=list(cyl=cyl, vs=vs), FUN=sum)))</code></pre>
+<pre><code>## $disp
+##    vs
+## cyl      0      1
+##   4  120.3 1036.2
+##   6  465.0  818.2
+##   8 4943.4     NA
+## 
+## $mpg
+##    vs
+## cyl     0     1
+##   4  26.0 267.3
+##   6  61.7  76.5
+##   8 211.4    NA</code></pre>
+<pre class="r"><code>with(mtcars, sapply(list(disp=disp, mpg=mpg), function(x) tapply(X=x, INDEX=list(cyl=cyl, vs=vs), FUN=sum)))</code></pre>
+<pre><code>##        disp   mpg
+## [1,]  120.3  26.0
+## [2,]  465.0  61.7
+## [3,] 4943.4 211.4
+## [4,] 1036.2 267.3
+## [5,]  818.2  76.5
+## [6,]     NA    NA</code></pre>
+<pre class="r"><code># Plyr
+plyr::ddply(mtcars, plyr::.(cyl, vs), plyr::summarise, sum_mpg = sum(mpg), sum_disp=sum(disp))</code></pre>
+<pre><code>##   cyl vs sum_mpg sum_disp
+## 1   4  0    26.0    120.3
+## 2   4  1   267.3   1036.2
+## 3   6  0    61.7    465.0
+## 4   6  1    76.5    818.2
+## 5   8  0   211.4   4943.4</code></pre>
+<pre class="r"><code>dt &lt;- function() M[order(cyl, vs), .(sum_mpg=sum(mpg), sum_disp=sum(disp)), by=c(&#39;cyl&#39;, &#39;vs&#39;)]
+dp &lt;- function() m %&gt;% group_by(cyl, vs) %&gt;% summarise(sum(mpg), sum(disp))
+ag &lt;- function() aggregate(cbind(mpg, disp) ~ cyl + vs, FUN=sum, data = mtcars)
+la &lt;- function() with(mtcars, lapply(list(disp=disp, mpg=mpg), function(x) tapply(X=x, INDEX=list(cyl=cyl, vs=vs), FUN=sum)))
+sa &lt;- function() with(mtcars, sapply(list(disp=disp, mpg=mpg), function(x) tapply(X=x, INDEX=list(cyl=cyl, vs=vs), FUN=sum)))
+pl &lt;- function()  plyr::ddply(mtcars, plyr::.(cyl, vs), plyr::summarise, sum_mpg = sum(mpg), sum_disp=sum(disp))
+
+# Compare speeds of top approaches
+microbenchmark(
+  times=100L,
+  dt(),
+  dp(),
+  ag(),
+  la(),
+  sa(),
+  pl()
+)</code></pre>
+<pre><code>## Unit: microseconds
+##  expr      min       lq      mean   median        uq       max neval
+##  dt() 1737.625 4029.345 38951.400 6708.512 21940.658 551761.12   100
+##  dp() 2135.247 3073.887  9454.328 3890.052  5383.641 205072.17   100
+##  ag() 2045.741 2679.749  5484.039 3250.157  5014.798  50200.46   100
+##  la()  660.218  868.579  1747.333 1028.905  1549.566  30199.90   100
+##  sa()  713.612  936.077  1945.686 1067.004  1706.214  13276.46   100
+##  pl() 3992.123 5460.128 14215.211 7300.542 12649.015 121489.84   100</code></pre>
+<p>Conclusion:</p>
+<ul>
+<li>Tapply breaks down when you start introducing additional groups. Not easy to read.</li>
+<li>For tapply, it seems you ahve to do two statements, or you could use lapply (which returns a list), or you could use sapply and feed lapply.</li>
+<li>sapply removes the labels, so you’d have to keep track of the indexing yourself.</li>
+<li>plyr seems like Hadley’s early work of love (2011). But he re-worked the package into <code>dplyr</code>, which is now 100x easier to use.</li>
+</ul>
+</div>
+<div id="filter-and-summarize" class="section level1">
+<h1>Filter and summarize</h1>
+<p>Get the mean of one and sum of the other by group</p>
+<pre class="r"><code>M[cyl &gt; 4, .(summ=sum(mpg), sumd=sum(disp)), by=.(cyl, vs)]</code></pre>
+<pre><code>##    cyl vs  summ   sumd
+## 1:   6  0  61.7  465.0
+## 2:   6  1  76.5  818.2
+## 3:   8  0 211.4 4943.4</code></pre>
+<pre class="r"><code>mtcars %&gt;% filter(cyl &gt; 4) %&gt;% group_by(cyl, vs) %&gt;% summarise(sum(mpg), sum(disp))</code></pre>
+<pre><code>## # A tibble: 3 x 4
+## # Groups:   cyl [?]
+##     cyl    vs `sum(mpg)` `sum(disp)`
+##   &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;
+## 1     6     0       61.7        465 
+## 2     6     1       76.5        818.
+## 3     8     0      211.        4943.</code></pre>
+<pre class="r"><code>aggregate(cbind(mpg, disp) ~ cyl + vs, FUN=sum, data = mtcars, subset=(cyl &gt; 4))</code></pre>
+<pre><code>##   cyl vs   mpg   disp
+## 1   6  0  61.7  465.0
+## 2   8  0 211.4 4943.4
+## 3   6  1  76.5  818.2</code></pre>
+<pre class="r"><code>with(mtcars[which(mtcars$cyl &gt; 4),], lapply(list(mpg, disp), function(x) tapply(x, INDEX=list(cyl, vs), sum)))</code></pre>
+<pre><code>## [[1]]
+##       0    1
+## 6  61.7 76.5
+## 8 211.4   NA
+## 
+## [[2]]
+##        0     1
+## 6  465.0 818.2
+## 8 4943.4    NA</code></pre>
+</div>
+<div id="compare-dplyr-vs-datatable-to-do-strings-of-tasks" class="section level1">
+<h1>Compare dplyr vs datatable to do strings of tasks:</h1>
+<ol style="list-style-type: decimal">
+<li>filter/subset</li>
+<li>mutate</li>
+<li>join (merge)</li>
+<li>group by</li>
+<li>summarize</li>
+<li>order</li>
+<li>reshape</li>
+</ol>
+</div>

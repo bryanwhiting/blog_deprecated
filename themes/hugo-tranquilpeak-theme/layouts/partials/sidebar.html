@@ -1,4 +1,9 @@
 <nav id="sidebar" data-behavior="{{ .Scratch.Get "sidebarBehavior" }}">
+  
+          <div class="twitter">
+          <a class="twitter-timeline" data-height="300" href="https://twitter.com/BryanWhiting?ref_src=twsrc%5Etfw">Tweets by BryanWhiting</a> 
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+          </div>
   <div class="sidebar-container">
     {{ with ($.Scratch.Get "authorPicture") }}
       <div class="sidebar-profile">
@@ -11,6 +16,8 @@
         {{ end }}
       </div>
     {{ end }}
+    
+    
     <ul class="sidebar-buttons">
       {{ partial "menu.html" (dict "menu" .Site.Menus.main "root" $) }}
     </ul>
@@ -21,4 +28,5 @@
       {{ partial "menu.html" (dict "menu" .Site.Menus.misc "root" $) }}
     </ul>
   </div>
+  
 </nav>
