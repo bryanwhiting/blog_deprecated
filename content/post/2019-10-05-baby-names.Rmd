@@ -1,5 +1,5 @@
 ---
-title: "Why is everyone I work with Named Chris? A deep dive on baby names in America"
+title: "Why is everyone I work with named Chris? A deep dive on baby names in America"
 author: ~
 date: '2019-10-05'
 slug: baby-names
