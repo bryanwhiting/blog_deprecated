@@ -1,0 +1,109 @@
+---
+title: "Why is everyone I work with Named Chris? A deep dive on baby names in America"
+author: ~
+date: '2019-10-05'
+slug: baby-names
+categories: []
+tags: []
+codefolding_show: hide
+---
+
+Why is everyone I work with seemd to be named Chris? Well, it turns out that between 1972 and 1995 the name "Christopher" was the second-most popular name (or 3rd). What was the most popular boy name during that time? Michael - it dominated. Michael was the top boy name between for 44 years bewteen 1954 and 1998 (except for 1960).
+
+Which got me thinking - how many names have attained that #1 status since 1950? And how does it differ across male and female names? This table below shows how many unique names have been ranked as nummber 1 between 1950 and 2018. For male, it's 7 different names. For female, it's been 10. Female names tend to change more frequently.
+
+| Rank | Male | Female |
+|----|----|----|
+|# Unique names in Top 1 | 7 | 10|
+|# Unique names in Top 3 | 15 | 29 |
+|# Unique names in Top 10 | 41 | 60 |
+| Total Unique (All Names) | 38,670 | 63,331|
+
+The fact that females have 63% more names in the US is kind of shocking. Why aren't male names as creative?
+
+Picking a name can be really hard for a parent. I don't want my boy to have a common name, so I gotta do my research. I'm curious: how do names trend over time? If I pick a name today, will it be popular tomorrow? Let's see.
+
+
+```{r, echo=F, warning=F, message=F}
+knitr::opts_chunk$set(echo = F, warning = F, message = F)
+```
+
+```{r, include=T, echo=F, warning=F, eval=FALSE}
+# hello
+df_all = data.frame()
+prefix = '/Users/bryanwhiting/Downloads/names/yob'
+# for (y in 2018:2000){
+for (y in 1880:2018){
+  path = paste0(prefix, y, '.txt')
+  df_new = read.csv(path, header = F) 
+  df_new$year = y
+  df_all = rbind(df_all, df_new)
+}
+colnames(df_all) <- c('name', 'sex', 'number', 'year')
+# Save
+save(df_all, file="~/github/blog/static/img/20190909/names.Rda")
+```
+
+```{r}
+load("~/github/blog/static/img/20190909/names.Rda")
+install.load::install_load(c('dplyr', 'tidyverse', 'plotly'))
+df2 <- df_all %>%
+  group_by(year, sex) %>%
+  arrange(year, sex, desc(number)) %>%
+  mutate(pct = number/sum(number) * 100,
+       cum_pct = cumsum(pct),
+       tenk = pct/100 * 10000,
+       rank = rank(desc(number), ties.method='first')) %>%
+  ungroup()
+```
+
+```{r}
+plot_top10 <- function(df2, s){
+  if (s == 'M'){
+    title = 'Top 10 Boy Names Since 1950'
+    default = c('Christopher', 'Michael')
+  } else {
+    title = 'Top 10 Girl Names Since 1950'
+    default = c('Jennifer', 'Jessica')
+  }
+  tmp <- df2 %>%
+    filter(rank <= 10,
+           year >= 1950,
+           sex == s) %>%
+    mutate(rank = rank) %>%
+    highlight_key(~name)#, group='Search Names (Select multiple holding "shift" + click)')
+  
+  # Working ggplotly example: https://plotcon17.cpsievert.me/workshop/day2/#18
+  p <- ggplot(tmp, aes(year, rank, group=name)) + 
+    geom_line() + 
+    geom_point() + 
+    labs(x = "Year", y="Name Rank", title=title) + 
+    scale_y_reverse(breaks = 1:10) + 
+    theme_minimal()
+  gg <- ggplotly(p, tooltip = c("name", "rank", 'year'))
+  
+  highlight(gg, 'plotly_click', defaultValues = default)
+}
+plot_top10(df2, s='M')
+```
+
+```{r}
+plot_top10(df2, s='F')
+```
+
+```{r, eval=F, include=F}
+df2 %>%
+  filter(year >= 1950,
+         sex == 'M') %>%
+  select(name) %>%
+  unique() %>%
+  count() 
+#Male:41 names in top 10, 15 in top 3, 7 top 1, 38,670 in total
+#Femal: 60 names in top 10, 29 in top 3, 10 top 1, 63,331 in total 
+```
+
+# Show me the code
+How did I do this analysis? 
+
+Step 1: The Social Security Administration reports all baby names each year in the United States, given the name occurs at least 5 times. Thankfully, I can download these easily from [here]( https://www.ssa.gov/oact/babynames/limits.html).
+Step 2: Combine the data across years and plot using the code from [here](https://github.com/bryanwhiting/blog/tree/master/content/post/2019-10-05-baby-names.Rmd). 
