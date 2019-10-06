@@ -7,8 +7,6 @@ thumbnailImagePosition: left
 thumbnailImage: img/20190909/top50.png
 categories: ['tutorials']
 tags: ['r', 'plotly', 'dataviz']
-draft: true
-publish: false
 ---
 
 I'm going to be a dad (again) in November. I don't want my boy to have a common name, so I gotta do my research. I'm curious: how do names trend over time? If I pick a name today, will it be popular tomorrow?
