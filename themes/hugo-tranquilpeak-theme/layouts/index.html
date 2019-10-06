@@ -2,6 +2,17 @@
 .twitter {
     float: center;
 }
+.column {
+  float: left;
+}
+
+.left {
+  width: 60%;
+}
+
+.right {
+  width: 10%;
+}
 </style>
 
 {{ partial "head.html" . }}
@@ -10,6 +21,7 @@
       {{ partial "header.html" . }}
       {{ partial "sidebar.html" . }}
       {{ partial "post/header-cover.html" . }}
+    
       <div id="main" data-behavior="{{ .Scratch.Get "sidebarBehavior" }}"
         class="{{ with .Params.coverimage }}hasCover{{ end }}
                {{ if eq .Params.covermeta "out" }}hasCoverMetaOut{{ else }}hasCoverMetaIn{{ end }}
@@ -17,7 +29,7 @@
         <section class="postShorten-group main-content-wrap">
           <h2>Recent Articles I've Read</h2>
           <div class="twitter">
-          <a class="twitter-timeline" data-height="300" data-width="400" href="https://twitter.com/BryanWhiting?ref_src=twsrc%5Etfw">Tweets by BryanWhiting</a> 
+          <a class="twitter-timeline" data-height="400" data-width="400" href="https://twitter.com/BryanWhiting?ref_src=twsrc%5Etfw">Tweets by BryanWhiting</a> 
           <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
           </div>
           <h2>Recent Posts</h2>
@@ -27,7 +39,6 @@
           {{ end }}
           {{ partial "pagination.html" . }}
       </div>
-      
       </section>
       {{ partial "footer.html" . }}
       </section>

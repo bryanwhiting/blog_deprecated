@@ -1,3 +1,6 @@
+# CODE FOLDING: https://www.jepusto.com/code-folding-with-blogdown-academic/
+custom_css = ["codefolding.css"]
+
 # Tranquilpeak
 # Version : 0.3.1-BETA
 # Author : Bryan Whiting
@@ -22,6 +25,14 @@ googleAnalytics = "UA-85616639-1"
 paginate = 7
 canonifyurls = true
 ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
+
+# Set to true to disable code folding
+disable_codefolding = false
+# Set to "hide" or "show" all codes by default
+codefolding_show = "show"
+# Set to true to exclude the "Show/hide all" button
+codefolding_nobutton = false
+
 
 [permalinks]
   post = "/:year/:month/:slug/"
@@ -202,6 +213,7 @@ ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
   # Custom JS. Put here your custom JS files. They are loaded after the theme JS;
   # they have to be referred from static root. Example
   # customJS = ["js/foo.js"]
+
 
   [params.header.rightLink]
     class = ""
