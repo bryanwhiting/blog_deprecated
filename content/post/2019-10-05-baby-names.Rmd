@@ -1,27 +1,22 @@
 ---
-title: "Why is everyone I work with named Chris? A deep dive on baby names in America"
+title: "Why is everyone I work with named Chris? A deep dive on top baby names in America"
 author: ~
 date: '2019-10-05'
 slug: baby-names
-categories: []
-tags: []
+thumbnailImagePosition: left  
+thumbnailImage: img/20190909/top10boynames.png
+categories: ['analysis']
+tags: ['r', 'plotly', 'ggplot2', 'dataviz']
 codefolding_show: hide
 ---
 
-Why is everyone I work with seemd to be named Chris? Well, it turns out that between 1972 and 1995 the name "Christopher" was the second-most popular name (or 3rd). What was the most popular boy name during that time? Michael - it dominated. Michael was the top boy name between for 44 years bewteen 1954 and 1998 (except for 1960).
+Why is everyone I work with seemed to be named Chris? My frist manager at my job introduced me to his colleague, also named Chris. That Chris had two other Chris' reporting to him. I switched teams to only report to a Chris, who also reports to Chris. There's even a Chris who reports to the same Chris I report to - a continual succession of three Chris'. What can explain this madness?
 
-Which got me thinking - how many names have attained that #1 status since 1950? And how does it differ across male and female names? This table below shows how many unique names have been ranked as nummber 1 between 1950 and 2018. For male, it's 7 different names. For female, it's been 10. Female names tend to change more frequently.
+I've taken a particular interest in names since I'm thinking of a name for my to-be-born son. I did a little digging through the [Social Security Administration names database]( https://www.ssa.gov/oact/babynames/limits.html), which lists all names given to baby boys and girls in America[^1]. 
 
-| Rank | Male | Female |
-|----|----|----|
-|# Unique names in Top 1 | 7 | 10|
-|# Unique names in Top 3 | 15 | 29 |
-|# Unique names in Top 10 | 41 | 60 |
-| Total Unique (All Names) | 38,670 | 63,331|
+[^1]:It even breaks it down by state. It'll return any name that is reported more than 5 times. So if the name "Juniper" is only given to four babies in the US in a given year, Juniper won't appear in the database.
 
-The fact that females have 63% more names in the US is kind of shocking. Why aren't male names as creative?
-
-Picking a name can be really hard for a parent. I don't want my boy to have a common name, so I gotta do my research. I'm curious: how do names trend over time? If I pick a name today, will it be popular tomorrow? Let's see.
+Well, it turns out that between 1972 and 1995 the name "Christopher" was the second-most popular name (or 3rd). What was the most popular boy name during that time? Michael - it dominated. Michael was the top boy name between for 44 years bewteen 1954 and 1998 (except for 1960).
 
 
 ```{r, echo=F, warning=F, message=F}
@@ -41,11 +36,11 @@ for (y in 1880:2018){
 }
 colnames(df_all) <- c('name', 'sex', 'number', 'year')
 # Save
-save(df_all, file="~/github/blog/static/img/20190909/names.Rda")
+save(df_all, file="~/github/blog/static/img/20190909/names-all.Rda")
 ```
 
 ```{r}
-load("~/github/blog/static/img/20190909/names.Rda")
+load("~/github/blog/static/img/20190909/names-all.Rda")
 install.load::install_load(c('dplyr', 'tidyverse', 'plotly'))
 df2 <- df_all %>%
   group_by(year, sex) %>%
@@ -87,9 +82,16 @@ plot_top10 <- function(df2, s){
 plot_top10(df2, s='M')
 ```
 
+For curiosity's sake, let's look at female names over time:
+
 ```{r}
 plot_top10(df2, s='F')
 ```
+
+Female names don't appear to be as dominant - holding on to the top 1 place seems like a rarer feat.
+
+This gets me thinking - how many names have attained that #1 status since 1950? And how does it differ across male and female names? This table below shows how many unique names have been ranked as nummber 1 between 1950 and 2018. For male, it's 7 different names. For female, it's been 10. Female names tend to change more frequently.
+
 
 ```{r, eval=F, include=F}
 df2 %>%
@@ -102,8 +104,97 @@ df2 %>%
 #Femal: 60 names in top 10, 29 in top 3, 10 top 1, 63,331 in total 
 ```
 
-# Show me the code
-How did I do this analysis? 
+| Rank | Male | Female |
+|----|----|----|
+|# Unique names in Top 1 | 7 | 10|
+|# Unique names in Top 3 | 15 | 29 |
+|# Unique names in Top 10 | 41 | 60 |
+| Total Unique (All Names) | 38,670 | 63,331|
 
-Step 1: The Social Security Administration reports all baby names each year in the United States, given the name occurs at least 5 times. Thankfully, I can download these easily from [here]( https://www.ssa.gov/oact/babynames/limits.html).
-Step 2: Combine the data across years and plot using the code from [here](https://github.com/bryanwhiting/blog/tree/master/content/post/2019-10-05-baby-names.Rmd). 
+The fact that females have 63% more names in the US is kind of shocking. Why aren't male names as creative?
+
+Perhaps names are like wardrobes in America. The stereotypical[^2] male's warddrobe is probably like a set of 5 blue shirts, maybe one grey, and, in the rare case, a green shirt. (Look around you at work - how many men in business casual aren't wearing some shade of blue?) Throw in a few pairs of pants, and you've got your outfits for the next few months. Women have a more refined approach - outfits for every occasion. The disparity in unique names maybe follows the refined ability for expression that women.
+
+[^2]: Don't be offended, just sayin'.
+
+Let's dive into the boy names who achieved top 1 status since 1950:
+```{r}
+top1 <- df2 %>% 
+  filter(sex == 'M', rank == 1, year > 1950) %>%
+  select(name) %>%
+  unique() %>% 
+  pull()
+
+df2 %>% 
+  filter(name %in% top1, sex == 'M') %>%
+  ggplot(aes(year, rank, color=name)) + 
+  geom_line() + 
+  geom_point() + 
+  labs(x = "Year", y="Name Rank", 
+       title='The Battle for Most Popular Boy Name',
+       subtitle = 'Showing 7 names who achieved 1st since 1950, but showing data back to 1880') + 
+  scale_y_reverse(limits = c(100, 0), breaks = c(1, seq(10,100, 10))) +
+  ggthemes::scale_color_pander() + 
+  theme_minimal()
+  
+```
+For a while there, oy names that became popular were, at one point in the past, popular. However, there seems to be a new trend among millenial parents with names Noah and Liam coming out of nowhere...
+
+Girl names follow a completely different track. Once a name becomes popular, it falls off a cliff years later. Girl names come and go. This plot kind of looks like long hair...a fashion choice common among women?
+```{r}
+top1 <- df2 %>% 
+  filter(sex == 'F', rank == 1, year > 1950) %>%
+  select(name) %>%
+  unique() %>% 
+  pull()
+df2 %>% 
+  filter(name %in% top1, sex == 'F') %>%
+  ggplot(aes(year, rank, color=name)) + 
+  geom_line() + 
+  geom_point() + 
+  labs(x = "Year", y="Name Rank", 
+       title='The Battle for Most Popular Girl Name',
+       subtitle = 'Showing 10 names who achieved 1st since 1950, but showing data back to 1880') + 
+  scale_y_reverse(limits = c(100, 0), breaks = c(1, seq(10,100, 10))) +
+  ggthemes::scale_color_pander() + 
+  theme_minimal()
+
+```
+It's pretty crazy that Mary held on to 1st place from 1880 through pretty much the 1960's. Part of me wonders how accurate the SSA data is going that far back[^3]. 
+
+[^3]: To check this, I looked at the CDC's reported population count for 2017 and matched it with the number of names I could find in the SSA's database. Turns out the SSA database covers about 92% of all names in America. So it's not 100% of the names.
+
+Lastly, which gender is more creative in their naming? Let's dive into the number of unique names given each year. Female names achieve peak creativity in 2007 with 20,568 unique names. Male creativity spikes a year later in 2008 with 14615 unique names.
+```{r}
+df_uniq <- df2 %>% 
+  count(year, sex, name)
+
+df_uniq %>% 
+  count(year, sex) %>%
+  ggplot(aes(year, n, color=sex)) + 
+  geom_line() + 
+  geom_point() + 
+  # geom_smooth() + 
+  labs(x = "Year", y="Number of Unique Names Used in a Year", 
+       title='Creativity is Actually on the Decline',
+       subtitle = 'Showing 10 names who achieved 1st since 1950, but showing data back to 1880') + 
+  geom_vline(xintercept = 2007)+
+  annotate("text", x = 2013, y = 3000, label= "2008")+
+  ggthemes::scale_color_pander() + 
+  theme_minimal()
+  
+```
+
+I was surprised that names have gotten less creative since 2007/2008. I thought that millenials would have gotten increasingly unique with the internet and access to highly-useful information like this blog post. Perhaps, instead, we're getting stuck in an analysis paralysis, and people mostly just give up and pick whatever name is in the top 1000.
+
+# Conclusions
+
+* Female names have far greater variety than male names.
+* Female names tend to fluctuate more in the upper-ranks.
+* All names seem to be 
+
+
+# How did I do this analysis? 
+
+* Step 1: The Social Security Administration reports all baby names each year in the United States, given the name occurs at least 5 times. I downloaded these easily from [here]( https://www.ssa.gov/oact/babynames/limits.html). Then I combined them together into one dataset.
+* Step 2: Combine the data across years and plot using the code from [here](https://github.com/bryanwhiting/blog/tree/master/content/post/2019-10-05-baby-names.Rmd). 
