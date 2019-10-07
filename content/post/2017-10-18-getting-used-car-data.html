@@ -23,7 +23,7 @@ read_html(url)</code></pre>
 <pre><code>## {xml_document}
 ## &lt;html lang=&quot;en-US&quot;&gt;
 ## [1] &lt;head&gt;\n&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset= ...
-## [2] &lt;body&gt;\n    &lt;div id=&quot;main&quot;&gt;\n&lt;div&gt;&lt;/div&gt;\n&lt;div data-qa=&quot;TransitionHo ...</code></pre>
+## [2] &lt;body&gt;\n    &lt;!-- Element target for any partner code meant to execut ...</code></pre>
 <p>You’ll see there’s a head and a body. Our data’s in the body, so let’s use <code>html_nodes()</code> and <code>html_text()</code> to parse out the data we want. I used <a href="https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html">Selectorgadget</a> to know what HTML classes to search for.</p>
 <pre class="r"><code>read_html(url) %&gt;% html_nodes(&#39;.col-xs-6.col-sm-8.no-left-padding&#39;) %&gt;% html_text()</code></pre>
 <pre><code>## character(0)</code></pre>
