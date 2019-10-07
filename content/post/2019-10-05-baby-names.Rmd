@@ -6,22 +6,25 @@ slug: baby-names
 thumbnailImagePosition: left  
 thumbnailImage: img/20190909/top10boynames.png
 categories: ['analysis']
-tags: ['r', 'plotly', 'ggplot2', 'dataviz']
+tags: ['r', 'plotly', 'ggplot2', 'dataviz', 'data-journalism']
 codefolding_show: hide
 ---
 
-Why is everyone I work with seemed to be named Chris? My frist manager at my job introduced me to his colleague, also named Chris. That Chris had two other Chris' reporting to him. I switched teams to only report to a Chris, who also reports to Chris. There's even a Chris who reports to the same Chris I report to - a continual succession of three Chris'. What can explain this madness?
+I work with a lot of people named Chris. And on my last team, I worked with even more people named Chris. So what?
 
-I've taken a particular interest in names since I'm thinking of a name for my to-be-born son. I did a little digging through the [Social Security Administration names database]( https://www.ssa.gov/oact/babynames/limits.html), which lists all names given to baby boys and girls in America[^1]. 
+I've taken a particular interest in names since I'm thinking of a name for my to-be-born son. I did a little digging through the [Social Security Administration names database]( https://www.ssa.gov/oact/babynames/limits.html), which lists all names given to baby boys and girls in America[^1]. I began this exercise to just get a quality list of ideas, but my curiosity got the better of me.
 
 [^1]:It even breaks it down by state. It'll return any name that is reported more than 5 times. So if the name "Juniper" is only given to four babies in the US in a given year, Juniper won't appear in the database.
 
-Well, it turns out that between 1972 and 1995 the name "Christopher" was the second-most popular name (or 3rd). So, I guess that explains it?
+It turns out that between 1972 and 1995 the name "Christopher" was the second-most popular name (or 3rd). I guess that explains it. Then I found five dollars.
+
+# Name Trends Since 1950
 
 What was the most popular boy name during that time? Michael - it dominated. Michael was the top boy name between for 44 years bewteen 1954 and 1998 (except for 1960). Yet Michael doesn't _seem_ as common among my co-workers. Guess there's just something about Chris. Pretty cool name.
 
 Let's look at the top 10 names for boys across time:
 
+> These plots aren't optimized for mobile devices. Please check them out on your desktop, or keep reading to see non-interactive plots.
 
 ```{r, echo=F, warning=F, message=F}
 knitr::opts_chunk$set(echo = F, warning = F, message = F)
@@ -117,7 +120,9 @@ df2 %>%
 
 The fact that females have 63% more names in the US is kind of shocking. Why aren't male names as creative?
 
-Perhaps names are like wardrobes in America. The stereotypical male's warddrobe is probably like a set of 5 blue shirts, maybe one grey, and, in the rare case, a green shirt. (Look around you at work - how many men in business casual aren't wearing some shade of blue?) Throw in a few pairs of pants, and you've got your outfits for the next few months. Women have a more refined approach - outfits for every occasion. The disparity in unique names maybe follows the refined ability for expression that women have.
+Perhaps names are like wardrobes in America. Looking at my closet, I see a lot of blue shirts. Why? Because blue is a great color. And I think others agree. For example, it's become a joke in the workplace - I'll show up to work with the same shirt as other male colleagues. Even that one red shirt I own - just last week someone teased me because their boss wears that shirt too. He called me a copy cat or something, like my shirt was un-original. Turns out my closet isn't as diverse as I think it is. Yet, I haven't run into that problem yet with my female colleauges. They seem to be more creative.
+
+# The Recent Top Names Back to 1880
 
 Let's dive into the boy names who achieved top 1 status since 1950:
 ```{r}
@@ -133,7 +138,7 @@ df2 %>%
   geom_line() + 
   geom_point() + 
   labs(x = "Year", y="Name Rank", 
-       title='The Battle for Most Popular Boy Name',
+       title='The Battle for Most Popular Male Name',
        subtitle = 'Showing 7 names who achieved 1st since 1950, but showing data back to 1880') + 
   scale_y_reverse(limits = c(100, 0), breaks = c(1, seq(10,100, 10))) +
   ggthemes::scale_color_pander() + 
@@ -142,7 +147,8 @@ df2 %>%
 ```
 For a while there, boy names that became popular were at one point in the past popular. However, there seems to be a new trend among millenial parents with a name like Liam coming out of nowhere...
 
-Girl names follow a completely different track. Once a name becomes popular, it falls off a cliff years later. Girl names come and go. This plot kind of looks like long hair...a fashion choice common among women?
+Female names follow a completely different track. Once a name becomes popular, it falls off a cliff years later. Girl names come and go. This plot kind of looks like long hair...a fashion choice common among women?
+
 ```{r}
 top1 <- df2 %>% 
   filter(sex == 'F', rank == 1, year > 1950) %>%
@@ -155,7 +161,7 @@ df2 %>%
   geom_line() + 
   geom_point() + 
   labs(x = "Year", y="Name Rank", 
-       title='The Battle for Most Popular Girl Name',
+       title='The Battle for Most Popular Female Name',
        subtitle = 'Showing 10 names who achieved 1st since 1950, but showing data back to 1880') + 
   scale_y_reverse(limits = c(100, 0), breaks = c(1, seq(10,100, 10))) +
   ggthemes::scale_color_pander() + 
@@ -167,7 +173,9 @@ Wow - Emma made a huge comback. To go through such a decline, and then see such 
 
 [^3]: To check this, I looked at the CDC's reported population count for 2017 and matched it with the number of names I could find in the SSA's database. Turns out the SSA database covers about 92% of all names in America. So it's not 100% of the names.
 
-Lastly, which gender is more creative in their naming? Let's dive into the number of unique names given each year. Female names achieve peak creativity in 2007 with 20,568 unique names. Male creativity spikes a year later in 2008 with 14615 unique names.
+# Uniqueness in the Name
+
+So, I think it's obvious from above, but just one more check: which sex is more creative in their naming? Let's dive into the number of unique names given each year. Female names achieve peak creativity in 2007 with 20,568 unique names. Male creativity spikes a year later in 2008 with 14,615 unique names.
 ```{r}
 df_uniq <- df2 %>% 
   count(year, sex, name)
@@ -188,14 +196,16 @@ df_uniq %>%
   
 ```
 
-I was surprised that names have gotten less creative since 2007/2008. I thought that millenials would have gotten increasingly unique with the internet and access to highly-useful information like this blog post. Perhaps, instead, we're getting stuck in an analysis paralysis, and people mostly just give up and pick whatever name is in the top 1000.
+I was surprised that names have gotten less creative since 2007/2008. I thought that millenials would have gotten increasingly unique with the internet and access to highly-useful information like this blog post. Perhaps, instead, we're getting stuck in an analysis paralysis, and people mostly just give up and pick whatever name is in the top 1000?
+
+What else could explain this rise in both names? Perhaps the data got more accurate as it became easier to report names. Maybe names took off in the 1970's because that's when computers became popular and it became easier to record things. 
 
 # Conclusions
 
 * Female names have far greater variety than male names.
 * Female names tend to fluctuate more in the upper-ranks.
 * Both male and female top names are holding a first-place rank for shorter durations than they have in the past.
-* Name creativity really started accelerating in the 1970's.
+* Name creativity really started accelerating in the 1970's, but peaked in 2008.
 * There's a strong correlation between creativity in male names as in female names.
 * A name popular today will quickly decline in popularity later.
 
