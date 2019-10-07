@@ -24,7 +24,7 @@ What was the most popular boy name during that time? Michael - it dominated. Mic
 
 Let's look at the top 10 names for boys across time:
 
-> These plots aren't optimized for mobile devices. Please check them out on your desktop, or keep reading to see non-interactive plots.
+_Note: These interactive plots aren't optimized for mobile devices. Please check them out on your desktop, or keep reading to see non-interactive plots. For those on desktop, you can hover your mouse and click to see different trends._
 
 ```{r, echo=F, warning=F, message=F}
 knitr::opts_chunk$set(echo = F, warning = F, message = F)
