@@ -9,7 +9,7 @@ categories: ['tutorials']
 tags: ['r', 'plotly', 'dataviz']
 ---
 
-I'm going to be a dad (again) in November. I don't want my boy to have a common name, so I gotta do my research. I'm curious: how do names trend over time? If I pick a name today, will it be popular tomorrow?
+I'm going to be a dad (again) soon. I don't want my boy to have a common name, so I gotta do my research. I'm curious: how do names trend over time? If I pick a name today, will it be popular tomorrow?
 
 Step 1: The Social Security Administration reports all baby names each year in the United States, given the name occurs at least 5 times. Thankfully, I can download these easily from [here]( https://www.ssa.gov/oact/babynames/limits.html).
 Step 2: Combine the data across years.
