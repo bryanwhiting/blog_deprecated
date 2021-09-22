@@ -1,0 +1,105 @@
+---
+title: Regression Modeling
+author: ~
+date: '2019-10-19'
+slug: regression-modeling
+categories: ['analysis']
+tags: []
+draft: true
+publish: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=F)
+install.load::install_load('skimr', 'ggplot2', 'tidyverse', 'h2o', 'arm', 'pls')
+```
+
+The goal of this analysis is to demonstrate multiple modeling methodologies for a particular data set.
+
+## Data collection
+
+Gathered data from here:
+* ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/
+
+```{r}
+# columns = readLines('ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.names')
+# print(columns)
+df = read.table('ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.data-original', col.names = c('mpg', 'cyl', 'disp', 'hp', 'wt', 'acc', 'year', 'origin', 'name'))
+
+# drop missing
+df <- df[!is.na(df$mpg),]
+```
+
+## Purpose
+
+* Using just a linear regression, what are all the ways I can improve the modeling fit.
+
+I'll be using R's [`caret`](https://topepo.github.io/caret/index.html) package, which stands for `Classification And REgression Training`.
+
+## Data exploration and manipulation
+
+### Prepare
+
+First split into test and training:
+```{r}
+library(caret)
+set.seed(3456)
+df <- df %>% mutate(cyl = as.factor(cyl), origin = as.factor(origin))
+train_idx = createDataPartition(df$mpg, p = .8, list=FALSE, times=1)
+df_train = df[train_idx,]
+df_test = df[-train_idx,]
+```
+
+#
+
+* Splines
+* Interactions
+* Full vs. Reduced modeling
+
+```{r}
+
+model_train_imp <- preProcess(df_train, method='medianImpute')
+df_train_imp <- predict(model_train_imp, df_train)
+df_test_imp <- predict(model_train_imp, df_test)
+
+xvars = df_train %>% dplyr::select(-name, -mpg, -cyl) %>% colnames
+
+# Basic linear regression
+results2 = list()
+mod_lm <- lm(mpg ~ disp + hp + wt + acc + year + origin, data = df_train_imp)
+results2$mod_lm <- postResample(predict(mod_lm, df_test_imp), df_test$mpg)
+
+# Adding interactions
+mod_lm2 <- lm(mpg ~ (disp + hp + wt + acc + year + origin)^2, data = df_train_imp)
+results2$mod_lm2 <- postResample(predict(mod_lm2, df_test_imp), df_test$mpg)
+
+# add 3-way interactions
+mod_lm3 <- lm(mpg ~ (disp + hp + wt + acc + year + origin)^3, data = df_train_imp)
+results2$mod_lm3 <- postResample(predict(mod_lm3, df_test_imp), df_test$mpg)
+
+# add 4-way interactions
+mod_lm4 <- lm(mpg ~ (disp + hp + wt + acc + year + origin)^4, data = df_train_imp)
+results2$mod_lm4 <- postResample(predict(mod_lm4, df_test_imp), df_test$mpg)
+
+# add 5-way interactions
+mod_lm5 <- lm(mpg ~ (disp + hp + wt + acc + year + origin)^5, data = df_train_imp)
+results2$mod_lm5 <- postResample(predict(mod_lm5, df_test_imp), df_test$mpg)
+
+results2
+
+```
+Conclusion:
+* Adding interactions can help performance, until it starts hurting it. (Perhaps here I don't have enough data for 5-way interactions.)
+
+Test:
+* Do backward selection on the 5-way interactions
+
+```{r}
+mod_lm6 = train(mpg ~ (.)^3, data = df_train_imp,
+                method = 'leapBackward')
+```
+
+Next: backward selection
+
+
+# Hypothesis testing

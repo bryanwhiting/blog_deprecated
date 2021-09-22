@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shiny on My take on data</title>
+    <link>/tags/shiny/</link>
+    <description>Recent content in Shiny on My take on data</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 23 Feb 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/shiny/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Getting Custom Domain for EC2 Web App - Part 2</title>
+      <link>/2019/02/rshiny-on-docker-part2/</link>
+      <pubDate>Sat, 23 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/02/rshiny-on-docker-part2/</guid>
+      <description>In this post, I&amp;rsquo;ll cover how to better customize some settings so to get your own custom domain for your EC2 instance. Say, app.example.com. Anyone interested in customizing an EC2 instance can use this - not just those who build R Shiny apps. I assume you already read part 1, where it was described how to launch an R Shiny app on EC2. I assume you already have some EC2 instance running with some useful app.</description>
+    </item>
+    
+    <item>
+      <title>R Shiny on AWS Using Docker - Part 1</title>
+      <link>/2019/02/rshiny-on-docker-part1/</link>
+      <pubDate>Tue, 19 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/02/rshiny-on-docker-part1/</guid>
+      <description>I want to run R Shiny on AWS using Docker. Here&amp;rsquo;s how to do it.
+In part 2, I&amp;rsquo;ll demonstrate how to get a custom domain and make the URL look clean.
+Useful background reading If you&amp;rsquo;re already comfortable with Docker, skip to the next section.
+ Great Simple tutorial on using Docker and Flask: Short and sweet. Docker for Beginners: Verbose and lengthy. Excellent introduction. Walks you through all the jargon.</description>
+    </item>
+    
+  </channel>
+</rss>

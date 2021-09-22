@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R on My take on data</title>
+    <link>/categories/r/</link>
+    <description>Recent content in R on My take on data</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 05 Apr 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Data Manipulation 2</title>
+      <link>/2019/04/data-manipulation-2/</link>
+      <pubDate>Fri, 05 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/04/data-manipulation-2/</guid>
+      <description> dir.create(&amp;#39;~/github/blog/static/post/20190405-data&amp;#39;) ## Warning in dir.create(&amp;quot;~/github/blog/static/post/20190405-data&amp;quot;): &amp;#39;/Users/ ## bryanwhiting/github/blog/static/post/20190405-data&amp;#39; already exists readr::write_csv(mtcars, &amp;#39;~/github/blog/static/post/20190405-data/mtcars.csv&amp;#39;) #head data/20190405-data/mtcars.csv #head static/post/20190405-data/mtcars.csv </description>
+    </item>
+    
+  </channel>
+</rss>

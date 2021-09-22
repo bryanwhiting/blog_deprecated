@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Life Lessons on My take on data</title>
+    <link>/tags/life-lessons/</link>
+    <description>Recent content in Life Lessons on My take on data</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 11 Jul 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/life-lessons/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Getting the First Data Science Job</title>
+      <link>/2018/07/getting-the-first-data-science-job/</link>
+      <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/getting-the-first-data-science-job/</guid>
+      <description>Last March, I wanted to break into the Data Science community but was struggling with confidence and starting to doubt I&amp;rsquo;d make it. I had been reading blog after blog about data science, practiced additional coding and learning new methods at night. And rejection after rejection, I wondered if I was on the right path. Now on the other side, hindsight is 20&amp;frasl;20.
+I write this post to my past self, a person seeking for a job they couldn&amp;rsquo;t seem to get.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data Journalism on My take on data</title>
+    <link>/tags/data-journalism/</link>
+    <description>Recent content in Data Journalism on My take on data</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 05 Oct 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/data-journalism/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Why does everyone I work with have the same name? A guide on how to not pick a unique baby name in America.</title>
+      <link>/2019/10/baby-names/</link>
+      <pubDate>Sat, 05 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/baby-names/</guid>
+      <description>I’ve taken a particular interest in names since I’m thinking of a name for my to-be-born son. I did a little digging through the Social Security Administration names database, which lists all names given to baby boys and girls in America1. I began this exercise to just get a quality list of ideas, but my curiosity got the better of me.
+Name Trends Since 1950 What was the most popular boy name since 1950?</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tutorials on My take on data</title>
+    <link>/categories/tutorials/</link>
+    <description>Recent content in Tutorials on My take on data</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 28 Oct 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/tutorials/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Sample Size</title>
+      <link>/2019/10/sample-size/</link>
+      <pubDate>Mon, 28 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/sample-size/</guid>
+      <description>So your boss likes asking questions. Let’s find answers to a few she might ask.
+# Go and collect some car data df = read.table(&amp;#39;ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.data-original&amp;#39;, col.names = c(&amp;#39;mpg&amp;#39;, &amp;#39;cyl&amp;#39;, &amp;#39;disp&amp;#39;, &amp;#39;hp&amp;#39;, &amp;#39;wt&amp;#39;, &amp;#39;acc&amp;#39;, &amp;#39;year&amp;#39;, &amp;#39;origin&amp;#39;, &amp;#39;name&amp;#39;)) # Let&amp;#39;s randomly shuffle the rows set.seed(1) df &amp;lt;- df[sample(nrow(df)),] # Extract make df$make &amp;lt;- word(df$name) df %&amp;lt;&amp;gt;% filter(!is.na(mpg)) %&amp;gt;% select(name, make, everything()) One Sample T-Test  Question 1: I think Ford cars have pretty bad miles-per-gallon (MPG).</description>
+    </item>
+    
+    <item>
+      <title>Scraping Baby Boy Name Trends</title>
+      <link>/2019/09/baby-boy-names/</link>
+      <pubDate>Mon, 09 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/09/baby-boy-names/</guid>
+      <description>I’m going to be a dad (again) soon. I don’t want my boy to have a common name, so I gotta do my research. I’m curious: how do names trend over time? If I pick a name today, will it be popular tomorrow?
+Step 1: The Social Security Administration reports all baby names each year in the United States, given the name occurs at least 5 times.</description>
+    </item>
+    
+    <item>
+      <title>Getting Custom Domain for EC2 Web App - Part 2</title>
+      <link>/2019/02/rshiny-on-docker-part2/</link>
+      <pubDate>Sat, 23 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/02/rshiny-on-docker-part2/</guid>
+      <description>In this post, I&amp;rsquo;ll cover how to better customize some settings so to get your own custom domain for your EC2 instance. Say, app.example.com. Anyone interested in customizing an EC2 instance can use this - not just those who build R Shiny apps. I assume you already read part 1, where it was described how to launch an R Shiny app on EC2. I assume you already have some EC2 instance running with some useful app.</description>
+    </item>
+    
+    <item>
+      <title>R Shiny on AWS Using Docker - Part 1</title>
+      <link>/2019/02/rshiny-on-docker-part1/</link>
+      <pubDate>Tue, 19 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/02/rshiny-on-docker-part1/</guid>
+      <description>I want to run R Shiny on AWS using Docker. Here&amp;rsquo;s how to do it.
+In part 2, I&amp;rsquo;ll demonstrate how to get a custom domain and make the URL look clean.
+Useful background reading If you&amp;rsquo;re already comfortable with Docker, skip to the next section.
+ Great Simple tutorial on using Docker and Flask: Short and sweet. Docker for Beginners: Verbose and lengthy. Excellent introduction. Walks you through all the jargon.</description>
+    </item>
+    
+    <item>
+      <title>Collect, Analyze, and Map Addresses in R</title>
+      <link>/2018/07/addresses-and-maps/</link>
+      <pubDate>Sat, 28 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/addresses-and-maps/</guid>
+      <description>The goal of this tutorial is to do the following:
+Collect addresses (via Google Forms) Download to R (via googlesheets) Geocode them (via geocode) Plot them (using leaflet) Get driving distance between them (via gmapsdistance) Cluster them (kmeans) Making the leaflet plot fancy  1. Collect Perhaps in a future post I’ll explore googleformr. For now, I create forms the old-school way.</description>
+    </item>
+    
+    <item>
+      <title>Webscraping Thousands of Used Cars</title>
+      <link>/2017/10/getting-used-car-data/</link>
+      <pubDate>Wed, 18 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/10/getting-used-car-data/</guid>
+      <description>In another post, I describe how I use this data that I’ve scraped, but I wanted to provide a more in-depth tutorial for those interested in how I got the data. Note, this data belongs to Truecar, so all uses herein are for personal and academic reasons only.
+Get the data In order to do any good analaysis, you first need data. I prefer to have more data than less, where possible.</description>
+    </item>
+    
+    <item>
+      <title>Blogdown and Tranquilpeak Hosted on Netlify: a Deep Dive</title>
+      <link>/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/</link>
+      <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/</guid>
+      <description>This blog will outline what I see as differences between Hugo and Jekyll, some benefits and drawbacks of using Netlify vs. GitHub pages to host, and how to launch the Hugo Tranquilpeak theme from scratch.
+Why Hugo? One of my first posts was about blogging with Jekyll hosted on GitHub. About six months after writing that post, I hit a few bugs trying to debug it and got frustrated because I had already forgotten all of what I binge-learned earlier.</description>
+    </item>
+    
+    <item>
+      <title>The Shell and its Many Languages</title>
+      <link>/2017/01/the-shell-and-its-many-languages/</link>
+      <pubDate>Sat, 14 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/01/the-shell-and-its-many-languages/</guid>
+      <description>If you don&amp;rsquo;t know how to use the shell/terminal/command line, you should. Why? Here&amp;rsquo;s a sampling of I&amp;rsquo;ve done in the last month:
+ I used R to generate 30,000 plots using ggplot(). I used the shell and ffmpeg to animate those plots as a movie. I&amp;rsquo;ve used the shell from VBA to send an Excel column of data into Stata, execute a summary statistic command, and then import the results back into Excel.</description>
+    </item>
+    
+  </channel>
+</rss>

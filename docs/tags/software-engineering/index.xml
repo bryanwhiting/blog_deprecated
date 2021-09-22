@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Software Engineering on My take on data</title>
+    <link>/tags/software-engineering/</link>
+    <description>Recent content in Software Engineering on My take on data</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 02 Jul 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/software-engineering/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Semantic Versioning for Data Science Models</title>
+      <link>/2018/07/semantic-versioning-for-data-science-models/</link>
+      <pubDate>Mon, 02 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/semantic-versioning-for-data-science-models/</guid>
+      <description>If you’ve ever wanted to tag your data science model, you’ve probably wondered how to version it. Which will it be: vx.4.1, v34.1231.51.21, or v91.x4.dev34? After reading about semantic versioning, I propose a method for versioning data science models.
+Semantic Versioning for Software Semantic versioning proposes the following:
+ Given a version number MAJOR.MINOR.PATCH, increment the:
+MAJOR version when you make incompatible API changes, MINOR version when you add functionality in a backwards-compatible manner, and PATCH version when you make backwards-compatible bug fixes.</description>
+    </item>
+    
+  </channel>
+</rss>

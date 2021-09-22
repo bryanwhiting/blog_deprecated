@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Machine Learning on My take on data</title>
+    <link>/tags/machine-learning/</link>
+    <description>Recent content in Machine Learning on My take on data</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 08 Sep 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Machine Learning Model Notes</title>
+      <link>/2018/09/machine-learning-models/</link>
+      <pubDate>Sat, 08 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/machine-learning-models/</guid>
+      <description>Here are some notes on machine learning models.
+Concepts Behind Decision Trees  Bagging (boostrap aggregation): Randomly sample with replacement, and average the results. Majority vote: The most commonly-occuring prediction. Internal node: Where the splits occur. Branches: Segments that connect the nodes. Terminal node (leafs, regions): Where the observations end up. The average of the responses (or majority vote) is the prediction for future observations. Gini index: where \(m\) is the leaf and \(k\) is the class (0 or 1 for binary classification, but can be extedned for multiple classes).</description>
+    </item>
+    
+    <item>
+      <title>Collect, Analyze, and Map Addresses in R</title>
+      <link>/2018/07/addresses-and-maps/</link>
+      <pubDate>Sat, 28 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/addresses-and-maps/</guid>
+      <description>The goal of this tutorial is to do the following:
+Collect addresses (via Google Forms) Download to R (via googlesheets) Geocode them (via geocode) Plot them (using leaflet) Get driving distance between them (via gmapsdistance) Cluster them (kmeans) Making the leaflet plot fancy  1. Collect Perhaps in a future post I’ll explore googleformr. For now, I create forms the old-school way.</description>
+    </item>
+    
+  </channel>
+</rss>

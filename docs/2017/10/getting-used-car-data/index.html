@@ -1,0 +1,958 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+  
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <script data-ad-client="ca-pub-6540088627087882" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.54.0">
+    <meta name="theme" content="Tranquilpeak 0.3.1-BETA">
+    <title>Webscraping Thousands of Used Cars</title>
+    <meta name="author" content="Bryan Whiting">
+    <meta name="keywords" content="">
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+    <meta name="description" content="In another post, I describe how I use this data that I’ve scraped, but I wanted to provide a more in-depth tutorial for those interested in how I got the data. Note, this data belongs to Truecar, so all uses herein are for personal and academic reasons only.
+Get the data In order to do any good analaysis, you first need data. I prefer to have more data than less, where possible.">
+    <meta property="og:description" content="In another post, I describe how I use this data that I’ve scraped, but I wanted to provide a more in-depth tutorial for those interested in how I got the data. Note, this data belongs to Truecar, so all uses herein are for personal and academic reasons only.
+Get the data In order to do any good analaysis, you first need data. I prefer to have more data than less, where possible.">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Webscraping Thousands of Used Cars">
+    <meta property="og:url" content="/2017/10/getting-used-car-data/">
+    <meta property="og:site_name" content="My take on data">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="My take on data">
+    <meta name="twitter:description" content="In another post, I describe how I use this data that I’ve scraped, but I wanted to provide a more in-depth tutorial for those interested in how I got the data. Note, this data belongs to Truecar, so all uses herein are for personal and academic reasons only.
+Get the data In order to do any good analaysis, you first need data. I prefer to have more data than less, where possible.">
+    
+      <meta name="twitter:creator" content="@bryanwhiting">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=640">
+    
+
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" />
+    
+    
+    <link rel="stylesheet" href="/css/style-u6mk0ojoywresbx8iepslrmmhl4stuhrsxuwhkpwrkrx7mryjcaimasnk4pi.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-85616639-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">My take on data</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Bryan Whiting</h4>
+        
+          <h5 class="sidebar-profile-bio">father, innovator, data scientist</h5>
+        
+      </div>
+    
+    
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about/index.html">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/projects/index.html">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-briefcase"></i>
+      
+      <span class="sidebar-button-desc">Projects</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/2138773/bryan">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/bryanwhiting">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/bryanwhiting">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://www.linkedin.com/in/bryan-whiting-b524a44b/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-linkedin"></i>
+      
+      <span class="sidebar-button-desc">LinkedIn</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+    </ul>
+  </div>
+  
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Webscraping Thousands of Used Cars
+    </h1>
+  
+  <div class="postShorten-meta post-meta">
+  
+    <time itemprop="datePublished" datetime="2017-10-18T00:00:00Z">
+      
+  October 18, 2017
+
+    </time>
+  
+  
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/tutorials">tutorials</a>
+    
+  
+
+
+</div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              
+
+
+<p>In another post, I describe how I use this data that I’ve scraped, but I wanted to provide a more in-depth tutorial for those interested in how I got the data. Note, this data belongs to Truecar, so all uses herein are for personal and academic reasons only.</p>
+<div id="get-the-data" class="section level1">
+<h1>Get the data</h1>
+<p>In order to do any good analaysis, you first need data. I prefer to have more data than less, where possible. In this case, I don’t have any data, so I use webscraping to get the data. There are much better tutorials on how to scrape data, so I’ll be light. I use R’s <code>rvest</code> package here, which does a decent job.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> Let’s look at Truecar’s Used Car postings<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>. First I use <code>google</code> to find the search query on Truecar that I like.</p>
+<pre class="r"><code># Load packages
+library(rvest)
+library(dplyr)
+library(magrittr)</code></pre>
+<pre class="r"><code># Find the URL of the data you want to scrape
+url &lt;- &#39;https://www.truecar.com/used-cars-for-sale/listings/ford/edge/&#39;
+read_html(url)</code></pre>
+<pre><code>## {xml_document}
+## &lt;html lang=&quot;en-US&quot;&gt;
+## [1] &lt;head&gt;\n&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset= ...
+## [2] &lt;body&gt;\n    &lt;!-- Element target for any partner code meant to execut ...</code></pre>
+<p>You’ll see there’s a head and a body. Our data’s in the body, so let’s use <code>html_nodes()</code> and <code>html_text()</code> to parse out the data we want. I used <a href="https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html">Selectorgadget</a> to know what HTML classes to search for.</p>
+<pre class="r"><code>read_html(url) %&gt;% html_nodes(&#39;.col-xs-6.col-sm-8.no-left-padding&#39;) %&gt;% html_text()</code></pre>
+<pre><code>## character(0)</code></pre>
+<p>So that’s how you get the data on a single page. If you look closer at the URL, you see a lot of helpful things. First, there’s the make, then the model, then the location-zip, then the year-range, and ultimately the trim. This is a very pretty and clean URL. If you click on a few additional pages, you’ll see the URL opens up with <code>?page=2</code>.</p>
+<pre><code>https://www.truecar.com/used-cars-for-sale/listings/ford/edge/location-90210/?page=2</code></pre>
+<p>This is our ‘in’ to scraping multiple pages. I won’t bore you with the details of how to get <em>that</em> data into a neat matrix for us to analyze, but suffice it to say that I’m able to do it. Just build a function to construct a URL, and build a loop to go through the different pages, then use lots of <code>str_extract</code> from the <code>stringr</code> package and <code>gsub</code> to clean up the data.</p>
+<pre class="r"><code>library(stringr)
+
+make = &#39;ford&#39;
+model = &#39;edge&#39;
+zip = &#39;90210&#39;
+year = 2012
+npages = 5
+
+url &lt;- paste(&#39;https://www.truecar.com/used-cars-for-sale/listings/&#39;, 
+             make, &#39;/&#39;, 
+             model ,
+             &#39;/location-&#39;, zip,
+             &#39;/year-&#39;,year,&#39;-max/?page=&#39;, sep = &quot;&quot;)
+
+urls &lt;- paste(url, 1:npages, sep = &quot;&quot;)
+
+scrape &lt;- function(pageno){
+  try(
+    read_html(urls[pageno]) %&gt;% html_nodes(&#39;.col-xs-6.col-sm-8.no-left-padding&#39;) %&gt;% html_text()
+  )
+}
+
+long_list = scrape(1)
+for(i in 2:npages){
+  print(i)
+  new_list = try(scrape(i))
+  
+  error = (&quot;try-error&quot; %in% class(new_list))
+  
+  if( error == FALSE ){
+    long_list = c(long_list, new_list) 
+  } else {
+    break
+  }
+}</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>stats &lt;- long_list
+df &lt;- as.data.frame(stats)
+df$stats %&lt;&gt;% as.character()
+df$price &lt;- str_extract(df$stats, &#39;\\$[0-9]*,[0-9]*&#39;) %&gt;% 
+  gsub(&#39;Price: |\\$|,&#39;, &#39;&#39;, .) %&gt;%
+  as.numeric()
+df$year &lt;- str_extract(df$stats, &#39;^[0-9]* &#39;) %&gt;% 
+  as.numeric()
+df$mileage &lt;- str_extract(df$stats, &#39;Mileage: [0-9]*,[0-9]*&#39;) %&gt;% 
+  gsub(&#39;Mileage: |,&#39;, &#39;&#39;, .) %&gt;%
+  as.numeric()
+
+# a = df$stats[1]
+df$trim &lt;- str_extract(df$stats, &#39;.*Mileage:&#39;) %&gt;% 
+  gsub(&#39;FWD|AWD|4x[24]|[24]WD|V6|4-cyl|^[0-9][0-9][0-9][0-9]|4dr|Automatic|Manual|Mileage:&#39;, &#39;&#39;, ., ignore.case = T) %&gt;% 
+  gsub(make, &#39;&#39;, ., ignore.case = T) %&gt;% 
+  gsub(model, &#39;&#39;, ., ignore.case = T) %&gt;% 
+  trimws() 
+
+
+df$awd &lt;- grepl(&#39;AWD|4WD|4x4&#39;, df$stats, ignore.case = T) %&gt;% as.numeric()
+df$manual &lt;- grepl(&#39;manual&#39;, df$stats) %&gt;% as.numeric()
+df$v6 &lt;- grepl(&#39;V6&#39;, df$stats) %&gt;% as.numeric()
+df$location &lt;- str_extract(df$stats, &#39;Location: .*Exterior:&#39;) %&gt;% 
+  gsub(&#39;Location: |Exterior:&#39;, &#39;&#39;, .) %&gt;% 
+  trimws() 
+df$ext &lt;- str_extract(df$stats, &#39;Exterior: .*Interior:&#39;) %&gt;% 
+  gsub(&#39;Interior:|Exterior:&#39;, &#39;&#39;, .) %&gt;% 
+  trimws() 
+df$int &lt;- str_extract(df$stats, &#39;Interior: .*VIN:&#39;) %&gt;% 
+  gsub(&#39;Interior: |VIN:&#39;, &#39;&#39;, .) %&gt;% 
+  trimws() 
+df$vin &lt;- str_extract(df$stats, &#39;VIN: .*\\$&#39;) %&gt;% 
+  gsub(&#39;VIN: |\\$&#39;, &#39;&#39;, .) %&gt;% 
+  substr(., 1, 17)
+df$deal &lt;- str_extract(df$stats, &#39;\\$[0-9]*,[0-9]* below&#39;) %&gt;% 
+  gsub(&#39;below|\\$|,&#39;, &#39;&#39;, .) %&gt;% trimws() %&gt;%
+  as.numeric()</code></pre>
+<p>And here’s what the results look like. You’ve got the original scraped data in the <code>stats</code> column and then everything else that you can parse out. Just like that, you’ve got</p>
+<pre class="r"><code># df was the dataframe object we needed
+df %&gt;% select(-stats) %&gt;% head(10) %&gt;% formattable::formattable()</code></pre>
+<table class="table table-condensed">
+<thead>
+<tr>
+<th style="text-align:right;">
+price
+</th>
+<th style="text-align:right;">
+year
+</th>
+<th style="text-align:right;">
+mileage
+</th>
+<th style="text-align:right;">
+trim
+</th>
+<th style="text-align:right;">
+awd
+</th>
+<th style="text-align:right;">
+manual
+</th>
+<th style="text-align:right;">
+v6
+</th>
+<th style="text-align:right;">
+location
+</th>
+<th style="text-align:right;">
+ext
+</th>
+<th style="text-align:right;">
+int
+</th>
+<th style="text-align:right;">
+vin
+</th>
+<th style="text-align:right;">
+deal
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Python’s <code>beautifulSoup</code> package could probably do a better job.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>I tried scraping CarGurus, but wasn’t able to paginate. I tried scraping CarMax, but had difficulty. Edmunds was also easy, but Truecar was easiset.<a href="#fnref2">↩</a></p></li>
+</ol>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="//tags/r/">r</a>
+
+  <a class="tag tag--primary tag--small" href="//tags/webscraping/">webscraping</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/buying-a-used-car-the-data-science-way/" data-tooltip="Buying a used car the data science way (and hacking Truecar)">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2017/06/yet-another-weekly-planner/" data-tooltip="Yet Another Weekly Planner">
+          
+            <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=%2f2017%2f10%2fgetting-used-car-data%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2f2017%2f10%2fgetting-used-car-data%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=%2f2017%2f10%2fgetting-used-car-data%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+      <li class="post-action">
+        <a class="post-action-btn btn btn--default" href="#disqus_thread">
+          <i class="fa fa-comment-o"></i>
+        </a>
+      </li>
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+   
+   
+  <script>
+  $(document).ready(function () {
+    window.initializeCodeFolding("show" === "hide");
+  });
+  </script>
+  <script src="/js/codefolding.js"></script>
+
+
+    
+  <span class="copyrights">
+    &copy; 2019 Bryan Whiting. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/buying-a-used-car-the-data-science-way/" data-tooltip="Buying a used car the data science way (and hacking Truecar)">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2017/06/yet-another-weekly-planner/" data-tooltip="Yet Another Weekly Planner">
+          
+            <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=%2f2017%2f10%2fgetting-used-car-data%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2f2017%2f10%2fgetting-used-car-data%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=%2f2017%2f10%2fgetting-used-car-data%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+      <li class="post-action">
+        <a class="post-action-btn btn btn--default" href="#disqus_thread">
+          <i class="fa fa-comment-o"></i>
+        </a>
+      </li>
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <ul class="share-options">
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2f2017%2f10%2fgetting-used-car-data%2f">
+        <i class="fa fa-google-plus"></i><span>Share on Google Plus</span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2f2017%2f10%2fgetting-used-car-data%2f">
+        <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2f2017%2f10%2fgetting-used-car-data%2f">
+        <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Bryan Whiting</h4>
+    
+      <div id="about-card-bio">father, innovator, data scientist</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Data Scientist
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Washington, D.C.
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/sample-size/">
+                <h3 class="media-heading">Sample Size</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">So your boss likes asking questions. Let’s find answers to a few she might ask.
+# Go and collect some car data df = read.table(&#39;ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.data-original&#39;, col.names = c(&#39;mpg&#39;, &#39;cyl&#39;, &#39;disp&#39;, &#39;hp&#39;, &#39;wt&#39;, &#39;acc&#39;, &#39;year&#39;, &#39;origin&#39;, &#39;name&#39;)) # Let&#39;s randomly shuffle the rows set.seed(1) df &lt;- df[sample(nrow(df)),] # Extract make df$make &lt;- word(df$name) df %&lt;&gt;% filter(!is.na(mpg)) %&gt;% select(name, make, everything()) One Sample T-Test  Question 1: I think Ford cars have pretty bad miles-per-gallon (MPG).</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/births-time-series-month/">
+                <h3 class="media-heading">Modeling Birth Rates Part 2: By Month</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In Part 1, I modeled births at the year level, which didn’t seem to have much seasonality. Now I’m going to try to model the monthly birth rates in the US.
+Predicting Seasonality I hit up the UN data to get seasonal birthrates, which I couldn’t find at CDC. Unfortunately, the UN data doesn’t have a long range of data.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/births-time-series-year/">
+                <h3 class="media-heading">Modeling Birth Rates Part 1: By Year</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I’m still excited to be a dad, so I’m going to try to model birth rates in the US. This will be a time series modeling exercise, and I’ll use this time to explore some modeling techniques. In Part 2 I’ll model the monthly birth rates.
+I downloaded CDC birth data from here: * https://www.cdc.gov/nchs/data-visualization/natality-trends/ * “Births and General Fertility Rates” &gt; Download CSV * Other data sets can be found here: https://www.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/baby-names/">
+                <h3 class="media-heading">Why does everyone I work with have the same name? A guide on how to not pick a unique baby name in America.</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I’ve taken a particular interest in names since I’m thinking of a name for my to-be-born son. I did a little digging through the Social Security Administration names database, which lists all names given to baby boys and girls in America1. I began this exercise to just get a quality list of ideas, but my curiosity got the better of me.
+Name Trends Since 1950 What was the most popular boy name since 1950?</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/09/baby-boy-names/">
+                <h3 class="media-heading">Scraping Baby Boy Name Trends</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I’m going to be a dad (again) soon. I don’t want my boy to have a common name, so I gotta do my research. I’m curious: how do names trend over time? If I pick a name today, will it be popular tomorrow?
+Step 1: The Social Security Administration reports all baby names each year in the United States, given the name occurs at least 5 times.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/04/dplyr-vs-datatable/">
+                <h3 class="media-heading">Dplyr vs Datatable</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Apr 4, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In the world of data science in R, the battle between dplyr and datatable is real. Here I compare their performance against base r commands for some common tasks. Who will be the winner on speed and simplicity?
+Make random datasets set.seed(71) size1 &lt;- 4*10^6 size2 &lt;- size1 * 0.1 df1 &lt;- data.frame(id=paste0(&quot;SERVICE_&quot;, 1:size1), value=rnorm(size1), stringsAsFactors=FALSE) df2 &lt;- data.frame(id=paste0(&quot;SERVICE_&quot;, sample(1:size1, size2)), value=rnorm(size2), stringsAsFactors=FALSE) dt1 &lt;- data.table(df1) dt2 &lt;- data.table(df2) # mtcars data M &lt;- data.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/02/rshiny-on-docker-part2/">
+                <h3 class="media-heading">Getting Custom Domain for EC2 Web App - Part 2</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In this post, I&rsquo;ll cover how to better customize some settings so to get your own custom domain for your EC2 instance. Say, app.example.com. Anyone interested in customizing an EC2 instance can use this - not just those who build R Shiny apps. I assume you already read part 1, where it was described how to launch an R Shiny app on EC2. I assume you already have some EC2 instance running with some useful app.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/02/rshiny-on-docker-part1/">
+                <h3 class="media-heading">R Shiny on AWS Using Docker - Part 1</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I want to run R Shiny on AWS using Docker. Here&rsquo;s how to do it.
+In part 2, I&rsquo;ll demonstrate how to get a custom domain and make the URL look clean.
+Useful background reading If you&rsquo;re already comfortable with Docker, skip to the next section.
+ Great Simple tutorial on using Docker and Flask: Short and sweet. Docker for Beginners: Verbose and lengthy. Excellent introduction. Walks you through all the jargon.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/09/machine-learning-models/">
+                <h3 class="media-heading">Machine Learning Model Notes</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Here are some notes on machine learning models.
+Concepts Behind Decision Trees  Bagging (boostrap aggregation): Randomly sample with replacement, and average the results. Majority vote: The most commonly-occuring prediction. Internal node: Where the splits occur. Branches: Segments that connect the nodes. Terminal node (leafs, regions): Where the observations end up. The average of the responses (or majority vote) is the prediction for future observations. Gini index: where \(m\) is the leaf and \(k\) is the class (0 or 1 for binary classification, but can be extedned for multiple classes).</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/09/byu-football/">
+                <h3 class="media-heading">byu football</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Goal of this post. Answer some interesting questions about BYU football. Dive into different modeling approaches. I don’t explain my thinking below, but some of the charts might be cool.
+Some questions of interest
+ How is Kilani Sitake doing in his second season compared to past BYU coaches? More challenging: how’s he doing relative to all second-season coaches?  df_in &lt;- read.csv(file.path(fp_data, &#39;byu_seasons.csv&#39;)) %&gt;% distinct() Some basic questions: * How many years do we have data on?</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         25 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('/images/durango-blurred.JPG');"></div>
+  
+
+
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.js"></script>
+
+
+<script src="/js/script-wl33z0n6ocaypepiqrazthtivfrliqijej4rq8ek8gvrv1awftmgjuv8k4zc.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight').each(function(i, block) {
+    var code = "";
+    hljs.highlightAuto(block.innerText).value.split(/\r\n|\r|\n/).forEach(function(line) {
+      code += "<span class=\"line\">" + line + "</span><br>";
+    });
+    if (code.length > 0) {
+      block.innerHTML = code;  
+    }
+  });
+  $('pre > code').each(function(i, block) {
+    $(this).addClass('codeblock');
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2017\/10\/getting-used-car-data\/';
+          
+            this.page.identifier = '\/2017\/10\/getting-used-car-data\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'bryanwhiting1';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+
+    
+  </body>
+</html>
+

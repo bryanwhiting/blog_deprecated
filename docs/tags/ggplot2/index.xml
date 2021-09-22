@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ggplot2 on My take on data</title>
+    <link>/tags/ggplot2/</link>
+    <description>Recent content in Ggplot2 on My take on data</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 05 Oct 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/ggplot2/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Why does everyone I work with have the same name? A guide on how to not pick a unique baby name in America.</title>
+      <link>/2019/10/baby-names/</link>
+      <pubDate>Sat, 05 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/baby-names/</guid>
+      <description>I’ve taken a particular interest in names since I’m thinking of a name for my to-be-born son. I did a little digging through the Social Security Administration names database, which lists all names given to baby boys and girls in America1. I began this exercise to just get a quality list of ideas, but my curiosity got the better of me.
+Name Trends Since 1950 What was the most popular boy name since 1950?</description>
+    </item>
+    
+    <item>
+      <title>byu football</title>
+      <link>/2018/09/byu-football/</link>
+      <pubDate>Fri, 07 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/byu-football/</guid>
+      <description>Goal of this post. Answer some interesting questions about BYU football. Dive into different modeling approaches. I don’t explain my thinking below, but some of the charts might be cool.
+Some questions of interest
+ How is Kilani Sitake doing in his second season compared to past BYU coaches? More challenging: how’s he doing relative to all second-season coaches?  df_in &amp;lt;- read.csv(file.path(fp_data, &amp;#39;byu_seasons.csv&amp;#39;)) %&amp;gt;% distinct() Some basic questions: * How many years do we have data on?</description>
+    </item>
+    
+    <item>
+      <title>The DataViz battle: Plotly vs ggplot2</title>
+      <link>/2017/02/the-dataviz-battle-plotly-vs-ggplot2/</link>
+      <pubDate>Fri, 10 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/02/the-dataviz-battle-plotly-vs-ggplot2/</guid>
+      <description>R users fall in love with ggplot2, the growing standard for data visualization in R. The ability to quickly vizualize trends, and customize just about anything you’d want, make it a powerful tool. Yet this week, I made a discovery that may reduce how much I used ggplot2. Enter plot_ly().
+For this post, I assume that you have a working knowledge of the dplyr (or magrittr) and ggplot2 packages.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,368 @@
+---
+title: "AutoMPG Dataset"
+date: 2019-10-14T16:25:09-04:00
+draft: true
+categories: ['dataviz']
+tags: ['ggplot2', 'r', 'plotly']
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=F)
+install.load::install_load('skimr', 'ggplot2', 'tidyverse', 'h2o', 'arm', 'pls')
+```
+
+The goal of this analysis is to demonstrate multiple modeling methodologies for a particular data set.
+
+## Data collection
+
+Gathered data from here:
+* ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/
+
+```{r}
+# columns = readLines('ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.names')
+# print(columns)
+df = read.table('ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.data-original', col.names = c('mpg', 'cyl', 'disp', 'hp', 'wt', 'acc', 'year', 'origin', 'name'))
+
+# drop missing
+df <- df[!is.na(df$mpg),]
+```
+
+## Purpose
+
+* Goal 1: Create a model for the mpg of new cars.
+* Goal 2: Create a model for cars after 1980.
+
+I'll be using R's [`caret`](https://topepo.github.io/caret/index.html) package, which stands for `Classification And REgression Training`.
+
+## Data exploration and manipulation
+
+### Prepare
+First split into test and training:
+```{r}
+library(caret)
+set.seed(3456)
+df <- df %>% mutate(cyl = as.factor(cyl), origin = as.factor(origin))
+train_idx = createDataPartition(df$mpg, p = .8, list=FALSE, times=1)
+df_train = df[train_idx,]
+df_test = df[-train_idx,]
+```
+
+
+### Data Summary
+```{r}
+skim(df_train)
+```
+* 321 rows of data, 8 features
+* No missing values
+* 312 unique names - how many brands are there?
+* hp and mpg have missing values (need to remove missing target, might keep missing hp)
+* make, model
+* Perhaps having a number in the name can affect things
+
+```{r}
+
+```
+
+### Distributions relating to Target
+
+```{r}
+
+xvars = df_train %>% select(-name, -mpg, -cyl) %>% colnames
+
+new_theme = theme_set(theme_minimal())
+p1 <- qplot(x=cyl, y=mpg, data=df_train)
+p2 <- qplot(x=disp, y=mpg, data=df_train)
+p3 <- qplot(x=hp, y=mpg, data=df_train)
+p4 <- qplot(x=wt, y=mpg, data=df_train)
+p5 <- qplot(x=acc, y=mpg, data=df_train)
+p6 <- qplot(x=year, y=mpg, data=df_train)
+p7 <- qplot(x=origin, y=mpg, data=df_train)
+cowplot::plot_grid(p1, p2, p3, p4, p5, p6, p7, nrow = 3)
+
+# This works, but is slow
+# df_train %>%
+#   select(-name) %>%
+#   gather(-mpg, key = 'var', value='value') %>%
+#   ggplot(aes(x = value, y = mpg)) +
+#     geom_point() +
+#     facet_wrap(~ var, scales = "free") +
+#     # scale_x_continuous(breaks = scales::pretty_breaks(n = 3)) + 
+#     theme_bw()
+
+
+```
+
+Relationships:
+* cyl: 5 different levels of cyl. seems to be an arcing trend - seems non-linear. As cyl increases, mpg seems to decrease.
+* disp is continuous, has a non-linear relationship with mpg. Perhaps I can transform disp to make it linear.
+* wt: decreasing.
+* acc: doesn't seem correlated - maybe there's an important interaction
+* year: continuous trend upward.
+* origin: increasing trend.
+
+### Time Series considerations
+
+* There's an increasing effect with time.
+
+### Data Cleaning
+
+* Some models in the Caret package can't handle missing values.
+
+Options available to me:
+* Centering and Scaling
+* PCA
+* BoxCox, YeoJohnson, expoTrans, range, 
+
+#### Imputation methods:
+
+Missing at Random or not? 
+
+* Drop missing (which requires you to drop missing values in production)
+* Naive: 
+  * Categorical: Mode
+  * Continuous: Median, mean
+* K-nearest Neighbors (knnImpute)
+* EM Algorithm
+* bagImpute
+* medianImpute
+
+#### Use PCA to transform the predictors into orthogonal componen
+
+## Modeling Techniques
+
+Things to try:
+* Linear regression vs. random forest, vs. h2o
+
+Metrics:
+* RMSE
+* MAE
+
+### Basic LM
+
+```{r}
+preds <- list()
+results <- list()
+
+# Fit a basic linear regression
+lm_mod <- lm(mpg ~ cyl + disp + hp + wt + acc + year + origin, data = df_train)
+preds$lm <- predict(lm_mod, df_test)
+postResample(preds$lm, df_test$mpg)
+```
+
+Save to a results object:
+```{r}
+results$lm <- postResample(preds$lm, df_test$mpg)
+```
+
+
+### Caret's Packages
+I randomly select a few of `caret`'s packages from: https://topepo.github.io/caret/train-models-by-tag.html#bayesian-model. I don't tune them, I just use the default settings.
+```{r}
+models <-  c('lm', 'gbm', 'kernelpls', 'widekernelpls', 'pls', 'bayesglm', 'glmboost')
+for(m in models){
+  # fit the model
+  mod <- train(x=df_train[,xvars], y=df_train$mpg, method = m) 
+  # predict
+  model_id = paste0('car_', m)
+  preds[[model_id]] <- predict(mod, df_test)
+  # save performance
+  results[[model_id]] <- postResample(preds[[model_id]], df_test$mpg)
+}
+
+```
+
+### With imputatation
+Some methods in `caret` require imputation, such as 'rf', 'plsRglm', 'svmLinear3':
+```{r}
+install.load::install_load('mboost', 'arm', 'brnn')
+# Impute with medianImpute method
+model_train_imp <- preProcess(df_train, method='medianImpute')
+df_train_imp <- predict(model_train_imp, df_train)
+df_test_imp <- predict(model_train_imp, df_test)
+
+# re-fit all the models, including those that require imputation
+models2 <- c(models, 'rf', 'svmLinear3', 'gam', 'gamSpline')
+for(m in models2){
+  # fit the model
+  mod <- train(x=df_train_imp[,xvars], y=df_train_imp$mpg, method = m)
+  # predict
+  model_id = paste0('car_', m, '_imp')
+  preds[[model_id]] <- predict(mod, df_test_imp)
+  # save performance
+  results[[model_id]] <- postResample(preds[[model_id]], df_test_imp$mpg)
+}
+
+```
+
+* mtry: number of random trees
+
+I gave up on `plsRglm` because I was getting some errors I didn't understand. Same with `brnn` package. Here are some errors I was getting:
+* `plsRglm` error:
+```
+49: model fit failed for Resample05: nt=1, alpha.pvals.expli=0.01 Error in plsRglmmodel.default(y, x, nt = param$nt, modele = dst, pvals.expli = param$alpha.pvals.expli <  : 
+```
+* `brnn` error: 
+```
+37: model fit failed for Resample13: neurons=1 Error in brnn.default(as.matrix(x), y, neurons = param$neurons, ...) : 
+  formal argument "neurons" matched by multiple actual arguments
+```
+
+### H2O AutoML 
+
+```{r}
+library(h2o)
+h2o.init()
+h2o_df <- as.h2o(df, destination_frame='df')
+h2o_train <- as.h2o(df_train, destination_frame = 'df_train')
+h2o_test <- as.h2o(df_test, destination_frame = 'df_test')
+
+aml <- h2o.automl(x = xvars,
+           y = 'mpg', 
+           training_frame = h2o_train,
+           max_runtime_secs = 60*5)
+
+# View Leaderbaord
+lb <- aml@leaderboard
+print(lb, n = nrow(lb))
+```
+
+Get predictions for each model in the AutoML object:
+```{r}
+# Get list of model_ids
+model_ids = lb$model_id %>% as.data.frame() %>% pull()
+for(m in model_ids){
+  print(m)
+  mod <- h2o.getModel(model_id=m)
+  model_id = paste0('h2o_automl_', m)
+  # Need to convert h2o object into a dataframe
+  preds[[model_id]] <- h2o.predict(mod, h2o_test) %>% as.data.frame()
+  results[[model_id]] <- postResample(preds[[model_id]], df_test$mpg)
+}
+
+```
+
+
+# Compare H2O and XGBoost with Caret
+Attempting grid search on XGBoost:
+* https://gist.github.com/ledell/71e0b8861d4fa35b59dde2af282815a5
+
+```{r}
+# Some XGboost/GBM hyperparameters
+hyper_params <- list(ntrees = seq(100, 1000, 1),
+                     learn_rate = seq(0.0001, 0.2, 0.0001),
+                     max_depth = seq(1, 20, 1),
+                     sample_rate = seq(0.5, 1.0, 0.0001),
+                     col_sample_rate = seq(0.2, 1.0, 0.0001))
+search_criteria <- list(strategy = "RandomDiscrete",
+                        stopping_metric = 'rmse',
+                        max_runtime_secs = 60*5,
+                        seed = 1)
+
+# Train the grid
+xgb_grid <- h2o.grid(algorithm = "xgboost",
+                     x = xvars, y = 'mpg',
+                     training_frame = h2o_train,
+                     nfolds = 5,
+                     seed = 1,
+                     hyper_params = hyper_params,
+                     search_criteria = search_criteria)
+
+
+# Sort the grid by CV AUC
+grid <- h2o.getGrid(grid_id = xgb_grid@grid_id, sort_by = "residual_deviance", decreasing = TRUE)
+df_grid <- grid@summary_table %>% as.data.frame()
+
+model_ids = df_grid$model_ids 
+for(m in model_ids){
+  print(m)
+  mod <- h2o.getModel(model_id=m)
+  model_id = paste0('h2o_xgb_tune_', m)
+  # Need to convert h2o object into a dataframe
+  preds[[model_id]] <- h2o.predict(mod, h2o_test) %>% as.data.frame()
+  results[[model_id]] <- postResample(preds[[model_id]], df_test$mpg)
+}
+```
+
+## Model Evaluation
+Compare performance using [`postResample()`](https://topepo.github.io/caret/measuring-performance.html#measures-for-regression): 
+```{r}
+col = c('RMSE', 'RSquared', 'MAE')
+df_res <- t(data.frame(results)) %>% data.frame() 
+df_res$model <- rownames(df_res)
+df_res <- df_res %>%
+  arrange(desc(Rsquared)) %>%
+  mutate(rank_r2 = row_number()) %>%
+  arrange(RMSE) %>%
+  mutate(rank_rmse = row_number()) %>%
+  arrange(MAE) %>% 
+  mutate(rank_mae = row_number()) %>% 
+  dplyr::select(model, RMSE, rank_rmse, Rsquared, rank_r2, MAE, rank_mae)
+df_res %>% arrange(RMSE)
+```
+
+A few interesting notes:
+1. It took 2 seconds to both code and fit the `lm()` model, which did about 36% worse than the best model (or got you 76% of the way there). Fascinating that it placed 85/107, which is in the bottom 20%. This definitely fits the 80-20 rule somehow...
+2. Where money matters, it's worth exploring a variety of tools. H2o's best model was the auto_ml `GBM` model, which outperformed the tuned XGBoost model.
+3. The default `caret` `gbm` is a strong contender. Perhaps with more tuning this model could do better.
+4. The winning model technique is determined by the mdoel evaluation metric. Each model is trained to optimize some metric.
+
+What do the results mean? Let's back into these:
+```{r}
+results[['car_gbm_imp']]
+```
+
+What does RMSE mean here? [link](https://www.theanalysisfactor.com/assessing-the-fit-of-regression-models/)
+* RMSE is taking the difference between the predictions and the observed y, squaring it, taking the mean of that square, and then taking the square root of the mean. Or, simply:
+```{r}
+p <- preds[['car_gbm_imp']]
+y <- test_imp$mpg
+# Let's look at MSE
+mean((p - y)^2)
+```
+* This is the variance of the predictions: On average, the difference between the predi
+* The RMSE is the standard deviation of the unexplained variance. It's in the same unit as the response.
+* RMSE tells you how concentrated the predictions are around the target. [link](https://www.statisticshowto.datasciencecentral.com/rmse/)
+```{r}
+sqrt(mean((p - y)^2))
+```
+
+What does Rsquared mean here?
+* R^2 is the coefficient of determination (the correlation coefficient ^2).
+* R^2 is a relative measure of fit.
+```{r}
+cor(p, y)
+cor(p, y)^2
+```
+
+
+What does MAE mean here?
+* M
+In this case, I think 
+
+
+
+### Stacking the predictions
+* Todo: stack all the predictions and use a linear regression. is the final model better?
+* Todo: stack predictions using gbm.
+
+## Model evaluation
+
+## Final Model
+
+
+Todo:
+* Why does the `caret` lm model differ from the base `lm`?
+* Re-build a time-series model and see performance
+* Build m
+* Compare against h2o autoML
+* Add feature engineering, compare performance
+* Figure out why `rf` model doesn't work.
+* Check assumptions
+* Why does lm differe from car_lm
+* Which imputation method is best? - Try salting the data with more missing values and see which method is best.
+* Create a yaml file with pros and cons of all techniques, then create a datatable from it.
+
+
+## Lessons Learned
+* Caret lets you easily switch between methods.
+* Some algorithms in Caret cannot allow missing values in the predictors. `rf`, `svmLinear3`, `plsRglm` are three that I randomly tried randomly.

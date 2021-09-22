@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R on My take on data</title>
+    <link>/tags/r/</link>
+    <description>Recent content in R on My take on data</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 28 Oct 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Sample Size</title>
+      <link>/2019/10/sample-size/</link>
+      <pubDate>Mon, 28 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/sample-size/</guid>
+      <description>So your boss likes asking questions. Let’s find answers to a few she might ask.
+# Go and collect some car data df = read.table(&amp;#39;ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.data-original&amp;#39;, col.names = c(&amp;#39;mpg&amp;#39;, &amp;#39;cyl&amp;#39;, &amp;#39;disp&amp;#39;, &amp;#39;hp&amp;#39;, &amp;#39;wt&amp;#39;, &amp;#39;acc&amp;#39;, &amp;#39;year&amp;#39;, &amp;#39;origin&amp;#39;, &amp;#39;name&amp;#39;)) # Let&amp;#39;s randomly shuffle the rows set.seed(1) df &amp;lt;- df[sample(nrow(df)),] # Extract make df$make &amp;lt;- word(df$name) df %&amp;lt;&amp;gt;% filter(!is.na(mpg)) %&amp;gt;% select(name, make, everything()) One Sample T-Test  Question 1: I think Ford cars have pretty bad miles-per-gallon (MPG).</description>
+    </item>
+    
+    <item>
+      <title>Modeling Birth Rates Part 2: By Month</title>
+      <link>/2019/10/births-time-series-month/</link>
+      <pubDate>Sat, 26 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/births-time-series-month/</guid>
+      <description>In Part 1, I modeled births at the year level, which didn’t seem to have much seasonality. Now I’m going to try to model the monthly birth rates in the US.
+Predicting Seasonality I hit up the UN data to get seasonal birthrates, which I couldn’t find at CDC. Unfortunately, the UN data doesn’t have a long range of data.</description>
+    </item>
+    
+    <item>
+      <title>Modeling Birth Rates Part 1: By Year</title>
+      <link>/2019/10/births-time-series-year/</link>
+      <pubDate>Wed, 23 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/births-time-series-year/</guid>
+      <description>I’m still excited to be a dad, so I’m going to try to model birth rates in the US. This will be a time series modeling exercise, and I’ll use this time to explore some modeling techniques. In Part 2 I’ll model the monthly birth rates.
+I downloaded CDC birth data from here: * https://www.cdc.gov/nchs/data-visualization/natality-trends/ * “Births and General Fertility Rates” &amp;gt; Download CSV * Other data sets can be found here: https://www.</description>
+    </item>
+    
+    <item>
+      <title>Why does everyone I work with have the same name? A guide on how to not pick a unique baby name in America.</title>
+      <link>/2019/10/baby-names/</link>
+      <pubDate>Sat, 05 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/baby-names/</guid>
+      <description>I’ve taken a particular interest in names since I’m thinking of a name for my to-be-born son. I did a little digging through the Social Security Administration names database, which lists all names given to baby boys and girls in America1. I began this exercise to just get a quality list of ideas, but my curiosity got the better of me.
+Name Trends Since 1950 What was the most popular boy name since 1950?</description>
+    </item>
+    
+    <item>
+      <title>Scraping Baby Boy Name Trends</title>
+      <link>/2019/09/baby-boy-names/</link>
+      <pubDate>Mon, 09 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/09/baby-boy-names/</guid>
+      <description>I’m going to be a dad (again) soon. I don’t want my boy to have a common name, so I gotta do my research. I’m curious: how do names trend over time? If I pick a name today, will it be popular tomorrow?
+Step 1: The Social Security Administration reports all baby names each year in the United States, given the name occurs at least 5 times.</description>
+    </item>
+    
+    <item>
+      <title>Dplyr vs Datatable</title>
+      <link>/2019/04/dplyr-vs-datatable/</link>
+      <pubDate>Thu, 04 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/04/dplyr-vs-datatable/</guid>
+      <description>In the world of data science in R, the battle between dplyr and datatable is real. Here I compare their performance against base r commands for some common tasks. Who will be the winner on speed and simplicity?
+Make random datasets set.seed(71) size1 &amp;lt;- 4*10^6 size2 &amp;lt;- size1 * 0.1 df1 &amp;lt;- data.frame(id=paste0(&amp;quot;SERVICE_&amp;quot;, 1:size1), value=rnorm(size1), stringsAsFactors=FALSE) df2 &amp;lt;- data.frame(id=paste0(&amp;quot;SERVICE_&amp;quot;, sample(1:size1, size2)), value=rnorm(size2), stringsAsFactors=FALSE) dt1 &amp;lt;- data.table(df1) dt2 &amp;lt;- data.table(df2) # mtcars data M &amp;lt;- data.</description>
+    </item>
+    
+    <item>
+      <title>Getting Custom Domain for EC2 Web App - Part 2</title>
+      <link>/2019/02/rshiny-on-docker-part2/</link>
+      <pubDate>Sat, 23 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/02/rshiny-on-docker-part2/</guid>
+      <description>In this post, I&amp;rsquo;ll cover how to better customize some settings so to get your own custom domain for your EC2 instance. Say, app.example.com. Anyone interested in customizing an EC2 instance can use this - not just those who build R Shiny apps. I assume you already read part 1, where it was described how to launch an R Shiny app on EC2. I assume you already have some EC2 instance running with some useful app.</description>
+    </item>
+    
+    <item>
+      <title>R Shiny on AWS Using Docker - Part 1</title>
+      <link>/2019/02/rshiny-on-docker-part1/</link>
+      <pubDate>Tue, 19 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/02/rshiny-on-docker-part1/</guid>
+      <description>I want to run R Shiny on AWS using Docker. Here&amp;rsquo;s how to do it.
+In part 2, I&amp;rsquo;ll demonstrate how to get a custom domain and make the URL look clean.
+Useful background reading If you&amp;rsquo;re already comfortable with Docker, skip to the next section.
+ Great Simple tutorial on using Docker and Flask: Short and sweet. Docker for Beginners: Verbose and lengthy. Excellent introduction. Walks you through all the jargon.</description>
+    </item>
+    
+    <item>
+      <title>byu football</title>
+      <link>/2018/09/byu-football/</link>
+      <pubDate>Fri, 07 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/byu-football/</guid>
+      <description>Goal of this post. Answer some interesting questions about BYU football. Dive into different modeling approaches. I don’t explain my thinking below, but some of the charts might be cool.
+Some questions of interest
+ How is Kilani Sitake doing in his second season compared to past BYU coaches? More challenging: how’s he doing relative to all second-season coaches?  df_in &amp;lt;- read.csv(file.path(fp_data, &amp;#39;byu_seasons.csv&amp;#39;)) %&amp;gt;% distinct() Some basic questions: * How many years do we have data on?</description>
+    </item>
+    
+    <item>
+      <title>Collect, Analyze, and Map Addresses in R</title>
+      <link>/2018/07/addresses-and-maps/</link>
+      <pubDate>Sat, 28 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/addresses-and-maps/</guid>
+      <description>The goal of this tutorial is to do the following:
+Collect addresses (via Google Forms) Download to R (via googlesheets) Geocode them (via geocode) Plot them (using leaflet) Get driving distance between them (via gmapsdistance) Cluster them (kmeans) Making the leaflet plot fancy  1. Collect Perhaps in a future post I’ll explore googleformr. For now, I create forms the old-school way.</description>
+    </item>
+    
+    <item>
+      <title>Rmarkdown images, Leaflet and googlesheets on Blogdown</title>
+      <link>/2018/07/debugging-leaflet-and-googlesheets-on-blogdown/</link>
+      <pubDate>Sat, 28 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/debugging-leaflet-and-googlesheets-on-blogdown/</guid>
+      <description>The beauty of open source is “Oh, let me just download that package and I can do amazing things!”. The reality is “ok, I downloaded it, and I got the ‘hello world’ example working. But now to actually get it to do what I want in the environment that I want takes like…now 30 hours? Just one more bug and I’ll finally give up…”
+Bugs I hit: I hit a lot of bugs when building my Leaflet tutorial.</description>
+    </item>
+    
+    <item>
+      <title>Buying a used car the data science way (and hacking Truecar)</title>
+      <link>/2018/02/buying-a-used-car-the-data-science-way/</link>
+      <pubDate>Sat, 10 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/02/buying-a-used-car-the-data-science-way/</guid>
+      <description>So you want to buy a car, but you don’t know anything about them? Welcome to my life.
+You show up at the dealer and there’s a sticker on the window. You know the difference between make and model, but you soon learn what a trim is. Some versions come with leather. Some have a sun roof. Some have all wheel drive. Some have 20k in miles, and a similarly priced car in a higher trim is at 40k miles.</description>
+    </item>
+    
+    <item>
+      <title>Webscraping Thousands of Used Cars</title>
+      <link>/2017/10/getting-used-car-data/</link>
+      <pubDate>Wed, 18 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/10/getting-used-car-data/</guid>
+      <description>In another post, I describe how I use this data that I’ve scraped, but I wanted to provide a more in-depth tutorial for those interested in how I got the data. Note, this data belongs to Truecar, so all uses herein are for personal and academic reasons only.
+Get the data In order to do any good analaysis, you first need data. I prefer to have more data than less, where possible.</description>
+    </item>
+    
+    <item>
+      <title>Yet Another Weekly Planner</title>
+      <link>/2017/06/yet-another-weekly-planner/</link>
+      <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/06/yet-another-weekly-planner/</guid>
+      <description>I believe that each creation has four phases: dreaming, planning, acting, and reflecting. Think about it - is there anything you&amp;rsquo;ve ever made that didn&amp;rsquo;t first enter into your mind, you came up with some game plan, you carried it out, and then when you were done you could see what went well and where you improved? Isn&amp;rsquo;t this what scrums are really about?
+I wanted a scrum for my personal life, but I didn&amp;rsquo;t find it practical to use the many online resources available.</description>
+    </item>
+    
+    <item>
+      <title>Blogdown and Tranquilpeak Hosted on Netlify: a Deep Dive</title>
+      <link>/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/</link>
+      <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/</guid>
+      <description>This blog will outline what I see as differences between Hugo and Jekyll, some benefits and drawbacks of using Netlify vs. GitHub pages to host, and how to launch the Hugo Tranquilpeak theme from scratch.
+Why Hugo? One of my first posts was about blogging with Jekyll hosted on GitHub. About six months after writing that post, I hit a few bugs trying to debug it and got frustrated because I had already forgotten all of what I binge-learned earlier.</description>
+    </item>
+    
+    <item>
+      <title>The DataViz battle: Plotly vs ggplot2</title>
+      <link>/2017/02/the-dataviz-battle-plotly-vs-ggplot2/</link>
+      <pubDate>Fri, 10 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/02/the-dataviz-battle-plotly-vs-ggplot2/</guid>
+      <description>R users fall in love with ggplot2, the growing standard for data visualization in R. The ability to quickly vizualize trends, and customize just about anything you’d want, make it a powerful tool. Yet this week, I made a discovery that may reduce how much I used ggplot2. Enter plot_ly().
+For this post, I assume that you have a working knowledge of the dplyr (or magrittr) and ggplot2 packages.</description>
+    </item>
+    
+    <item>
+      <title>The Shell and its Many Languages</title>
+      <link>/2017/01/the-shell-and-its-many-languages/</link>
+      <pubDate>Sat, 14 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/01/the-shell-and-its-many-languages/</guid>
+      <description>If you don&amp;rsquo;t know how to use the shell/terminal/command line, you should. Why? Here&amp;rsquo;s a sampling of I&amp;rsquo;ve done in the last month:
+ I used R to generate 30,000 plots using ggplot(). I used the shell and ffmpeg to animate those plots as a movie. I&amp;rsquo;ve used the shell from VBA to send an Excel column of data into Stata, execute a summary statistic command, and then import the results back into Excel.</description>
+    </item>
+    
+  </channel>
+</rss>

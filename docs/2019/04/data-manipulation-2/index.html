@@ -1,0 +1,787 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+  
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.54.0">
+    <meta name="theme" content="Tranquilpeak 0.3.1-BETA">
+    <title>Data Manipulation 2</title>
+    <meta name="author" content="Bryan Whiting">
+    <meta name="keywords" content="">
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+    <meta name="description" content=" dir.create(&#39;~/github/blog/static/post/20190405-data&#39;) ## Warning in dir.create(&quot;~/github/blog/static/post/20190405-data&quot;): &#39;/Users/ ## bryanwhiting/github/blog/static/post/20190405-data&#39; already exists readr::write_csv(mtcars, &#39;~/github/blog/static/post/20190405-data/mtcars.csv&#39;) #head data/20190405-data/mtcars.csv #head static/post/20190405-data/mtcars.csv ">
+    <meta property="og:description" content=" dir.create(&#39;~/github/blog/static/post/20190405-data&#39;) ## Warning in dir.create(&quot;~/github/blog/static/post/20190405-data&quot;): &#39;/Users/ ## bryanwhiting/github/blog/static/post/20190405-data&#39; already exists readr::write_csv(mtcars, &#39;~/github/blog/static/post/20190405-data/mtcars.csv&#39;) #head data/20190405-data/mtcars.csv #head static/post/20190405-data/mtcars.csv ">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Data Manipulation 2">
+    <meta property="og:url" content="/2019/04/data-manipulation-2/">
+    <meta property="og:site_name" content="My take on data">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="My take on data">
+    <meta name="twitter:description" content=" dir.create(&#39;~/github/blog/static/post/20190405-data&#39;) ## Warning in dir.create(&quot;~/github/blog/static/post/20190405-data&quot;): &#39;/Users/ ## bryanwhiting/github/blog/static/post/20190405-data&#39; already exists readr::write_csv(mtcars, &#39;~/github/blog/static/post/20190405-data/mtcars.csv&#39;) #head data/20190405-data/mtcars.csv #head static/post/20190405-data/mtcars.csv ">
+    
+      <meta name="twitter:creator" content="@bryanwhiting">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=640">
+    
+
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" />
+    
+    
+    <link rel="stylesheet" href="/css/style-u6mk0ojoywresbx8iepslrmmhl4stuhrsxuwhkpwrkrx7mryjcaimasnk4pi.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-85616639-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">My take on data</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  
+          <div class="twitter">
+          <a class="twitter-timeline" data-height="300" href="https://twitter.com/BryanWhiting?ref_src=twsrc%5Etfw">Tweets by BryanWhiting</a> 
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+          </div>
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Bryan Whiting</h4>
+        
+          <h5 class="sidebar-profile-bio">father, innovator, data scientist</h5>
+        
+      </div>
+    
+    
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about/index.html">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/projects/index.html">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-briefcase"></i>
+      
+      <span class="sidebar-button-desc">Projects</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/2138773/bryan">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/bryanwhiting">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/bryanwhiting">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://www.linkedin.com/in/bryan-whiting-b524a44b/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-linkedin"></i>
+      
+      <span class="sidebar-button-desc">LinkedIn</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+    </ul>
+  </div>
+  
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Data Manipulation 2
+    </h1>
+  
+  <div class="postShorten-meta post-meta">
+  
+    <time itemprop="datePublished" datetime="2019-04-05T00:00:00Z">
+      
+  April 5, 2019
+
+    </time>
+  
+  
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/r">r</a>
+    
+  
+
+
+</div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              
+
+
+<pre class="r"><code>dir.create(&#39;~/github/blog/static/post/20190405-data&#39;)</code></pre>
+<pre><code>## Warning in dir.create(&quot;~/github/blog/static/post/20190405-data&quot;): &#39;/Users/
+## bryanwhiting/github/blog/static/post/20190405-data&#39; already exists</code></pre>
+<pre class="r"><code>readr::write_csv(mtcars, &#39;~/github/blog/static/post/20190405-data/mtcars.csv&#39;)</code></pre>
+<pre class="bash"><code>#head data/20190405-data/mtcars.csv
+#head static/post/20190405-data/mtcars.csv</code></pre>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+            
+            <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/dplyr-vs-datatable/" data-tooltip="Dplyr vs Datatable">
+          
+            <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=%2f2019%2f04%2fdata-manipulation-2%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2f2019%2f04%2fdata-manipulation-2%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=%2f2019%2f04%2fdata-manipulation-2%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+      <li class="post-action">
+        <a class="post-action-btn btn btn--default" href="#disqus_thread">
+          <i class="fa fa-comment-o"></i>
+        </a>
+      </li>
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Bryan Whiting. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/dplyr-vs-datatable/" data-tooltip="Dplyr vs Datatable">
+          
+            <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=%2f2019%2f04%2fdata-manipulation-2%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2f2019%2f04%2fdata-manipulation-2%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=%2f2019%2f04%2fdata-manipulation-2%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+      <li class="post-action">
+        <a class="post-action-btn btn btn--default" href="#disqus_thread">
+          <i class="fa fa-comment-o"></i>
+        </a>
+      </li>
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <ul class="share-options">
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2f2019%2f04%2fdata-manipulation-2%2f">
+        <i class="fa fa-google-plus"></i><span>Share on Google Plus</span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2f2019%2f04%2fdata-manipulation-2%2f">
+        <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2f2019%2f04%2fdata-manipulation-2%2f">
+        <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Bryan Whiting</h4>
+    
+      <div id="about-card-bio">father, innovator, data scientist</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Data Scientist
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Washington, D.C.
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/04/data-manipulation-2/">
+                <h3 class="media-heading">Data Manipulation 2</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Apr 4, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"> dir.create(&#39;~/github/blog/static/post/20190405-data&#39;) ## Warning in dir.create(&quot;~/github/blog/static/post/20190405-data&quot;): &#39;/Users/ ## bryanwhiting/github/blog/static/post/20190405-data&#39; already exists readr::write_csv(mtcars, &#39;~/github/blog/static/post/20190405-data/mtcars.csv&#39;) #head data/20190405-data/mtcars.csv #head static/post/20190405-data/mtcars.csv </div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/04/dplyr-vs-datatable/">
+                <h3 class="media-heading">Dplyr vs Datatable</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Apr 4, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In the world of data science in R, the battle between dplyr and datatable is real. Here I do compare their performance against base r commands for some common tasks.
+# Make random datasets set.seed(71) size1 &lt;- 4*10^6 size2 &lt;- size1 * 0.1 df1 &lt;- data.frame(id=paste0(&quot;SERVICE_&quot;, 1:size1), value=rnorm(size1), stringsAsFactors=FALSE) df2 &lt;- data.frame(id=paste0(&quot;SERVICE_&quot;, sample(1:size1, size2)), value=rnorm(size2), stringsAsFactors=FALSE) dt1 &lt;- data.table(df1) dt2 &lt;- data.table(df2) # mtcars data M &lt;- data.table(mtcars) m &lt;- as_tibble(mtcars) Group by sum</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/02/rshiny-on-docker-part2/">
+                <h3 class="media-heading">Getting Custom Domain for EC2 Web App - Part 2</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In this post, I&rsquo;ll cover how to better customize some settings so to get your own custom domain for your EC2 instance. Say, app.example.com. Anyone interested in customizing an EC2 instance can use this - not just those who build R Shiny apps. I assume you already read part 1, where it was described how to launch an R Shiny app on EC2. I assume you already have some EC2 instance running with some useful app.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/02/rshiny-on-docker-part1/">
+                <h3 class="media-heading">R Shiny on AWS Using Docker - Part 1</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I want to run R Shiny on AWS using Docker. Here&rsquo;s how to do it.
+In part 2, I&rsquo;ll demonstrate how to get a custom domain and make the URL look clean.
+Useful background reading If you&rsquo;re already comfortable with Docker, skip to the next section.
+ Great Simple tutorial on using Docker and Flask: Short and sweet. Docker for Beginners: Verbose and lengthy. Excellent introduction. Walks you through all the jargon.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/09/machine-learning-models/">
+                <h3 class="media-heading">Machine Learning Model Notes</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Here are some notes on machine learning models.
+Concepts Behind Decision Trees  Bagging (boostrap aggregation): Randomly sample with replacement, and average the results. Majority vote: The most commonly-occuring prediction. Internal node: Where the splits occur. Branches: Segments that connect the nodes. Terminal node (leafs, regions): Where the observations end up. The average of the responses (or majority vote) is the prediction for future observations. Gini index: where \(m\) is the leaf and \(k\) is the class (0 or 1 for binary classification, but can be extedned for multiple classes).</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/09/byu-football/">
+                <h3 class="media-heading">byu football</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Goal of this post. Answer some interesting questions about BYU football. Dive into different modeling approaches. I don’t explain my thinking below, but some of the charts might be cool.
+Some questions of interest
+ How is Kilani Sitake doing in his second season compared to past BYU coaches? More challenging: how’s he doing relative to all second-season coaches?  df_in &lt;- read.csv(file.path(fp_data, &#39;byu_seasons.csv&#39;)) %&gt;% distinct() Some basic questions: * How many years do we have data on?</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/09/basic-probability-and-stats/">
+                <h3 class="media-heading">Basic Probability and Stats</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">install.load::install_load(&#39;ggplot2&#39;, &#39;reticulate&#39;, &#39;dplyr&#39;, &#39;pscl&#39;, &#39;Zelig&#39;, &#39;tidyverse&#39;) ## ## Attaching package: &#39;dplyr&#39; ## The following objects are masked from &#39;package:stats&#39;: ## ## filter, lag ## The following objects are masked from &#39;package:base&#39;: ## ## intersect, setdiff, setequal, union ## Classes and Methods for R developed in the ## Political Science Computational Laboratory ## Department of Political Science ## Stanford University ## Simon Jackman ## hurdle and zeroinfl functions by Achim Zeileis ## Loading required package: survival ## ## Attaching package: &#39;Zelig&#39; ## The following object is masked from &#39;package:ggplot2&#39;: ## ## stat ## ── Attaching packages ────────────────────────────────────────── tidyverse 1.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/07/addresses-and-maps/">
+                <h3 class="media-heading">Collect, Analyze, and Map Addresses in R</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jul 7, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">The goal of this tutorial is to do the following:
+Collect addresses (via Google Forms) Download to R (via googlesheets) Geocode them (via geocode) Plot them (using leaflet) Get driving distance between them (via gmapsdistance) Cluster them (kmeans) Making the leaflet plot fancy  1. Collect Perhaps in a future post I’ll explore googleformr. For now, I create forms the old-school way.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/07/debugging-leaflet-and-googlesheets-on-blogdown/">
+                <h3 class="media-heading">Rmarkdown images, Leaflet and googlesheets on Blogdown</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jul 7, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">The beauty of open source is “Oh, let me just download that package and I can do amazing things!”. The reality is “ok, I downloaded it, and I got the ‘hello world’ example working. But now to actually get it to do what I want in the environment that I want takes like…now 30 hours? Just one more bug and I’ll finally give up…”
+Bugs I hit: I hit a lot of bugs when building my Leaflet tutorial.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/07/getting-the-first-data-science-job/">
+                <h3 class="media-heading">Getting the First Data Science Job</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jul 7, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Last March, I wanted to break into the Data Science community but was struggling with confidence and starting to doubt I&rsquo;d make it. I had been reading blog after blog about data science, practiced additional coding and learning new methods at night. And rejection after rejection, I wondered if I was on the right path. Now on the other side, hindsight is 20&frasl;20.
+I write this post to my past self, a person seeking for a job they couldn&rsquo;t seem to get.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         21 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('/images/durango-blurred.JPG');"></div>
+  
+
+
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.js"></script>
+
+
+<script src="/js/script-wl33z0n6ocaypepiqrazthtivfrliqijej4rq8ek8gvrv1awftmgjuv8k4zc.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight').each(function(i, block) {
+    var code = "";
+    hljs.highlightAuto(block.innerText).value.split(/\r\n|\r|\n/).forEach(function(line) {
+      code += "<span class=\"line\">" + line + "</span><br>";
+    });
+    if (code.length > 0) {
+      block.innerHTML = code;  
+    }
+  });
+  $('pre > code').each(function(i, block) {
+    $(this).addClass('codeblock');
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2019\/04\/data-manipulation-2\/';
+          
+            this.page.identifier = '\/2019\/04\/data-manipulation-2\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'bryanwhiting1';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+
+    
+  </body>
+</html>
+

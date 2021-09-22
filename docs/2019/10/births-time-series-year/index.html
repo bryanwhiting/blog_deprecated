@@ -1,0 +1,1384 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+  
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <script data-ad-client="ca-pub-6540088627087882" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.54.0">
+    <meta name="theme" content="Tranquilpeak 0.3.1-BETA">
+    <title>Modeling Birth Rates Part 1: By Year</title>
+    <meta name="author" content="Bryan Whiting">
+    <meta name="keywords" content="">
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+    <meta name="description" content="I’m still excited to be a dad, so I’m going to try to model birth rates in the US. This will be a time series modeling exercise, and I’ll use this time to explore some modeling techniques. In Part 2 I’ll model the monthly birth rates.
+I downloaded CDC birth data from here: * https://www.cdc.gov/nchs/data-visualization/natality-trends/ * “Births and General Fertility Rates” &gt; Download CSV * Other data sets can be found here: https://www.">
+    <meta property="og:description" content="I’m still excited to be a dad, so I’m going to try to model birth rates in the US. This will be a time series modeling exercise, and I’ll use this time to explore some modeling techniques. In Part 2 I’ll model the monthly birth rates.
+I downloaded CDC birth data from here: * https://www.cdc.gov/nchs/data-visualization/natality-trends/ * “Births and General Fertility Rates” &gt; Download CSV * Other data sets can be found here: https://www.">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Modeling Birth Rates Part 1: By Year">
+    <meta property="og:url" content="/2019/10/births-time-series-year/">
+    <meta property="og:site_name" content="My take on data">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="My take on data">
+    <meta name="twitter:description" content="I’m still excited to be a dad, so I’m going to try to model birth rates in the US. This will be a time series modeling exercise, and I’ll use this time to explore some modeling techniques. In Part 2 I’ll model the monthly birth rates.
+I downloaded CDC birth data from here: * https://www.cdc.gov/nchs/data-visualization/natality-trends/ * “Births and General Fertility Rates” &gt; Download CSV * Other data sets can be found here: https://www.">
+    
+      <meta name="twitter:creator" content="@bryanwhiting">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=640">
+    
+
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" />
+    
+    
+    <link rel="stylesheet" href="/css/style-u6mk0ojoywresbx8iepslrmmhl4stuhrsxuwhkpwrkrx7mryjcaimasnk4pi.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-85616639-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">My take on data</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Bryan Whiting</h4>
+        
+          <h5 class="sidebar-profile-bio">father, innovator, data scientist</h5>
+        
+      </div>
+    
+    
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about/index.html">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/projects/index.html">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-briefcase"></i>
+      
+      <span class="sidebar-button-desc">Projects</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/2138773/bryan">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/bryanwhiting">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/bryanwhiting">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://www.linkedin.com/in/bryan-whiting-b524a44b/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-linkedin"></i>
+      
+      <span class="sidebar-button-desc">LinkedIn</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+    </ul>
+  </div>
+  
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Modeling Birth Rates Part 1: By Year
+    </h1>
+  
+  <div class="postShorten-meta post-meta">
+  
+    <time itemprop="datePublished" datetime="2019-10-23T00:00:00Z">
+      
+  October 23, 2019
+
+    </time>
+  
+  
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/analysis">analysis</a>
+    
+  
+
+
+</div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              
+
+
+<p>I’m still excited to be a dad, so I’m going to try to model birth rates in the US. This will be a time series modeling exercise, and I’ll use this time to explore some modeling techniques. In <a href="/post/births-time-series-month">Part 2</a> I’ll model the monthly birth rates.</p>
+<p>I downloaded CDC birth data from here: * <a href="https://www.cdc.gov/nchs/data-visualization/natality-trends/" class="uri">https://www.cdc.gov/nchs/data-visualization/natality-trends/</a> * “Births and General Fertility Rates” &gt; Download CSV * Other data sets can be found here: <a href="https://www.cdc.gov/nchs/data-visualization/" class="uri">https://www.cdc.gov/nchs/data-visualization/</a></p>
+<p>What do the data look like?</p>
+<pre class="r"><code>df &lt;- readr::read_csv(&#39;~/github/blog/static/img/20191023-births/NCHS_-_Births_and_General_Fertility_Rates__United_States.csv&#39;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Year = col_integer(),
+##   `Birth Number` = col_number(),
+##   `General Fertility Rate` = col_double(),
+##   `Crude Birth Rate` = col_double()
+## )</code></pre>
+<pre class="r"><code>colnames(df) %&lt;&gt;% tolower() %&gt;% str_replace_all(&#39; &#39;, &#39;_&#39;)
+df %&lt;&gt;% 
+  mutate(birth_number = birth_number/1e6) %&gt;%
+  select(year, birth_number)
+
+# skim the data
+skimr::skim(df)</code></pre>
+<pre><code>## Skim summary statistics
+##  n obs: 107 
+##  n variables: 2 
+## 
+## ── Variable type:integer ───────────────────────────────────────────────────────────────
+##  variable missing complete   n mean    sd   p0    p25  p50    p75 p100
+##      year       0      107 107 1962 31.03 1909 1935.5 1962 1988.5 2015
+##      hist
+##  ▇▇▇▇▇▇▇▇
+## 
+## ── Variable type:numeric ───────────────────────────────────────────────────────────────
+##      variable missing complete   n mean  sd   p0  p25  p50  p75 p100
+##  birth_number       0      107 107 3.47 0.6 2.31 2.94 3.63 3.99 4.32
+##      hist
+##  ▃▃▆▂▂▅▇▆</code></pre>
+<pre class="r"><code># Vizualize trend over year:
+theme_set(theme_minimal())
+ggplot(df, aes(x = year, y = birth_number)) +
+  geom_point() +
+  geom_line() +
+  ggthemes::scale_color_pander() + 
+  labs(title = &#39;Number of US Births by Year&#39;,
+       y = &#39;Number Births (Millions)&#39;)</code></pre>
+<p><img src="/post/2019-10-23-births-times-series-year_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>These data are hard to model because they’re not particularly stable. But let’s see if we can predict the first last 10 years using the prior 2000</p>
+<pre class="r"><code># split into test and train
+cutoff &lt;- 2008
+
+# for modeling, we&#39;ll filter to below this cutoff:
+df_train = df[df$year &lt;= cutoff,]
+max(df_train$year)</code></pre>
+<pre><code>## [1] 2008</code></pre>
+<div id="linear-model" class="section level2">
+<h2>Linear model</h2>
+<p>Let’s fit a line trend to this data:</p>
+<pre class="r"><code># Fit a line trend
+mod &lt;- lm(birth_number ~ year, data = df %&gt;% filter(year &lt;= cutoff))
+df$p_line &lt;- predict(mod, df)
+
+# color stolen: http://www.sthda.com/english/wiki/ggplot2-colors-how-to-change-colors-automatically-and-manually
+# shade_color = &quot;#56B4E9&quot;
+
+plot_births &lt;- function(df){
+  df %&gt;% 
+    select(year, birth_number, starts_with(&#39;p_&#39;)) %&gt;%
+    gather(key=line, value=value, -year) %&gt;%
+    ggplot(aes(x = year, y = value)) +
+      geom_rect(aes(xmin=cutoff, xmax=Inf, ymin=-Inf, ymax=Inf), fill=&#39;pink&#39;, alpha=.01) + 
+      geom_line(aes(color=line)) +
+      ggthemes::scale_color_pander() + 
+      geom_vline(xintercept = cutoff) + 
+      labs(title = &#39;Number of US Births by Year&#39;,
+           y = &#39;Number Births (Millions)&#39;)  
+  
+}
+plot_births(df)</code></pre>
+<p><img src="/post/2019-10-23-births-times-series-year_files/figure-html/unnamed-chunk-3-1.png" width="672" /> Clearly, this linear model doesn’t extrapolate well. Let’s build in some features into the data.</p>
+</div>
+<div id="enhanced-the-linear-model-with-features" class="section level2">
+<h2>Enhanced the linear model with features</h2>
+<p>Perhaps adding some lagged features can improve the model fit.</p>
+<pre class="r"><code># Fit a line trend using last year&#39;s data:
+df2 &lt;- df %&gt;% mutate(b_1 = lag(birth_number, 1),
+              b_2 = lag(birth_number, 2),
+              b_5 = lag(birth_number, 5),
+              b_10 = lag(birth_number, 10)) 
+df_train =  df2 %&gt;% filter(year &lt;= cutoff)
+#mod &lt;- lm(birth_number ~ year + b_1 + b_2 + b_5 + b_10, data = df_train)
+mod &lt;- lm(birth_number ~ year + b_1, data = df_train)
+df$p_known &lt;- predict(mod, df2)
+df$p_dyn &lt;- predict(mod, df2)
+
+# dynamic prediction
+for (y in cutoff:2015) {
+  # Find the index
+  ind = which(df2$year == y)
+  if (y == cutoff){
+    b_1 = df[ind-1,]$birth_number
+  } else {
+    b_1 = df[ind-1,]$p_dyn
+  }
+  # Predict
+  df[ind,]$p_dyn = predict(mod, data.frame(year=y, b_1 = b_1))
+}
+tail(df, 10)</code></pre>
+<pre><code>## # A tibble: 10 x 5
+##     year birth_number p_line p_known p_dyn
+##    &lt;int&gt;        &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1  2006         4.27   4.18    4.16  4.16
+##  2  2007         4.32   4.20    4.28  4.28
+##  3  2008         4.25   4.21    4.33  4.33
+##  4  2009         4.13   4.23    4.26  4.34
+##  5  2010         4.00   4.25    4.15  4.36
+##  6  2011         3.95   4.26    4.03  4.37
+##  7  2012         3.95   4.28    3.99  4.38
+##  8  2013         3.93   4.29    3.99  4.40
+##  9  2014         3.99   4.31    3.97  4.41
+## 10  2015         3.98   4.32    4.02  4.42</code></pre>
+<p>The code is dynamically predicting. The difference between <code>p_dyn</code> and <code>p_known</code> is that <code>p_dyn</code> is dynamically predicting, using the lag of p_dyn as b_1 for future predictions. Whereas <code>p_known</code> is always just using b_1. You see the divergence in the year 2009. Both predictions are the same until we have extrapolated predictions.</p>
+<p>You’d use <code>p_known</code> if you were building a model to only predicting one year out in advance.</p>
+<pre class="r"><code># proof it works: take the p_dyn prediction from 2010 and use it to predict 2011.
+predict(mod, data.frame(year=2011, b_1=4.36))</code></pre>
+<pre><code>##       1 
+## 4.37315</code></pre>
+<p>Let’s view the predictions:</p>
+<pre class="r"><code>plot_births(df)</code></pre>
+<p><img src="/post/2019-10-23-births-times-series-year_files/figure-html/unnamed-chunk-6-1.png" width="672" /> As you see from the predictions, <code>p_dyn</code> is going to extrapolate at the linear trend from the last point it used. As you add more terms, it might be able to smooth out. The <code>p_known</code> is going to over index to the prior year, but gives a much better fit than just <code>p_line</code>. If you want something with good extrapolation, you may want ARIMA model.</p>
+</div>
+<div id="arima-model" class="section level2">
+<h2>ARIMA model</h2>
+<p>My <a href="/post/births-time-series-month">next post</a> will cover some of the nuances of ARIMA modeling. For this post, I just want to see if ARIMA modeling will make my life simpler than hand-coding dynamic predictions. Also, ARIMA modeling can figure out your lags for you, so you don’t have to.</p>
+<pre class="r"><code>y &lt;- df %&gt;% filter(year &lt;= cutoff) %&gt;% pull(birth_number)
+best_arima &lt;- forecast::auto.arima(y=y)
+summary(best_arima)</code></pre>
+<pre><code>## Series: y 
+## ARIMA(0,1,1) 
+## 
+## Coefficients:
+##          ma1
+##       0.4513
+## s.e.  0.0966
+## 
+## sigma^2 estimated as 0.01281:  log likelihood=75.63
+## AIC=-147.25   AICc=-147.13   BIC=-142.06
+## 
+## Training set error measures:
+##                     ME      RMSE        MAE       MPE     MAPE      MASE
+## Training set 0.0103333 0.1120282 0.07790827 0.2686606 2.375598 0.9030343
+##                     ACF1
+## Training set -0.05619628</code></pre>
+<p>This is suggesting an ARIMA(0, 1, 1) model. Check out <a href="https://people.duke.edu/~rnau/411arim.htm">this</a> for a dive into what ARIMA modeling means:</p>
+<blockquote>
+<p>A nonseasonal ARIMA model is classified as an “ARIMA(p,d,q)” model, where: * p is the number of autoregressive terms, * d is the number of nonseasonal differences needed for stationarity, and * q is the number of lagged forecast errors in the prediction equation.</p>
+</blockquote>
+<p>We see the ARIMA model just fits a line trend going out.</p>
+<pre class="r"><code>plot(forecast::forecast(best_arima, h=6))</code></pre>
+<p><img src="/post/2019-10-23-births-times-series-year_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Let’s see what ARIMA would have done with a larger time range:</p>
+<pre class="r"><code>y &lt;- df %&gt;% filter(year &lt;= 1990) %&gt;% pull(birth_number)
+# ic is the information criteria used for model selection 
+best_arima &lt;- forecast::auto.arima(y=y, ic=&#39;aic&#39;)
+plot(forecast::forecast(best_arima, h=15))</code></pre>
+<p><img src="/post/2019-10-23-births-times-series-year_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>summary(best_arima)</code></pre>
+<pre><code>## Series: y 
+## ARIMA(0,1,1) 
+## 
+## Coefficients:
+##          ma1
+##       0.4627
+## s.e.  0.1067
+## 
+## sigma^2 estimated as 0.01496:  log likelihood=55.64
+## AIC=-107.27   AICc=-107.12   BIC=-102.48
+## 
+## Training set error measures:
+##                      ME      RMSE       MAE       MPE     MAPE      MASE
+## Training set 0.01228742 0.1208229 0.0851674 0.3215201 2.656232 0.8975789
+##                     ACF1
+## Training set -0.05845822</code></pre>
+<div id="build-our-own-auto.arima" class="section level3">
+<h3>Build our own auto.arima()</h3>
+<p>Maybe we don’t want to use <code>auto.arima()</code> and want to play around with our own settings. For example, <code>auto.arima()</code> has its own defaults for picking the best model. What if we want to pick the model based off of predictive accuracy on unseen data? Let’s find out:</p>
+<pre class="r"><code># determin how many predictions to do
+n_preds &lt;- 25
+# determin what year cutoff I need
+cutoff &lt;- 2015-n_preds
+# Create training and observed data
+y &lt;- df %&gt;% filter(year &lt;= cutoff) %&gt;% pull(birth_number)
+obs &lt;- df %&gt;% filter(year &gt; cutoff) %&gt;% pull(birth_number)
+
+# Create some combos of ARIMA models
+p &lt;- 0:2
+d &lt;- 0:2
+q &lt;- 0:4
+all_combos &lt;- as.data.frame(expand.grid(p, d, q))
+colnames(all_combos) &lt;- c(&#39;p&#39;, &#39;d&#39;, &#39;q&#39;)
+# See the combos:
+head(all_combos)</code></pre>
+<pre><code>##   p d q
+## 1 0 0 0
+## 2 1 0 0
+## 3 2 0 0
+## 4 0 1 0
+## 5 1 1 0
+## 6 2 1 0</code></pre>
+<pre class="r"><code># list to store predictions
+preds &lt;- list()
+# List to store RMSE and model metrics
+rmse &lt;- list()
+
+# To start things off, let&#39;s just fit a model that&#39;s the mean of y. We&#39;ll prove that this is the same as ARIMA(0,0,0) - it&#39;s just the intercept.
+combo_name &lt;- &#39;dumb_mean&#39;
+yhat &lt;- rep(mean(y), n_preds)
+preds[[combo_name]] &lt;- yhat
+rmse[[combo_name]] &lt;- c(caret::postResample(yhat, obs=obs), AIC=NA)
+
+# Now let&#39;s see if ARIMA can beat a dumb model.
+for (row in 1:nrow(all_combos)){
+  combo &lt;- all_combos[row,] %&gt;% as.numeric()
+  combo_name = paste0(&#39;ARIMA(&#39;, paste0(combo, collapse =&#39;,&#39;), &#39;)&#39;)
+  cat(&#39;\nRunning:&#39;, combo_name)
+  
+  m &lt;- stats::arima(y, 
+                    order=combo, 
+                    #seasonal=list(order=c(0, 1, 0),period=12),
+                    method = &#39;ML&#39;
+  )
+  # Use this if you want the original data attached
+  #yhat &lt;- c(y, predict(m, n.ahead=15)$pred)
+  yhat &lt;- predict(m, n.ahead=n_preds)$pred
+  preds[[combo_name]] &lt;- yhat
+  rmse[[combo_name]] &lt;- c(caret::postResample(yhat, obs=obs), AIC=m$aic)
+}</code></pre>
+<pre><code>## 
+## Running: ARIMA(0,0,0)
+## Running: ARIMA(1,0,0)
+## Running: ARIMA(2,0,0)
+## Running: ARIMA(0,1,0)
+## Running: ARIMA(1,1,0)
+## Running: ARIMA(2,1,0)
+## Running: ARIMA(0,2,0)
+## Running: ARIMA(1,2,0)
+## Running: ARIMA(2,2,0)
+## Running: ARIMA(0,0,1)
+## Running: ARIMA(1,0,1)
+## Running: ARIMA(2,0,1)
+## Running: ARIMA(0,1,1)
+## Running: ARIMA(1,1,1)
+## Running: ARIMA(2,1,1)
+## Running: ARIMA(0,2,1)
+## Running: ARIMA(1,2,1)
+## Running: ARIMA(2,2,1)
+## Running: ARIMA(0,0,2)
+## Running: ARIMA(1,0,2)
+## Running: ARIMA(2,0,2)
+## Running: ARIMA(0,1,2)
+## Running: ARIMA(1,1,2)
+## Running: ARIMA(2,1,2)
+## Running: ARIMA(0,2,2)
+## Running: ARIMA(1,2,2)
+## Running: ARIMA(2,2,2)
+## Running: ARIMA(0,0,3)
+## Running: ARIMA(1,0,3)
+## Running: ARIMA(2,0,3)
+## Running: ARIMA(0,1,3)
+## Running: ARIMA(1,1,3)
+## Running: ARIMA(2,1,3)
+## Running: ARIMA(0,2,3)
+## Running: ARIMA(1,2,3)
+## Running: ARIMA(2,2,3)
+## Running: ARIMA(0,0,4)
+## Running: ARIMA(1,0,4)
+## Running: ARIMA(2,0,4)
+## Running: ARIMA(0,1,4)
+## Running: ARIMA(1,1,4)
+## Running: ARIMA(2,1,4)
+## Running: ARIMA(0,2,4)
+## Running: ARIMA(1,2,4)
+## Running: ARIMA(2,2,4)</code></pre>
+<pre class="r"><code>df_preds &lt;- as.tibble(preds)
+df_preds[0:5, 0:5]</code></pre>
+<pre><code>## # A tibble: 5 x 5
+##   dumb_mean `ARIMA(0,0,0)` `ARIMA(1,0,0)` `ARIMA(2,0,0)` `ARIMA(0,1,0)`
+##       &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;
+## 1      3.30           3.30           4.14           4.17           4.16
+## 2      3.30           3.30           4.12           4.15           4.16
+## 3      3.30           3.30           4.11           4.12           4.16
+## 4      3.30           3.30           4.09           4.09           4.16
+## 5      3.30           3.30           4.08           4.06           4.16</code></pre>
+<p>Now that we have the predictions, let’s find the RMSE of each prediction and surface the best 5 models:</p>
+<pre class="r"><code>df_res &lt;- as.data.frame(rmse) %&gt;% t()
+df_res &lt;- df_res %&gt;% 
+  # make the dataframe rownames into a new column to make sure everything matches
+  as.tibble(rownames=&#39;m&#39;) %&gt;%
+  # add the model names before sorting
+  mutate(model = names(rmse)) %&gt;%
+  arrange(RMSE) %&gt;%
+  mutate(rank=row_number()) %&gt;% #head() # uncomment this to make sure everything checks out
+  select(model, everything(), -m)
+# View the results
+df_res %&gt;% head(10) %&gt;% knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">model</th>
+<th align="right">RMSE</th>
+<th align="right">Rsquared</th>
+<th align="right">MAE</th>
+<th align="right">AIC</th>
+<th align="right">rank</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ARIMA(2,1,0)</td>
+<td align="right">0.1559537</td>
+<td align="right">0.0242816</td>
+<td align="right">0.1387364</td>
+<td align="right">-104.65523</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">ARIMA(0,1,0)</td>
+<td align="right">0.1672763</td>
+<td align="right">NA</td>
+<td align="right">0.1500630</td>
+<td align="right">-96.87256</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">ARIMA(2,1,1)</td>
+<td align="right">0.1686301</td>
+<td align="right">0.0176971</td>
+<td align="right">0.1518507</td>
+<td align="right">-104.64969</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">ARIMA(2,1,2)</td>
+<td align="right">0.1723238</td>
+<td align="right">0.0134531</td>
+<td align="right">0.1555453</td>
+<td align="right">-102.92410</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">ARIMA(0,1,3)</td>
+<td align="right">0.1733878</td>
+<td align="right">0.0190806</td>
+<td align="right">0.1566874</td>
+<td align="right">-104.30416</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">ARIMA(1,0,0)</td>
+<td align="right">0.1734486</td>
+<td align="right">0.0353080</td>
+<td align="right">0.1445162</td>
+<td align="right">-91.66510</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">ARIMA(1,1,2)</td>
+<td align="right">0.1756161</td>
+<td align="right">0.0180997</td>
+<td align="right">0.1588489</td>
+<td align="right">-104.28126</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">ARIMA(0,1,2)</td>
+<td align="right">0.1765064</td>
+<td align="right">0.0174900</td>
+<td align="right">0.1597073</td>
+<td align="right">-106.27290</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">ARIMA(1,1,1)</td>
+<td align="right">0.1827839</td>
+<td align="right">0.0140462</td>
+<td align="right">0.1657801</td>
+<td align="right">-106.07617</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">ARIMA(0,1,1)</td>
+<td align="right">0.1925335</td>
+<td align="right">NA</td>
+<td align="right">0.1750649</td>
+<td align="right">-107.27327</td>
+<td align="right">10</td>
+</tr>
+</tbody>
+</table>
+<p>One note: When you filtere by AIC I find that <code>ARIMA(0,1,1)</code>, the chosen model by <code>auto.arima()</code>, isn’t the model with the lowest AIC. But the model with the lowest AIC in our set is <code>ARIMA(2,1,4)</code>. We see below that <code>ARIMA(0,1,1)</code> comes in second place with respect to AIC.</p>
+<pre class="r"><code>df_res %&gt;% arrange(AIC) %&gt;% head(10) %&gt;% knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">model</th>
+<th align="right">RMSE</th>
+<th align="right">Rsquared</th>
+<th align="right">MAE</th>
+<th align="right">AIC</th>
+<th align="right">rank</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ARIMA(2,1,4)</td>
+<td align="right">0.2438147</td>
+<td align="right">0.0341325</td>
+<td align="right">0.2181809</td>
+<td align="right">-107.2797</td>
+<td align="right">20</td>
+</tr>
+<tr class="even">
+<td align="left">ARIMA(0,1,1)</td>
+<td align="right">0.1925335</td>
+<td align="right">NA</td>
+<td align="right">0.1750649</td>
+<td align="right">-107.2733</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="left">ARIMA(1,1,4)</td>
+<td align="right">0.4281514</td>
+<td align="right">0.0541832</td>
+<td align="right">0.4021990</td>
+<td align="right">-107.1702</td>
+<td align="right">28</td>
+</tr>
+<tr class="even">
+<td align="left">ARIMA(0,1,2)</td>
+<td align="right">0.1765064</td>
+<td align="right">0.0174900</td>
+<td align="right">0.1597073</td>
+<td align="right">-106.2729</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">ARIMA(1,1,1)</td>
+<td align="right">0.1827839</td>
+<td align="right">0.0140462</td>
+<td align="right">0.1657801</td>
+<td align="right">-106.0762</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="left">ARIMA(2,0,4)</td>
+<td align="right">0.5021202</td>
+<td align="right">0.0423849</td>
+<td align="right">0.4002382</td>
+<td align="right">-105.9320</td>
+<td align="right">30</td>
+</tr>
+<tr class="odd">
+<td align="left">ARIMA(1,1,3)</td>
+<td align="right">0.4228768</td>
+<td align="right">0.0436743</td>
+<td align="right">0.4003587</td>
+<td align="right">-105.5662</td>
+<td align="right">27</td>
+</tr>
+<tr class="even">
+<td align="left">ARIMA(2,1,0)</td>
+<td align="right">0.1559537</td>
+<td align="right">0.0242816</td>
+<td align="right">0.1387364</td>
+<td align="right">-104.6552</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">ARIMA(2,1,1)</td>
+<td align="right">0.1686301</td>
+<td align="right">0.0176971</td>
+<td align="right">0.1518507</td>
+<td align="right">-104.6497</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">ARIMA(2,1,3)</td>
+<td align="right">0.2247741</td>
+<td align="right">0.0003864</td>
+<td align="right">0.2034835</td>
+<td align="right">-104.5112</td>
+<td align="right">13</td>
+</tr>
+<tr class="odd">
+<td align="left">I’m not sure ho</td>
+<td align="right">w `auto.arim</td>
+<td align="right">a()` is choo</td>
+<td align="right">sing, but ma</td>
+<td align="right">ybe it wasn’</td>
+<td align="right">t able to search all the values of <code>p, d, q</code> that I’m searching. In either case, this shows that you shouldn’t trust the default values - they may not explore everything you want…</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="checking-the-predictions" class="section level3">
+<h3>Checking the predictions</h3>
+<p>Now let’s look at the predictions for the top models</p>
+<pre class="r"><code>top_mods &lt;- df_res %&gt;% filter(rank &lt;= 5) %&gt;% pull(model)
+# Filter to the predictions for the top 5 models:
+keep_preds &lt;- as.tibble(preds[top_mods])
+colnames(keep_preds) &lt;- paste0(&#39;p_&#39;, colnames(keep_preds))
+# Run this if you want to see how it compares to the prior models, but those were trainded with a different cutoff time period
+# df %&gt;% 
+#   # filter to just the predictions
+#   filter(year &gt; cutoff) %&gt;%
+#   # column bind the predictions
+#   cbind(keep_preds) %&gt;%
+#   plot_births()
+df %&gt;%
+  filter(year &gt; cutoff) %&gt;%
+  select(year, birth_number) %&gt;%
+  cbind(keep_preds) %&gt;%
+  plot_births()</code></pre>
+<p><img src="/post/2019-10-23-births-times-series-year_files/figure-html/unnamed-chunk-13-1.png" width="672" /> We see that the ARIMA models all flat-line after just a few years. This is probably a good behavior, as it’ll have some variability for a few years, but then eventually flatten to the intercept.</p>
+</div>
+</div>
+<div id="prophet" class="section level2">
+<h2>Prophet</h2>
+<p>Again, my next post covers <code>prophet</code>, the Facebook library for time series forecasting:</p>
+<pre class="r"><code>library(prophet)</code></pre>
+<pre><code>## Loading required package: Rcpp</code></pre>
+<pre><code>## Loading required package: rlang</code></pre>
+<pre><code>## 
+## Attaching package: &#39;rlang&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:magrittr&#39;:
+## 
+##     set_names</code></pre>
+<pre><code>## The following objects are masked from &#39;package:purrr&#39;:
+## 
+##     %@%, as_function, flatten, flatten_chr, flatten_dbl,
+##     flatten_int, flatten_lgl, flatten_raw, invoke, list_along,
+##     modify, prepend, splice</code></pre>
+<pre class="r"><code>m &lt;- df %&gt;%
+  filter(year &lt;= cutoff) %&gt;%
+  mutate(ds=as.Date(paste0(year, &#39;-01-01&#39;)), y=birth_number) %&gt;%
+  prophet(weekly.seasonality = F, 
+                   daily.seasonality = F)
+
+future &lt;- make_future_dataframe(m, n_preds, freq=&#39;year&#39;)
+cbind(head(future), tail(future))</code></pre>
+<pre><code>##           ds         ds
+## 1 1909-01-01 2010-01-01
+## 2 1910-01-01 2011-01-01
+## 3 1911-01-01 2012-01-01
+## 4 1912-01-01 2013-01-01
+## 5 1913-01-01 2014-01-01
+## 6 1914-01-01 2015-01-01</code></pre>
+<p>Now predict:</p>
+<pre class="r"><code>p_proph &lt;- predict(m, future)
+plot(m, p_proph)</code></pre>
+<p><img src="/post/2019-10-23-births-times-series-year_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>This doesn’t seem to be much better than just fitting a linear model. It seems that this birth data is really hard to model: there doesn’t appear to be much rhyme or reason in the growth/decline of number of births based on historical data. Despite the correlation between <code>y</code> and <code>y_t-1</code> being .974, you can’t tell when it’s going to switch direction.</p>
+<pre class="r"><code># correlation
+cor(cbind(y, lag = lag(y))[2:length(y),])</code></pre>
+<pre><code>##             y       lag
+## y   1.0000000 0.9743339
+## lag 0.9743339 1.0000000</code></pre>
+<p>So the linear models (or any models) will do poorly in predicting far into the future because you don’t know if you’re in a rise or decline of births.</p>
+</div>
+<div id="final-thoughts" class="section level2">
+<h2>Final thoughts</h2>
+<ul>
+<li><code>auto.arima()</code> may fit the best model based on AIC, but it doesn’t necessarily yield the most predictive model.</li>
+<li><code>ARIMA()</code> models are just linear models with additional terms, such as differenced terms to achieve seasonality, lagged terms, and autoregressive terms.</li>
+<li><code>ARIMA</code> models do dynamic predictions and flatline after a few predictions, depending on the number of moving average terms.</li>
+</ul>
+<p>We explored variations of modeling this data assuming a univariate modeling approach. With extrapolation, it’s really hard to do anything other than that. For example, you can add X’s to your model. Clearly, there’s a booming between 1940-1960, which is known as the post WWII baby boom. Unless you know whether there’s going to be another world war (with the same post-war societal conditions), adding a feature for “is_post_war” probably won’t add much value. Because to predict a future Y based on future X values, you also need to forecast the future X’s. Modeling the future is just really, really hard because you’re extrapolating everything.</p>
+<p>A case where adding X helps in time series forecasting is when you know information about the future. For example, if you have seasonal trends by month, you’ll know that January is different than June. In our <a href="/post/births-time-series-month">next post</a>, we’ll review how we can get better forecasting by using these same techniques. Even when modeling by month, however, there’s still an underlying year trend. While we may get better predictions <em>within</em> a year knowing the month, our predictions <em>across</em> years will be fraught with the same challenges.</p>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="//tags/r/">r</a>
+
+  <a class="tag tag--primary tag--small" href="//tags/time-series/">time series</a>
+
+  <a class="tag tag--primary tag--small" href="//tags/modeling/">modeling</a>
+
+  <a class="tag tag--primary tag--small" href="//tags/forecasting/">forecasting</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2019/10/births-time-series-month/" data-tooltip="Modeling Birth Rates Part 2: By Month">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2019/10/baby-names/" data-tooltip="Why does everyone I work with have the same name? A guide on how to not pick a unique baby name in America.">
+          
+            <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=%2f2019%2f10%2fbirths-time-series-year%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2f2019%2f10%2fbirths-time-series-year%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=%2f2019%2f10%2fbirths-time-series-year%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+      <li class="post-action">
+        <a class="post-action-btn btn btn--default" href="#disqus_thread">
+          <i class="fa fa-comment-o"></i>
+        </a>
+      </li>
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+   
+   
+  <script>
+  $(document).ready(function () {
+    window.initializeCodeFolding("show" === "hide");
+  });
+  </script>
+  <script src="/js/codefolding.js"></script>
+
+
+    
+  <span class="copyrights">
+    &copy; 2019 Bryan Whiting. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2019/10/births-time-series-month/" data-tooltip="Modeling Birth Rates Part 2: By Month">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2019/10/baby-names/" data-tooltip="Why does everyone I work with have the same name? A guide on how to not pick a unique baby name in America.">
+          
+            <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=%2f2019%2f10%2fbirths-time-series-year%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2f2019%2f10%2fbirths-time-series-year%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=%2f2019%2f10%2fbirths-time-series-year%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+      <li class="post-action">
+        <a class="post-action-btn btn btn--default" href="#disqus_thread">
+          <i class="fa fa-comment-o"></i>
+        </a>
+      </li>
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <ul class="share-options">
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2f2019%2f10%2fbirths-time-series-year%2f">
+        <i class="fa fa-google-plus"></i><span>Share on Google Plus</span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2f2019%2f10%2fbirths-time-series-year%2f">
+        <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2f2019%2f10%2fbirths-time-series-year%2f">
+        <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Bryan Whiting</h4>
+    
+      <div id="about-card-bio">father, innovator, data scientist</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Data Scientist
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Washington, D.C.
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/sample-size/">
+                <h3 class="media-heading">Sample Size</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">So your boss likes asking questions. Let’s find answers to a few she might ask.
+# Go and collect some car data df = read.table(&#39;ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.data-original&#39;, col.names = c(&#39;mpg&#39;, &#39;cyl&#39;, &#39;disp&#39;, &#39;hp&#39;, &#39;wt&#39;, &#39;acc&#39;, &#39;year&#39;, &#39;origin&#39;, &#39;name&#39;)) # Let&#39;s randomly shuffle the rows set.seed(1) df &lt;- df[sample(nrow(df)),] # Extract make df$make &lt;- word(df$name) df %&lt;&gt;% filter(!is.na(mpg)) %&gt;% select(name, make, everything()) One Sample T-Test  Question 1: I think Ford cars have pretty bad miles-per-gallon (MPG).</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/births-time-series-month/">
+                <h3 class="media-heading">Modeling Birth Rates Part 2: By Month</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In Part 1, I modeled births at the year level, which didn’t seem to have much seasonality. Now I’m going to try to model the monthly birth rates in the US.
+Predicting Seasonality I hit up the UN data to get seasonal birthrates, which I couldn’t find at CDC. Unfortunately, the UN data doesn’t have a long range of data.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/births-time-series-year/">
+                <h3 class="media-heading">Modeling Birth Rates Part 1: By Year</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I’m still excited to be a dad, so I’m going to try to model birth rates in the US. This will be a time series modeling exercise, and I’ll use this time to explore some modeling techniques. In Part 2 I’ll model the monthly birth rates.
+I downloaded CDC birth data from here: * https://www.cdc.gov/nchs/data-visualization/natality-trends/ * “Births and General Fertility Rates” &gt; Download CSV * Other data sets can be found here: https://www.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/baby-names/">
+                <h3 class="media-heading">Why does everyone I work with have the same name? A guide on how to not pick a unique baby name in America.</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I’ve taken a particular interest in names since I’m thinking of a name for my to-be-born son. I did a little digging through the Social Security Administration names database, which lists all names given to baby boys and girls in America1. I began this exercise to just get a quality list of ideas, but my curiosity got the better of me.
+Name Trends Since 1950 What was the most popular boy name since 1950?</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/09/baby-boy-names/">
+                <h3 class="media-heading">Scraping Baby Boy Name Trends</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I’m going to be a dad (again) soon. I don’t want my boy to have a common name, so I gotta do my research. I’m curious: how do names trend over time? If I pick a name today, will it be popular tomorrow?
+Step 1: The Social Security Administration reports all baby names each year in the United States, given the name occurs at least 5 times.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/04/dplyr-vs-datatable/">
+                <h3 class="media-heading">Dplyr vs Datatable</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Apr 4, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In the world of data science in R, the battle between dplyr and datatable is real. Here I compare their performance against base r commands for some common tasks. Who will be the winner on speed and simplicity?
+Make random datasets set.seed(71) size1 &lt;- 4*10^6 size2 &lt;- size1 * 0.1 df1 &lt;- data.frame(id=paste0(&quot;SERVICE_&quot;, 1:size1), value=rnorm(size1), stringsAsFactors=FALSE) df2 &lt;- data.frame(id=paste0(&quot;SERVICE_&quot;, sample(1:size1, size2)), value=rnorm(size2), stringsAsFactors=FALSE) dt1 &lt;- data.table(df1) dt2 &lt;- data.table(df2) # mtcars data M &lt;- data.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/02/rshiny-on-docker-part2/">
+                <h3 class="media-heading">Getting Custom Domain for EC2 Web App - Part 2</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In this post, I&rsquo;ll cover how to better customize some settings so to get your own custom domain for your EC2 instance. Say, app.example.com. Anyone interested in customizing an EC2 instance can use this - not just those who build R Shiny apps. I assume you already read part 1, where it was described how to launch an R Shiny app on EC2. I assume you already have some EC2 instance running with some useful app.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/02/rshiny-on-docker-part1/">
+                <h3 class="media-heading">R Shiny on AWS Using Docker - Part 1</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I want to run R Shiny on AWS using Docker. Here&rsquo;s how to do it.
+In part 2, I&rsquo;ll demonstrate how to get a custom domain and make the URL look clean.
+Useful background reading If you&rsquo;re already comfortable with Docker, skip to the next section.
+ Great Simple tutorial on using Docker and Flask: Short and sweet. Docker for Beginners: Verbose and lengthy. Excellent introduction. Walks you through all the jargon.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/09/machine-learning-models/">
+                <h3 class="media-heading">Machine Learning Model Notes</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Here are some notes on machine learning models.
+Concepts Behind Decision Trees  Bagging (boostrap aggregation): Randomly sample with replacement, and average the results. Majority vote: The most commonly-occuring prediction. Internal node: Where the splits occur. Branches: Segments that connect the nodes. Terminal node (leafs, regions): Where the observations end up. The average of the responses (or majority vote) is the prediction for future observations. Gini index: where \(m\) is the leaf and \(k\) is the class (0 or 1 for binary classification, but can be extedned for multiple classes).</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/09/byu-football/">
+                <h3 class="media-heading">byu football</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Goal of this post. Answer some interesting questions about BYU football. Dive into different modeling approaches. I don’t explain my thinking below, but some of the charts might be cool.
+Some questions of interest
+ How is Kilani Sitake doing in his second season compared to past BYU coaches? More challenging: how’s he doing relative to all second-season coaches?  df_in &lt;- read.csv(file.path(fp_data, &#39;byu_seasons.csv&#39;)) %&gt;% distinct() Some basic questions: * How many years do we have data on?</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         25 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('/images/durango-blurred.JPG');"></div>
+  
+
+
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.js"></script>
+
+
+<script src="/js/script-wl33z0n6ocaypepiqrazthtivfrliqijej4rq8ek8gvrv1awftmgjuv8k4zc.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight').each(function(i, block) {
+    var code = "";
+    hljs.highlightAuto(block.innerText).value.split(/\r\n|\r|\n/).forEach(function(line) {
+      code += "<span class=\"line\">" + line + "</span><br>";
+    });
+    if (code.length > 0) {
+      block.innerHTML = code;  
+    }
+  });
+  $('pre > code').each(function(i, block) {
+    $(this).addClass('codeblock');
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2019\/10\/births-time-series-year\/';
+          
+            this.page.identifier = '\/2019\/10\/births-time-series-year\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'bryanwhiting1';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+
+    
+  </body>
+</html>
+

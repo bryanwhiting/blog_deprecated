@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Seasonality on My take on data</title>
+    <link>/tags/seasonality/</link>
+    <description>Recent content in Seasonality on My take on data</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 26 Oct 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/seasonality/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Modeling Birth Rates Part 2: By Month</title>
+      <link>/2019/10/births-time-series-month/</link>
+      <pubDate>Sat, 26 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/births-time-series-month/</guid>
+      <description>In Part 1, I modeled births at the year level, which didn’t seem to have much seasonality. Now I’m going to try to model the monthly birth rates in the US.
+Predicting Seasonality I hit up the UN data to get seasonal birthrates, which I couldn’t find at CDC. Unfortunately, the UN data doesn’t have a long range of data.</description>
+    </item>
+    
+  </channel>
+</rss>

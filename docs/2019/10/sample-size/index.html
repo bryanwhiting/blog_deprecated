@@ -1,0 +1,1254 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+  
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <script data-ad-client="ca-pub-6540088627087882" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.54.0">
+    <meta name="theme" content="Tranquilpeak 0.3.1-BETA">
+    <title>Sample Size</title>
+    <meta name="author" content="Bryan Whiting">
+    <meta name="keywords" content="">
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+    <meta name="description" content="So your boss likes asking questions. Let’s find answers to a few she might ask.
+# Go and collect some car data df = read.table(&#39;ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.data-original&#39;, col.names = c(&#39;mpg&#39;, &#39;cyl&#39;, &#39;disp&#39;, &#39;hp&#39;, &#39;wt&#39;, &#39;acc&#39;, &#39;year&#39;, &#39;origin&#39;, &#39;name&#39;)) # Let&#39;s randomly shuffle the rows set.seed(1) df &lt;- df[sample(nrow(df)),] # Extract make df$make &lt;- word(df$name) df %&lt;&gt;% filter(!is.na(mpg)) %&gt;% select(name, make, everything()) One Sample T-Test  Question 1: I think Ford cars have pretty bad miles-per-gallon (MPG).">
+    <meta property="og:description" content="So your boss likes asking questions. Let’s find answers to a few she might ask.
+# Go and collect some car data df = read.table(&#39;ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.data-original&#39;, col.names = c(&#39;mpg&#39;, &#39;cyl&#39;, &#39;disp&#39;, &#39;hp&#39;, &#39;wt&#39;, &#39;acc&#39;, &#39;year&#39;, &#39;origin&#39;, &#39;name&#39;)) # Let&#39;s randomly shuffle the rows set.seed(1) df &lt;- df[sample(nrow(df)),] # Extract make df$make &lt;- word(df$name) df %&lt;&gt;% filter(!is.na(mpg)) %&gt;% select(name, make, everything()) One Sample T-Test  Question 1: I think Ford cars have pretty bad miles-per-gallon (MPG).">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Sample Size">
+    <meta property="og:url" content="/2019/10/sample-size/">
+    <meta property="og:site_name" content="My take on data">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="My take on data">
+    <meta name="twitter:description" content="So your boss likes asking questions. Let’s find answers to a few she might ask.
+# Go and collect some car data df = read.table(&#39;ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.data-original&#39;, col.names = c(&#39;mpg&#39;, &#39;cyl&#39;, &#39;disp&#39;, &#39;hp&#39;, &#39;wt&#39;, &#39;acc&#39;, &#39;year&#39;, &#39;origin&#39;, &#39;name&#39;)) # Let&#39;s randomly shuffle the rows set.seed(1) df &lt;- df[sample(nrow(df)),] # Extract make df$make &lt;- word(df$name) df %&lt;&gt;% filter(!is.na(mpg)) %&gt;% select(name, make, everything()) One Sample T-Test  Question 1: I think Ford cars have pretty bad miles-per-gallon (MPG).">
+    
+      <meta name="twitter:creator" content="@bryanwhiting">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=640">
+    
+
+    
+      <meta property="og:image" content="/img/20190909/top50.png">
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" />
+    
+    
+    <link rel="stylesheet" href="/css/style-u6mk0ojoywresbx8iepslrmmhl4stuhrsxuwhkpwrkrx7mryjcaimasnk4pi.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-85616639-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">My take on data</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Bryan Whiting</h4>
+        
+          <h5 class="sidebar-profile-bio">father, innovator, data scientist</h5>
+        
+      </div>
+    
+    
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about/index.html">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/projects/index.html">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-briefcase"></i>
+      
+      <span class="sidebar-button-desc">Projects</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/2138773/bryan">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/bryanwhiting">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/bryanwhiting">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://www.linkedin.com/in/bryan-whiting-b524a44b/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-linkedin"></i>
+      
+      <span class="sidebar-button-desc">LinkedIn</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+    </ul>
+  </div>
+  
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Sample Size
+    </h1>
+  
+  <div class="postShorten-meta post-meta">
+  
+    <time itemprop="datePublished" datetime="2019-10-28T00:00:00Z">
+      
+  October 28, 2019
+
+    </time>
+  
+  
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/tutorials">tutorials</a>
+    
+  
+
+
+</div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              
+
+
+<p>So your boss likes asking questions. Let’s find answers to a few she might ask.</p>
+<pre class="r"><code># Go and collect some car data
+df = read.table(&#39;ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.data-original&#39;, col.names = c(&#39;mpg&#39;, &#39;cyl&#39;, &#39;disp&#39;, &#39;hp&#39;, &#39;wt&#39;, &#39;acc&#39;, &#39;year&#39;, &#39;origin&#39;, &#39;name&#39;))
+# Let&#39;s randomly shuffle the rows
+set.seed(1)
+df &lt;- df[sample(nrow(df)),]
+
+# Extract make
+df$make &lt;- word(df$name)
+
+df %&lt;&gt;% filter(!is.na(mpg)) %&gt;%
+  select(name, make, everything())</code></pre>
+<div id="one-sample-t-test" class="section level2">
+<h2>One Sample T-Test</h2>
+<blockquote>
+<p>Question 1: I think Ford cars have pretty bad miles-per-gallon (MPG). Double check that for me.</p>
+</blockquote>
+<p>Imagine you have no access to the internet, but can go and collect data from your office parking lot. Also imagine that your cars can speak, like in Nightrider, or the movie Cars. So you go and ask the cars in the parking lot what their MPG is. How many cars do you need to ask?</p>
+<p>First, you assume by “pretty bad” that she meant something like “around 15 mpg”. Trucks have different MPG than compacts, so there are many ways to answer this question. But let’s simplify and just assume she doesn’t care about type of car.</p>
+<p>Let’s use a power test using the <code>pwr</code> package in R. See <a href="https://www.statmethods.net/stats/power.html">statmethods.net</a> and <a href="https://stats.idre.ucla.edu/r/dae/power-analysis-for-paired-sample-t-test/">ucla.edu</a> for details, but <code>d</code> is the standardized difference <code>abs(mu1-mu2)/sigma</code>, not the absolute difference.</p>
+<ul>
+<li>Ho: mean(mpg) = 15</li>
+<li>Ha: mean(mpg) &gt; 15</li>
+</ul>
+<pre class="r"><code># how much different from 15 we want to deviate
+diff = 7
+v = 10 # assumed variance
+d = abs(diff)/v
+
+# Sample Size:
+pwr.t.test(d=d, sig.level=0.05, power=.85, type=&#39;one.sample&#39;, alternative=&#39;greater&#39;)</code></pre>
+<pre><code>## 
+##      One-sample t test power calculation 
+## 
+##               n = 16.1193
+##               d = 0.7
+##       sig.level = 0.05
+##           power = 0.85
+##     alternative = greater</code></pre>
+<p>So we need to sample 17 cars (round up) in order to prove that mean(mpg) is greater than 15 if we assume the true mean is 22. 7 is the ‘detectable difference’. It’s far easier to detect a difference of 7 than it is to detect a difference of 1 due to random chance. (If you set diff=1 then you need 720 cars to detect a difference).</p>
+<p>Let’s go sample 17 cars:</p>
+<pre class="r"><code>n17 &lt;- df %&gt;% 
+  filter(make == &#39;ford&#39;) %&gt;% 
+  head(17) 
+n17 %&gt;% knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="left">make</th>
+<th align="right">mpg</th>
+<th align="right">cyl</th>
+<th align="right">disp</th>
+<th align="right">hp</th>
+<th align="right">wt</th>
+<th align="right">acc</th>
+<th align="right">year</th>
+<th align="right">origin</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ford maverick</td>
+<td align="left">ford</td>
+<td align="right">18.0</td>
+<td align="right">6</td>
+<td align="right">250</td>
+<td align="right">88</td>
+<td align="right">3021</td>
+<td align="right">16.5</td>
+<td align="right">73</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">ford gran torino (sw)</td>
+<td align="left">ford</td>
+<td align="right">13.0</td>
+<td align="right">8</td>
+<td align="right">302</td>
+<td align="right">140</td>
+<td align="right">4294</td>
+<td align="right">16.0</td>
+<td align="right">72</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">ford mustang gl</td>
+<td align="left">ford</td>
+<td align="right">27.0</td>
+<td align="right">4</td>
+<td align="right">140</td>
+<td align="right">86</td>
+<td align="right">2790</td>
+<td align="right">15.6</td>
+<td align="right">82</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">ford ranger</td>
+<td align="left">ford</td>
+<td align="right">28.0</td>
+<td align="right">4</td>
+<td align="right">120</td>
+<td align="right">79</td>
+<td align="right">2625</td>
+<td align="right">18.6</td>
+<td align="right">82</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">ford granada l</td>
+<td align="left">ford</td>
+<td align="right">22.0</td>
+<td align="right">6</td>
+<td align="right">232</td>
+<td align="right">112</td>
+<td align="right">2835</td>
+<td align="right">14.7</td>
+<td align="right">82</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">ford galaxie 500</td>
+<td align="left">ford</td>
+<td align="right">15.0</td>
+<td align="right">8</td>
+<td align="right">429</td>
+<td align="right">198</td>
+<td align="right">4341</td>
+<td align="right">10.0</td>
+<td align="right">70</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">ford pinto</td>
+<td align="left">ford</td>
+<td align="right">18.0</td>
+<td align="right">6</td>
+<td align="right">171</td>
+<td align="right">97</td>
+<td align="right">2984</td>
+<td align="right">14.5</td>
+<td align="right">75</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">ford ltd landau</td>
+<td align="left">ford</td>
+<td align="right">17.6</td>
+<td align="right">8</td>
+<td align="right">302</td>
+<td align="right">129</td>
+<td align="right">3725</td>
+<td align="right">13.4</td>
+<td align="right">79</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">ford maverick</td>
+<td align="left">ford</td>
+<td align="right">24.0</td>
+<td align="right">6</td>
+<td align="right">200</td>
+<td align="right">81</td>
+<td align="right">3012</td>
+<td align="right">17.6</td>
+<td align="right">76</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">ford fairmont (man)</td>
+<td align="left">ford</td>
+<td align="right">25.1</td>
+<td align="right">4</td>
+<td align="right">140</td>
+<td align="right">88</td>
+<td align="right">2720</td>
+<td align="right">15.4</td>
+<td align="right">78</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">ford pinto (sw)</td>
+<td align="left">ford</td>
+<td align="right">22.0</td>
+<td align="right">4</td>
+<td align="right">122</td>
+<td align="right">86</td>
+<td align="right">2395</td>
+<td align="right">16.0</td>
+<td align="right">72</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">ford maverick</td>
+<td align="left">ford</td>
+<td align="right">15.0</td>
+<td align="right">6</td>
+<td align="right">250</td>
+<td align="right">72</td>
+<td align="right">3158</td>
+<td align="right">19.5</td>
+<td align="right">75</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">ford country</td>
+<td align="left">ford</td>
+<td align="right">12.0</td>
+<td align="right">8</td>
+<td align="right">400</td>
+<td align="right">167</td>
+<td align="right">4906</td>
+<td align="right">12.5</td>
+<td align="right">73</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">ford mustang ii 2+2</td>
+<td align="left">ford</td>
+<td align="right">25.5</td>
+<td align="right">4</td>
+<td align="right">140</td>
+<td align="right">89</td>
+<td align="right">2755</td>
+<td align="right">15.8</td>
+<td align="right">77</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">ford pinto</td>
+<td align="left">ford</td>
+<td align="right">25.0</td>
+<td align="right">4</td>
+<td align="right">98</td>
+<td align="right">NA</td>
+<td align="right">2046</td>
+<td align="right">19.0</td>
+<td align="right">71</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">ford fairmont</td>
+<td align="left">ford</td>
+<td align="right">26.4</td>
+<td align="right">4</td>
+<td align="right">140</td>
+<td align="right">88</td>
+<td align="right">2870</td>
+<td align="right">18.1</td>
+<td align="right">80</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">ford torino 500</td>
+<td align="left">ford</td>
+<td align="right">19.0</td>
+<td align="right">6</td>
+<td align="right">250</td>
+<td align="right">88</td>
+<td align="right">3302</td>
+<td align="right">15.5</td>
+<td align="right">71</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>Now let’s do our t-test:</p>
+<pre class="r"><code>t.test(n17$mpg, mu=15, alternative=&#39;greater&#39;)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  n17$mpg
+## t = 4.5787, df = 16, p-value = 0.0001545
+## alternative hypothesis: true mean is greater than 15
+## 95 percent confidence interval:
+##  18.55205      Inf
+## sample estimates:
+## mean of x 
+##  20.74118</code></pre>
+<p>We just proved that the mean(mpg) is not greater than 15</p>
+<p>What if we tested against 17?</p>
+<pre class="r"><code>t.test(n17$mpg, mu=17, alternative=&#39;greater&#39;)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  n17$mpg
+## t = 2.9837, df = 16, p-value = 0.004386
+## alternative hypothesis: true mean is greater than 17
+## 95 percent confidence interval:
+##  18.55205      Inf
+## sample estimates:
+## mean of x 
+##  20.74118</code></pre>
+<p>Oh! Nice, statistical significance. Wait. That’s called <a href="https://projects.fivethirtyeight.com/p-hacking/">p-hacking</a>. If you keep changing your test until you find significance, then you’re breaking the rules.</p>
+<p>Let’s say we wanted to detect a difference of two from the get-go:</p>
+<pre class="r"><code>pwr.t.test(d=(2)/v, sig.level=0.05, power=.85, type=&#39;one.sample&#39;, alternative=&#39;greater&#39;)</code></pre>
+<pre><code>## 
+##      One-sample t test power calculation 
+## 
+##               n = 181.0934
+##               d = 0.2
+##       sig.level = 0.05
+##           power = 0.85
+##     alternative = greater</code></pre>
+<p>This would have required a sample size of 182 cars given the assumptiosn of a 5% false positive rate and a 15% false negative rate (1-power). As you can see, if you just do the t-test from the beginning without specifying your hypothesis, then you can get into really tricky territory. Experimentation is hard, and it’s really easy to be biased by your results.</p>
+<p>There are so many assumptions here: 1. I’m assuming the variance of <code>mpg</code> for Ford cars. I have no idea what the variance is. 2. This shows that if I believe the mean to be 22, that it only takes 17 samples to prove it to be so. But remember, my original hypothesis is that MPG = 15. If I set the above to <code>2</code> to test a difference from 15 (assuming it <em>should</em> be 17), then it may take 181 samples. But I can “prove” below in just 4 samples that the difference is significant:</p>
+<pre class="r"><code>df %&gt;% 
+  # let&#39;s assume I get lucky and the first 4 cars I pull have greater than 17 mpg
+  filter(make == &#39;ford&#39;, mpg &gt; 17) %&gt;% 
+  head(4) %&gt;%
+  pull(mpg) %&gt;%
+  # test if greater than 17
+  t.test(., mu=17, alternative=&#39;greater&#39;)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  .
+## t = 2.9059, df = 3, p-value = 0.0311
+## alternative hypothesis: true mean is greater than 17
+## 95 percent confidence interval:
+##  18.28339      Inf
+## sample estimates:
+## mean of x 
+##     23.75</code></pre>
+<p>Bam, significant results. But my sample size of 4 is woefully small. As you continue increasing your sample size, you might not find a significant difference. This <a href="https://splitmetrics.com/blog/mobile-a-b-testing-sample-size/">post on A/B testing dives into this</a> theme.</p>
+<p>Going further, I “know” that the mean is 19.6. I can’t detect a difference from 21 with a full sample size:</p>
+<pre class="r"><code>df %&gt;% 
+  # let&#39;s assume I get lucky and the first 4 cars I pull have greater than 17 mpg
+  filter(make == &#39;ford&#39;) %&gt;% 
+  pull(mpg) %&gt;%
+  t.test(., mu=21, alternative=&#39;greater&#39;)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  .
+## t = -1.5976, df = 50, p-value = 0.9418
+## alternative hypothesis: true mean is greater than 21
+## 95 percent confidence interval:
+##  18.32425      Inf
+## sample estimates:
+## mean of x 
+##  19.69412</code></pre>
+<p>But with a reduced sample size it’s really easy to detect a difference (assuming I get unlucky and the first four cars I ask have a high MPG).</p>
+<pre class="r"><code>df %&gt;% 
+  filter(make == &#39;ford&#39;, mpg &gt; 21) %&gt;% 
+  head(4) %&gt;%
+  pull(mpg) %&gt;%
+  t.test(., mu=21, alternative=&#39;greater&#39;)</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  .
+## t = 3.0867, df = 3, p-value = 0.02693
+## alternative hypothesis: true mean is greater than 21
+## 95 percent confidence interval:
+##  22.00967      Inf
+## sample estimates:
+## mean of x 
+##     25.25</code></pre>
+<p>So you have to finish the test. You have to get the full sample size to detect the difference. That’s why people prefer multi-armed bandit tests - you don’t have to wait as long.</p>
+<p>You might be wondering, how else can I get the t-test value?</p>
+<pre class="r"><code>ford &lt;- df %&gt;% filter(make == &#39;ford&#39;)
+summary(lm(ford$mpg ~ 1))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = ford$mpg ~ 1)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -9.694 -4.944 -1.194  4.106 16.406 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  19.6941     0.8174   24.09   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.837 on 50 degrees of freedom</code></pre>
+<pre class="r"><code>t.test(ford$mpg )</code></pre>
+<pre><code>## 
+##  One Sample t-test
+## 
+## data:  ford$mpg
+## t = 24.094, df = 50, p-value &lt; 2.2e-16
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  18.05234 21.33590
+## sample estimates:
+## mean of x 
+##  19.69412</code></pre>
+<p>Mind blown.</p>
+</div>
+<div id="sample-size-calculation-by-hand" class="section level2">
+<h2>Sample Size calculation by hand</h2>
+<p>In <a href="https://www.lboro.ac.uk/media/wwwlboroacuk/content/mlsc/downloads/Samplesize.pdf">An Intro to Sample Size Calculations</a> we see a simple formula:</p>
+<p><span class="math display">\[ n = \frac{2*S_p^2}{(\frac{D}{Z_{\alpha/2})})^2} \]</span></p>
+<p>There’s a cool conclusion:</p>
+<blockquote>
+<p>In general, if you want to increase your precision by a factor k, you will need to increase your sample size by a factor k^2.</p>
+</blockquote>
+<pre class="r"><code>pwr.t.test(d=(2)/v, sig.level=0.05, power=.85, type=&#39;one.sample&#39;, alternative=&#39;greater&#39;)</code></pre>
+<pre><code>## 
+##      One-sample t test power calculation 
+## 
+##               n = 181.0934
+##               d = 0.2
+##       sig.level = 0.05
+##           power = 0.85
+##     alternative = greater</code></pre>
+</div>
+<div id="two-sample-t-test" class="section level2">
+<h2>Two-sample t-test</h2>
+<p>Question 2: Does Ford have a higher MPG than Chevy?</p>
+<pre class="r"><code>ford &lt;- df %&gt;% filter(make==&#39;ford&#39;)
+chevy &lt;- df %&gt;% filter(make==&#39;chevrolet&#39;)
+t.test(x=ford$mpg, y=chevy$mpg, conf.level = .01)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  ford$mpg and chevy$mpg
+## t = -0.62345, df = 87.39, p-value = 0.5346
+## alternative hypothesis: true difference in means is not equal to 0
+## 1 percent confidence interval:
+##  -0.7936601 -0.7622906
+## sample estimates:
+## mean of x mean of y 
+##  19.69412  20.47209</code></pre>
+<p>Question 1: Does Chevy have a non-zero MPG?</p>
+<pre class="r"><code># pwr.t.test()</code></pre>
+</div>
+<div id="power-analysis" class="section level1">
+<h1>Power analysis</h1>
+<pre class="r"><code>#pwr.t.test(d=0.5)
+
+#pwr.anova.test(k=5,f=.25,sig.level=.05,power=.8)</code></pre>
+</div>
+<div id="lessons-learned" class="section level1">
+<h1>Lessons Learned</h1>
+<ul>
+<li>A linear regression coefficient is the same thing as a one-sample t-test value.</li>
+<li>To increase your precision</li>
+</ul>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="//tags/r/">r</a>
+
+  <a class="tag tag--primary tag--small" href="//tags/plotly/">plotly</a>
+
+  <a class="tag tag--primary tag--small" href="//tags/dataviz/">dataviz</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2019/10/births-time-series-month/" data-tooltip="Modeling Birth Rates Part 2: By Month">
+          
+            <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=%2f2019%2f10%2fsample-size%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2f2019%2f10%2fsample-size%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=%2f2019%2f10%2fsample-size%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+      <li class="post-action">
+        <a class="post-action-btn btn btn--default" href="#disqus_thread">
+          <i class="fa fa-comment-o"></i>
+        </a>
+      </li>
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+   
+   
+  <script>
+  $(document).ready(function () {
+    window.initializeCodeFolding("show" === "hide");
+  });
+  </script>
+  <script src="/js/codefolding.js"></script>
+
+
+    
+  <span class="copyrights">
+    &copy; 2019 Bryan Whiting. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2019/10/births-time-series-month/" data-tooltip="Modeling Birth Rates Part 2: By Month">
+          
+            <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=%2f2019%2f10%2fsample-size%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2f2019%2f10%2fsample-size%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=%2f2019%2f10%2fsample-size%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+      <li class="post-action">
+        <a class="post-action-btn btn btn--default" href="#disqus_thread">
+          <i class="fa fa-comment-o"></i>
+        </a>
+      </li>
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <ul class="share-options">
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2f2019%2f10%2fsample-size%2f">
+        <i class="fa fa-google-plus"></i><span>Share on Google Plus</span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2f2019%2f10%2fsample-size%2f">
+        <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2f2019%2f10%2fsample-size%2f">
+        <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Bryan Whiting</h4>
+    
+      <div id="about-card-bio">father, innovator, data scientist</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Data Scientist
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Washington, D.C.
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/sample-size/">
+                <h3 class="media-heading">Sample Size</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">So your boss likes asking questions. Let’s find answers to a few she might ask.
+# Go and collect some car data df = read.table(&#39;ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.data-original&#39;, col.names = c(&#39;mpg&#39;, &#39;cyl&#39;, &#39;disp&#39;, &#39;hp&#39;, &#39;wt&#39;, &#39;acc&#39;, &#39;year&#39;, &#39;origin&#39;, &#39;name&#39;)) # Let&#39;s randomly shuffle the rows set.seed(1) df &lt;- df[sample(nrow(df)),] # Extract make df$make &lt;- word(df$name) df %&lt;&gt;% filter(!is.na(mpg)) %&gt;% select(name, make, everything()) One Sample T-Test  Question 1: I think Ford cars have pretty bad miles-per-gallon (MPG).</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/births-time-series-month/">
+                <h3 class="media-heading">Modeling Birth Rates Part 2: By Month</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In Part 1, I modeled births at the year level, which didn’t seem to have much seasonality. Now I’m going to try to model the monthly birth rates in the US.
+Predicting Seasonality I hit up the UN data to get seasonal birthrates, which I couldn’t find at CDC. Unfortunately, the UN data doesn’t have a long range of data.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/births-time-series-year/">
+                <h3 class="media-heading">Modeling Birth Rates Part 1: By Year</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I’m still excited to be a dad, so I’m going to try to model birth rates in the US. This will be a time series modeling exercise, and I’ll use this time to explore some modeling techniques. In Part 2 I’ll model the monthly birth rates.
+I downloaded CDC birth data from here: * https://www.cdc.gov/nchs/data-visualization/natality-trends/ * “Births and General Fertility Rates” &gt; Download CSV * Other data sets can be found here: https://www.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/baby-names/">
+                <h3 class="media-heading">Why does everyone I work with have the same name? A guide on how to not pick a unique baby name in America.</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I’ve taken a particular interest in names since I’m thinking of a name for my to-be-born son. I did a little digging through the Social Security Administration names database, which lists all names given to baby boys and girls in America1. I began this exercise to just get a quality list of ideas, but my curiosity got the better of me.
+Name Trends Since 1950 What was the most popular boy name since 1950?</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/09/baby-boy-names/">
+                <h3 class="media-heading">Scraping Baby Boy Name Trends</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I’m going to be a dad (again) soon. I don’t want my boy to have a common name, so I gotta do my research. I’m curious: how do names trend over time? If I pick a name today, will it be popular tomorrow?
+Step 1: The Social Security Administration reports all baby names each year in the United States, given the name occurs at least 5 times.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/04/dplyr-vs-datatable/">
+                <h3 class="media-heading">Dplyr vs Datatable</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Apr 4, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In the world of data science in R, the battle between dplyr and datatable is real. Here I compare their performance against base r commands for some common tasks. Who will be the winner on speed and simplicity?
+Make random datasets set.seed(71) size1 &lt;- 4*10^6 size2 &lt;- size1 * 0.1 df1 &lt;- data.frame(id=paste0(&quot;SERVICE_&quot;, 1:size1), value=rnorm(size1), stringsAsFactors=FALSE) df2 &lt;- data.frame(id=paste0(&quot;SERVICE_&quot;, sample(1:size1, size2)), value=rnorm(size2), stringsAsFactors=FALSE) dt1 &lt;- data.table(df1) dt2 &lt;- data.table(df2) # mtcars data M &lt;- data.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/02/rshiny-on-docker-part2/">
+                <h3 class="media-heading">Getting Custom Domain for EC2 Web App - Part 2</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In this post, I&rsquo;ll cover how to better customize some settings so to get your own custom domain for your EC2 instance. Say, app.example.com. Anyone interested in customizing an EC2 instance can use this - not just those who build R Shiny apps. I assume you already read part 1, where it was described how to launch an R Shiny app on EC2. I assume you already have some EC2 instance running with some useful app.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/02/rshiny-on-docker-part1/">
+                <h3 class="media-heading">R Shiny on AWS Using Docker - Part 1</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I want to run R Shiny on AWS using Docker. Here&rsquo;s how to do it.
+In part 2, I&rsquo;ll demonstrate how to get a custom domain and make the URL look clean.
+Useful background reading If you&rsquo;re already comfortable with Docker, skip to the next section.
+ Great Simple tutorial on using Docker and Flask: Short and sweet. Docker for Beginners: Verbose and lengthy. Excellent introduction. Walks you through all the jargon.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/09/machine-learning-models/">
+                <h3 class="media-heading">Machine Learning Model Notes</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Here are some notes on machine learning models.
+Concepts Behind Decision Trees  Bagging (boostrap aggregation): Randomly sample with replacement, and average the results. Majority vote: The most commonly-occuring prediction. Internal node: Where the splits occur. Branches: Segments that connect the nodes. Terminal node (leafs, regions): Where the observations end up. The average of the responses (or majority vote) is the prediction for future observations. Gini index: where \(m\) is the leaf and \(k\) is the class (0 or 1 for binary classification, but can be extedned for multiple classes).</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/09/byu-football/">
+                <h3 class="media-heading">byu football</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Goal of this post. Answer some interesting questions about BYU football. Dive into different modeling approaches. I don’t explain my thinking below, but some of the charts might be cool.
+Some questions of interest
+ How is Kilani Sitake doing in his second season compared to past BYU coaches? More challenging: how’s he doing relative to all second-season coaches?  df_in &lt;- read.csv(file.path(fp_data, &#39;byu_seasons.csv&#39;)) %&gt;% distinct() Some basic questions: * How many years do we have data on?</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         25 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('/images/durango-blurred.JPG');"></div>
+  
+
+
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.js"></script>
+
+
+<script src="/js/script-wl33z0n6ocaypepiqrazthtivfrliqijej4rq8ek8gvrv1awftmgjuv8k4zc.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight').each(function(i, block) {
+    var code = "";
+    hljs.highlightAuto(block.innerText).value.split(/\r\n|\r|\n/).forEach(function(line) {
+      code += "<span class=\"line\">" + line + "</span><br>";
+    });
+    if (code.length > 0) {
+      block.innerHTML = code;  
+    }
+  });
+  $('pre > code').each(function(i, block) {
+    $(this).addClass('codeblock');
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2019\/10\/sample-size\/';
+          
+            this.page.identifier = '\/2019\/10\/sample-size\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'bryanwhiting1';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+
+    
+  </body>
+</html>
+

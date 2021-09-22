@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My take on data</title>
+    <link>/</link>
+    <description>Recent content on My take on data</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 28 Oct 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Sample Size</title>
+      <link>/2019/10/sample-size/</link>
+      <pubDate>Mon, 28 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/sample-size/</guid>
+      <description>So your boss likes asking questions. Let’s find answers to a few she might ask.
+# Go and collect some car data df = read.table(&amp;#39;ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.data-original&amp;#39;, col.names = c(&amp;#39;mpg&amp;#39;, &amp;#39;cyl&amp;#39;, &amp;#39;disp&amp;#39;, &amp;#39;hp&amp;#39;, &amp;#39;wt&amp;#39;, &amp;#39;acc&amp;#39;, &amp;#39;year&amp;#39;, &amp;#39;origin&amp;#39;, &amp;#39;name&amp;#39;)) # Let&amp;#39;s randomly shuffle the rows set.seed(1) df &amp;lt;- df[sample(nrow(df)),] # Extract make df$make &amp;lt;- word(df$name) df %&amp;lt;&amp;gt;% filter(!is.na(mpg)) %&amp;gt;% select(name, make, everything()) One Sample T-Test  Question 1: I think Ford cars have pretty bad miles-per-gallon (MPG).</description>
+    </item>
+    
+    <item>
+      <title>Modeling Birth Rates Part 2: By Month</title>
+      <link>/2019/10/births-time-series-month/</link>
+      <pubDate>Sat, 26 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/births-time-series-month/</guid>
+      <description>In Part 1, I modeled births at the year level, which didn’t seem to have much seasonality. Now I’m going to try to model the monthly birth rates in the US.
+Predicting Seasonality I hit up the UN data to get seasonal birthrates, which I couldn’t find at CDC. Unfortunately, the UN data doesn’t have a long range of data.</description>
+    </item>
+    
+    <item>
+      <title>Modeling Birth Rates Part 1: By Year</title>
+      <link>/2019/10/births-time-series-year/</link>
+      <pubDate>Wed, 23 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/births-time-series-year/</guid>
+      <description>I’m still excited to be a dad, so I’m going to try to model birth rates in the US. This will be a time series modeling exercise, and I’ll use this time to explore some modeling techniques. In Part 2 I’ll model the monthly birth rates.
+I downloaded CDC birth data from here: * https://www.cdc.gov/nchs/data-visualization/natality-trends/ * “Births and General Fertility Rates” &amp;gt; Download CSV * Other data sets can be found here: https://www.</description>
+    </item>
+    
+    <item>
+      <title>Why does everyone I work with have the same name? A guide on how to not pick a unique baby name in America.</title>
+      <link>/2019/10/baby-names/</link>
+      <pubDate>Sat, 05 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/baby-names/</guid>
+      <description>I’ve taken a particular interest in names since I’m thinking of a name for my to-be-born son. I did a little digging through the Social Security Administration names database, which lists all names given to baby boys and girls in America1. I began this exercise to just get a quality list of ideas, but my curiosity got the better of me.
+Name Trends Since 1950 What was the most popular boy name since 1950?</description>
+    </item>
+    
+    <item>
+      <title>Scraping Baby Boy Name Trends</title>
+      <link>/2019/09/baby-boy-names/</link>
+      <pubDate>Mon, 09 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/09/baby-boy-names/</guid>
+      <description>I’m going to be a dad (again) soon. I don’t want my boy to have a common name, so I gotta do my research. I’m curious: how do names trend over time? If I pick a name today, will it be popular tomorrow?
+Step 1: The Social Security Administration reports all baby names each year in the United States, given the name occurs at least 5 times.</description>
+    </item>
+    
+    <item>
+      <title>Dplyr vs Datatable</title>
+      <link>/2019/04/dplyr-vs-datatable/</link>
+      <pubDate>Thu, 04 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/04/dplyr-vs-datatable/</guid>
+      <description>In the world of data science in R, the battle between dplyr and datatable is real. Here I compare their performance against base r commands for some common tasks. Who will be the winner on speed and simplicity?
+Make random datasets set.seed(71) size1 &amp;lt;- 4*10^6 size2 &amp;lt;- size1 * 0.1 df1 &amp;lt;- data.frame(id=paste0(&amp;quot;SERVICE_&amp;quot;, 1:size1), value=rnorm(size1), stringsAsFactors=FALSE) df2 &amp;lt;- data.frame(id=paste0(&amp;quot;SERVICE_&amp;quot;, sample(1:size1, size2)), value=rnorm(size2), stringsAsFactors=FALSE) dt1 &amp;lt;- data.table(df1) dt2 &amp;lt;- data.table(df2) # mtcars data M &amp;lt;- data.</description>
+    </item>
+    
+    <item>
+      <title>Getting Custom Domain for EC2 Web App - Part 2</title>
+      <link>/2019/02/rshiny-on-docker-part2/</link>
+      <pubDate>Sat, 23 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/02/rshiny-on-docker-part2/</guid>
+      <description>In this post, I&amp;rsquo;ll cover how to better customize some settings so to get your own custom domain for your EC2 instance. Say, app.example.com. Anyone interested in customizing an EC2 instance can use this - not just those who build R Shiny apps. I assume you already read part 1, where it was described how to launch an R Shiny app on EC2. I assume you already have some EC2 instance running with some useful app.</description>
+    </item>
+    
+    <item>
+      <title>R Shiny on AWS Using Docker - Part 1</title>
+      <link>/2019/02/rshiny-on-docker-part1/</link>
+      <pubDate>Tue, 19 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/02/rshiny-on-docker-part1/</guid>
+      <description>I want to run R Shiny on AWS using Docker. Here&amp;rsquo;s how to do it.
+In part 2, I&amp;rsquo;ll demonstrate how to get a custom domain and make the URL look clean.
+Useful background reading If you&amp;rsquo;re already comfortable with Docker, skip to the next section.
+ Great Simple tutorial on using Docker and Flask: Short and sweet. Docker for Beginners: Verbose and lengthy. Excellent introduction. Walks you through all the jargon.</description>
+    </item>
+    
+    <item>
+      <title>Machine Learning Model Notes</title>
+      <link>/2018/09/machine-learning-models/</link>
+      <pubDate>Sat, 08 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/machine-learning-models/</guid>
+      <description>Here are some notes on machine learning models.
+Concepts Behind Decision Trees  Bagging (boostrap aggregation): Randomly sample with replacement, and average the results. Majority vote: The most commonly-occuring prediction. Internal node: Where the splits occur. Branches: Segments that connect the nodes. Terminal node (leafs, regions): Where the observations end up. The average of the responses (or majority vote) is the prediction for future observations. Gini index: where \(m\) is the leaf and \(k\) is the class (0 or 1 for binary classification, but can be extedned for multiple classes).</description>
+    </item>
+    
+    <item>
+      <title>byu football</title>
+      <link>/2018/09/byu-football/</link>
+      <pubDate>Fri, 07 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/byu-football/</guid>
+      <description>Goal of this post. Answer some interesting questions about BYU football. Dive into different modeling approaches. I don’t explain my thinking below, but some of the charts might be cool.
+Some questions of interest
+ How is Kilani Sitake doing in his second season compared to past BYU coaches? More challenging: how’s he doing relative to all second-season coaches?  df_in &amp;lt;- read.csv(file.path(fp_data, &amp;#39;byu_seasons.csv&amp;#39;)) %&amp;gt;% distinct() Some basic questions: * How many years do we have data on?</description>
+    </item>
+    
+    <item>
+      <title>Basic Probability and Stats</title>
+      <link>/2018/09/basic-probability-and-stats/</link>
+      <pubDate>Mon, 03 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/basic-probability-and-stats/</guid>
+      <description>install.load::install_load(&amp;#39;ggplot2&amp;#39;, &amp;#39;reticulate&amp;#39;, &amp;#39;dplyr&amp;#39;, &amp;#39;pscl&amp;#39;, &amp;#39;Zelig&amp;#39;, &amp;#39;tidyverse&amp;#39;) ## ## Attaching package: &amp;#39;dplyr&amp;#39; ## The following objects are masked from &amp;#39;package:stats&amp;#39;: ## ## filter, lag ## The following objects are masked from &amp;#39;package:base&amp;#39;: ## ## intersect, setdiff, setequal, union ## Classes and Methods for R developed in the ## Political Science Computational Laboratory ## Department of Political Science ## Stanford University ## Simon Jackman ## hurdle and zeroinfl functions by Achim Zeileis ## Loading required package: survival ## ## Attaching package: &amp;#39;Zelig&amp;#39; ## The following object is masked from &amp;#39;package:ggplot2&amp;#39;: ## ## stat ## ── Attaching packages ────────────────────────────────────────── tidyverse 1.</description>
+    </item>
+    
+    <item>
+      <title>Collect, Analyze, and Map Addresses in R</title>
+      <link>/2018/07/addresses-and-maps/</link>
+      <pubDate>Sat, 28 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/addresses-and-maps/</guid>
+      <description>The goal of this tutorial is to do the following:
+Collect addresses (via Google Forms) Download to R (via googlesheets) Geocode them (via geocode) Plot them (using leaflet) Get driving distance between them (via gmapsdistance) Cluster them (kmeans) Making the leaflet plot fancy  1. Collect Perhaps in a future post I’ll explore googleformr. For now, I create forms the old-school way.</description>
+    </item>
+    
+    <item>
+      <title>Rmarkdown images, Leaflet and googlesheets on Blogdown</title>
+      <link>/2018/07/debugging-leaflet-and-googlesheets-on-blogdown/</link>
+      <pubDate>Sat, 28 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/debugging-leaflet-and-googlesheets-on-blogdown/</guid>
+      <description>The beauty of open source is “Oh, let me just download that package and I can do amazing things!”. The reality is “ok, I downloaded it, and I got the ‘hello world’ example working. But now to actually get it to do what I want in the environment that I want takes like…now 30 hours? Just one more bug and I’ll finally give up…”
+Bugs I hit: I hit a lot of bugs when building my Leaflet tutorial.</description>
+    </item>
+    
+    <item>
+      <title>Getting the First Data Science Job</title>
+      <link>/2018/07/getting-the-first-data-science-job/</link>
+      <pubDate>Wed, 11 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/getting-the-first-data-science-job/</guid>
+      <description>Last March, I wanted to break into the Data Science community but was struggling with confidence and starting to doubt I&amp;rsquo;d make it. I had been reading blog after blog about data science, practiced additional coding and learning new methods at night. And rejection after rejection, I wondered if I was on the right path. Now on the other side, hindsight is 20&amp;frasl;20.
+I write this post to my past self, a person seeking for a job they couldn&amp;rsquo;t seem to get.</description>
+    </item>
+    
+    <item>
+      <title>Semantic Versioning for Data Science Models</title>
+      <link>/2018/07/semantic-versioning-for-data-science-models/</link>
+      <pubDate>Mon, 02 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/semantic-versioning-for-data-science-models/</guid>
+      <description>If you’ve ever wanted to tag your data science model, you’ve probably wondered how to version it. Which will it be: vx.4.1, v34.1231.51.21, or v91.x4.dev34? After reading about semantic versioning, I propose a method for versioning data science models.
+Semantic Versioning for Software Semantic versioning proposes the following:
+ Given a version number MAJOR.MINOR.PATCH, increment the:
+MAJOR version when you make incompatible API changes, MINOR version when you add functionality in a backwards-compatible manner, and PATCH version when you make backwards-compatible bug fixes.</description>
+    </item>
+    
+    <item>
+      <title>Buying a used car the data science way (and hacking Truecar)</title>
+      <link>/2018/02/buying-a-used-car-the-data-science-way/</link>
+      <pubDate>Sat, 10 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/02/buying-a-used-car-the-data-science-way/</guid>
+      <description>So you want to buy a car, but you don’t know anything about them? Welcome to my life.
+You show up at the dealer and there’s a sticker on the window. You know the difference between make and model, but you soon learn what a trim is. Some versions come with leather. Some have a sun roof. Some have all wheel drive. Some have 20k in miles, and a similarly priced car in a higher trim is at 40k miles.</description>
+    </item>
+    
+    <item>
+      <title>Webscraping Thousands of Used Cars</title>
+      <link>/2017/10/getting-used-car-data/</link>
+      <pubDate>Wed, 18 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/10/getting-used-car-data/</guid>
+      <description>In another post, I describe how I use this data that I’ve scraped, but I wanted to provide a more in-depth tutorial for those interested in how I got the data. Note, this data belongs to Truecar, so all uses herein are for personal and academic reasons only.
+Get the data In order to do any good analaysis, you first need data. I prefer to have more data than less, where possible.</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>/projects/</link>
+      <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/projects/</guid>
+      <description>Some projects I&amp;rsquo;ve worked on. Some are complete, some are in progress. If it&amp;rsquo;s research, I say whether it&amp;rsquo;s complete or not. If it&amp;rsquo;s a product, I say that it&amp;rsquo;s either &amp;ldquo;In development&amp;rdquo; or in &amp;ldquo;beta&amp;rdquo;.
+   Project Description Type/Status     LDS conference analytics dashboard An R Shiny tool to analyze word frequencies and trends for the semi-annual LDS General Conference talks In development   Comparing GLMs, hurdle models, and zero-inflated models to detect discrepancies in banking overdrafts A regulatory framework to detect behavioral differences in overdraft fees between low-income and high-income users Complete   the garden A meditative planning tool Beta    Things I think are cool:</description>
+    </item>
+    
+    <item>
+      <title>Why I Write</title>
+      <link>/about/</link>
+      <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/about/</guid>
+      <description>I want to share. And I believe that writing is a process where scrambled thoughts can be converted into shareable information.
+In math, processes are called functions. In writing, my thoughts are the inputs, writing is the function, and this post is my output. In statistics, the truth is unattainable, only estimable. Writing is the function that uses my thoughts to estimate truth. And bias is the distance from the truth.</description>
+    </item>
+    
+    <item>
+      <title>Yet Another Weekly Planner</title>
+      <link>/2017/06/yet-another-weekly-planner/</link>
+      <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/06/yet-another-weekly-planner/</guid>
+      <description>I believe that each creation has four phases: dreaming, planning, acting, and reflecting. Think about it - is there anything you&amp;rsquo;ve ever made that didn&amp;rsquo;t first enter into your mind, you came up with some game plan, you carried it out, and then when you were done you could see what went well and where you improved? Isn&amp;rsquo;t this what scrums are really about?
+I wanted a scrum for my personal life, but I didn&amp;rsquo;t find it practical to use the many online resources available.</description>
+    </item>
+    
+    <item>
+      <title>Blogdown and Tranquilpeak Hosted on Netlify: a Deep Dive</title>
+      <link>/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/</link>
+      <pubDate>Tue, 20 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/06/blogdown-and-tranquilpeak-hosted-on-netlify-a-deep-dive/</guid>
+      <description>This blog will outline what I see as differences between Hugo and Jekyll, some benefits and drawbacks of using Netlify vs. GitHub pages to host, and how to launch the Hugo Tranquilpeak theme from scratch.
+Why Hugo? One of my first posts was about blogging with Jekyll hosted on GitHub. About six months after writing that post, I hit a few bugs trying to debug it and got frustrated because I had already forgotten all of what I binge-learned earlier.</description>
+    </item>
+    
+    <item>
+      <title>The DataViz battle: Plotly vs ggplot2</title>
+      <link>/2017/02/the-dataviz-battle-plotly-vs-ggplot2/</link>
+      <pubDate>Fri, 10 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/02/the-dataviz-battle-plotly-vs-ggplot2/</guid>
+      <description>R users fall in love with ggplot2, the growing standard for data visualization in R. The ability to quickly vizualize trends, and customize just about anything you’d want, make it a powerful tool. Yet this week, I made a discovery that may reduce how much I used ggplot2. Enter plot_ly().
+For this post, I assume that you have a working knowledge of the dplyr (or magrittr) and ggplot2 packages.</description>
+    </item>
+    
+    <item>
+      <title>The Shell and its Many Languages</title>
+      <link>/2017/01/the-shell-and-its-many-languages/</link>
+      <pubDate>Sat, 14 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/01/the-shell-and-its-many-languages/</guid>
+      <description>If you don&amp;rsquo;t know how to use the shell/terminal/command line, you should. Why? Here&amp;rsquo;s a sampling of I&amp;rsquo;ve done in the last month:
+ I used R to generate 30,000 plots using ggplot(). I used the shell and ffmpeg to animate those plots as a movie. I&amp;rsquo;ve used the shell from VBA to send an Excel column of data into Stata, execute a summary statistic command, and then import the results back into Excel.</description>
+    </item>
+    
+    <item>
+      <title>Starting with Jekyll</title>
+      <link>/2016/11/starting-with-jekyll/</link>
+      <pubDate>Mon, 07 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/2016/11/starting-with-jekyll/</guid>
+      <description>Hello world.
+I wanted to start a blog. I wanted to set it up for free, use a custom URL (and not something.bloggingplatform.com), and be able to both blog and create tutorials. I didn&amp;rsquo;t mind it possibly being technical1. Enter Jekyll.
+If you want to get your blog in 10 minutes, skip to below.
+Why Blog with Jekyll? Here&amp;rsquo;s why you can and should blog with Jekyll (if you&amp;rsquo;re a data scientist):</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/1/01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/1/01/</guid>
+      <description>R Shiny on Docker       code{white-space: pre;} pre:not([class]) { background-color: white; }  if (window.hljs) { hljs.configure({languages: []}); hljs.initHighlightingOnLoad(); if (document.readyState &amp;&amp; document.readyState === &#34;complete&#34;) { window.setTimeout(function() { hljs.initHighlighting(); }, 0); } }  h1 { font-size: 34px; } h1.title { font-size: 38px; } h2 { font-size: 30px; } h3 { font-size: 24px; } h4 { font-size: 18px; } h5 { font-size: 16px; } h6 { font-size: 12px; } .</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/1/01/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/1/01/</guid>
+      <description>  leaflet          {&#34;x&#34;:{&#34;options&#34;:{&#34;crs&#34;:{&#34;crsClass&#34;:&#34;L.CRS.EPSG3857&#34;,&#34;code&#34;:null,&#34;proj4def&#34;:null,&#34;projectedBounds&#34;:null,&#34;options&#34;:{}}},&#34;calls&#34;:[{&#34;method&#34;:&#34;addTiles&#34;,&#34;args&#34;:[&#34;//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&#34;,null,null,{&#34;minZoom&#34;:0,&#34;maxZoom&#34;:18,&#34;tileSize&#34;:256,&#34;subdomains&#34;:&#34;abc&#34;,&#34;errorTileUrl&#34;:&#34;&#34;,&#34;tms&#34;:false,&#34;noWrap&#34;:false,&#34;zoomOffset&#34;:0,&#34;zoomReverse&#34;:false,&#34;opacity&#34;:1,&#34;zIndex&#34;:1,&#34;detectRetina&#34;:false,&#34;attribution&#34;:&#34;&amp;copy; OpenStreetMap contributors, CC-BY-SA&#34;}]},{&#34;method&#34;:&#34;addMarkers&#34;,&#34;args&#34;:[[40.6129419,40.6500629,40.6337817,40.873067,40.7329225,40.7520435,42.7618252,40.7010575],[-74.0766727,-73.8913059,-74.1230263,-73.858432,-74.00398,-73.9701833,-73.6629522,-73.7263072],null,null,null,{&#34;interactive&#34;:true,&#34;draggable&#34;:false,&#34;keyboard&#34;:true,&#34;title&#34;:&#34;&#34;,&#34;alt&#34;:&#34;&#34;,&#34;zIndexOffset&#34;:0,&#34;opacity&#34;:1,&#34;riseOnHover&#34;:false,&#34;riseOffset&#34;:250},null,null,null,null,null,{&#34;interactive&#34;:false,&#34;permanent&#34;:false,&#34;direction&#34;:&#34;auto&#34;,&#34;opacity&#34;:1,&#34;offset&#34;:[0,0],&#34;textsize&#34;:&#34;10px&#34;,&#34;textOnly&#34;:false,&#34;className&#34;:&#34;&#34;,&#34;sticky&#34;:true},null]}],&#34;limits&#34;:{&#34;lat&#34;:[40.6129419,42.7618252],&#34;lng&#34;:[-74.1230263,-73.6629522]}},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]} {&#34;viewer&#34;:{&#34;width&#34;:&#34;100%&#34;,&#34;height&#34;:400,&#34;padding&#34;:0,&#34;fill&#34;:true},&#34;browser&#34;:{&#34;width&#34;:&#34;100%&#34;,&#34;height&#34;:400,&#34;padding&#34;:0,&#34;fill&#34;:true}}   </description>
+    </item>
+    
+  </channel>
+</rss>

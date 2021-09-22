@@ -1,0 +1,1590 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+  
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <script data-ad-client="ca-pub-6540088627087882" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.54.0">
+    <meta name="theme" content="Tranquilpeak 0.3.1-BETA">
+    <title>Basic Probability and Stats</title>
+    <meta name="author" content="Bryan Whiting">
+    <meta name="keywords" content="">
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+    <meta name="description" content="install.load::install_load(&#39;ggplot2&#39;, &#39;reticulate&#39;, &#39;dplyr&#39;, &#39;pscl&#39;, &#39;Zelig&#39;, &#39;tidyverse&#39;) ## ## Attaching package: &#39;dplyr&#39; ## The following objects are masked from &#39;package:stats&#39;: ## ## filter, lag ## The following objects are masked from &#39;package:base&#39;: ## ## intersect, setdiff, setequal, union ## Classes and Methods for R developed in the ## Political Science Computational Laboratory ## Department of Political Science ## Stanford University ## Simon Jackman ## hurdle and zeroinfl functions by Achim Zeileis ## Loading required package: survival ## ## Attaching package: &#39;Zelig&#39; ## The following object is masked from &#39;package:ggplot2&#39;: ## ## stat ## ── Attaching packages ────────────────────────────────────────── tidyverse 1.">
+    <meta property="og:description" content="install.load::install_load(&#39;ggplot2&#39;, &#39;reticulate&#39;, &#39;dplyr&#39;, &#39;pscl&#39;, &#39;Zelig&#39;, &#39;tidyverse&#39;) ## ## Attaching package: &#39;dplyr&#39; ## The following objects are masked from &#39;package:stats&#39;: ## ## filter, lag ## The following objects are masked from &#39;package:base&#39;: ## ## intersect, setdiff, setequal, union ## Classes and Methods for R developed in the ## Political Science Computational Laboratory ## Department of Political Science ## Stanford University ## Simon Jackman ## hurdle and zeroinfl functions by Achim Zeileis ## Loading required package: survival ## ## Attaching package: &#39;Zelig&#39; ## The following object is masked from &#39;package:ggplot2&#39;: ## ## stat ## ── Attaching packages ────────────────────────────────────────── tidyverse 1.">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Basic Probability and Stats">
+    <meta property="og:url" content="/2018/09/basic-probability-and-stats/">
+    <meta property="og:site_name" content="My take on data">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="My take on data">
+    <meta name="twitter:description" content="install.load::install_load(&#39;ggplot2&#39;, &#39;reticulate&#39;, &#39;dplyr&#39;, &#39;pscl&#39;, &#39;Zelig&#39;, &#39;tidyverse&#39;) ## ## Attaching package: &#39;dplyr&#39; ## The following objects are masked from &#39;package:stats&#39;: ## ## filter, lag ## The following objects are masked from &#39;package:base&#39;: ## ## intersect, setdiff, setequal, union ## Classes and Methods for R developed in the ## Political Science Computational Laboratory ## Department of Political Science ## Stanford University ## Simon Jackman ## hurdle and zeroinfl functions by Achim Zeileis ## Loading required package: survival ## ## Attaching package: &#39;Zelig&#39; ## The following object is masked from &#39;package:ggplot2&#39;: ## ## stat ## ── Attaching packages ────────────────────────────────────────── tidyverse 1.">
+    
+      <meta name="twitter:creator" content="@bryanwhiting">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=640">
+    
+
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" />
+    
+    
+    <link rel="stylesheet" href="/css/style-u6mk0ojoywresbx8iepslrmmhl4stuhrsxuwhkpwrkrx7mryjcaimasnk4pi.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-85616639-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">My take on data</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Bryan Whiting</h4>
+        
+          <h5 class="sidebar-profile-bio">father, innovator, data scientist</h5>
+        
+      </div>
+    
+    
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about/index.html">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/projects/index.html">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-briefcase"></i>
+      
+      <span class="sidebar-button-desc">Projects</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/2138773/bryan">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/bryanwhiting">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/bryanwhiting">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://www.linkedin.com/in/bryan-whiting-b524a44b/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-linkedin"></i>
+      
+      <span class="sidebar-button-desc">LinkedIn</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+    </ul>
+  </div>
+  
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Basic Probability and Stats
+    </h1>
+  
+  <div class="postShorten-meta post-meta">
+  
+    <time itemprop="datePublished" datetime="2018-09-03T00:00:00Z">
+      
+  September 3, 2018
+
+    </time>
+  
+  
+
+</div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              
+
+
+<pre class="r"><code>install.load::install_load(&#39;ggplot2&#39;, &#39;reticulate&#39;, &#39;dplyr&#39;, &#39;pscl&#39;, &#39;Zelig&#39;, &#39;tidyverse&#39;)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre><code>## Classes and Methods for R developed in the
+## Political Science Computational Laboratory
+## Department of Political Science
+## Stanford University
+## Simon Jackman
+## hurdle and zeroinfl functions by Achim Zeileis</code></pre>
+<pre><code>## Loading required package: survival</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Zelig&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     stat</code></pre>
+<pre><code>## ── Attaching packages ────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ tibble  1.4.2     ✔ purrr   0.2.5
+## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
+## ✔ readr   1.1.1     ✔ forcats 0.3.0</code></pre>
+<pre><code>## ── Conflicts ───────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+## ✖ purrr::reduce() masks Zelig::reduce()
+## ✖ Zelig::stat()   masks ggplot2::stat()</code></pre>
+<p>This post is a messy hodgepodge of my notes on inferential methods in statistics. Hopefully it’s useful enough to help you become aware of what’s out there. I gave up halfway through. I did it for me, not for you, but thought I’d share regardless.</p>
+<div id="t-test" class="section level2">
+<h2>t-test</h2>
+<p>One-way, two-way, and Pair <a href="http://blog.minitab.com/blog/adventures-in-statistics-2/understanding-t-tests-1-sample-2-sample-and-paired-t-tests">link</a>.</p>
+<div id="when-to-use" class="section level3">
+<h3>When to use:</h3>
+<p>When you want to know if the statistic you’ve calculated is significantly different from the population.</p>
+<p>Assumptions of a t-test:</p>
+<ol style="list-style-type: decimal">
+<li>Both groups are independent of each other</li>
+<li>Each observation is independent of each other</li>
+<li><span class="math inline">\(\bar{x}\)</span> follows a normal distribution with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma\)</span></li>
+<li>Both groups have the same variance</li>
+<li><span class="math inline">\(n\)</span> is sufficiently large. (Someone said that 30 is the magic number, but that’s completely relative.)</li>
+</ol>
+<p><span class="math display">\[
+t = \frac{\bar{x}-\mu}{\sigma/\sqrt{n}}
+\]</span></p>
+<p><span class="math inline">\(\bar{x}\)</span> is the sample mean. You collect a sample of size <span class="math inline">\(n\)</span>.</p>
+<p>where <span class="math inline">\(\mu\)</span> is the population parameter. That’s what you’re comparing against. You’re testing to see if th</p>
+</div>
+<div id="hypothesis" class="section level3">
+<h3>Hypothesis:</h3>
+<p>The <a href="https://libguides.library.kent.edu/SPSS/OneSampletTest">null and alternative hypothesis</a>:</p>
+<ul>
+<li><span class="math inline">\(H_o\)</span>: <span class="math inline">\(\bar{x} = \mu\)</span></li>
+<li><span class="math inline">\(H_{a_1}\)</span>: <span class="math inline">\(\bar{x} \ne \mu\)</span> (two-sided t-test)</li>
+<li><span class="math inline">\(H_{a_2}\)</span>: <span class="math inline">\(\bar{x} \gt \mu\)</span> (one-sided t-test, right)</li>
+<li><span class="math inline">\(H_{a_3}\)</span>: <span class="math inline">\(\bar{x} \lt \mu\)</span> (one-sided t-test, left)</li>
+</ul>
+<p>Doing a two-sided t-test means you’ll be checking if <span class="math inline">\(\bar{x}\)</span> is greater than or less than a value. You don’t know which. The blue area is the ‘rejection’ region. So you first get your <span class="math inline">\(\bar{x}\)</span> and your <span class="math inline">\(n\)</span> from your data. Then get your <span class="math inline">\(t\)</span>-value. Then you see where your <span class="math inline">\(t\)</span>-value lies on the domain.</p>
+<pre class="r"><code>x &lt;- seq(-4, 4, length.out = 1000 )
+df = 10
+dat &lt;- data.frame(x = x, y = dt(x, df=df))
+
+obs_t_value = 2.6
+
+ggplot(dat, aes(x=x)) + 
+  stat_function(fun=dt, args=list(df=df)) + 
+  geom_area(data=dat[dat$x &gt; qt(.975, df=df),], aes(x=x, y=y), fill=&#39;blue&#39;) + 
+  geom_vline(xintercept=qt(.975, df=df), color=&#39;grey&#39;) + 
+  geom_vline(xintercept=obs_t_value, color=&#39;green&#39;) + 
+  geom_area(data=dat[dat$x &lt; qt(.025, df=df),], aes(x=x, y=y), fill=&#39;blue&#39;) + 
+  geom_vline(xintercept=qt(.025, df=df), color=&#39;grey&#39;) + 
+  theme_void()</code></pre>
+<p><img src="/post/2018-09-03-basic-probability-and-stats_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>So we got a t-value that’s in the shaded area. Hooray. We ‘reject’ the null hypothesis.</p>
+<pre class="r"><code>ggplot(dat, aes(x=x)) + 
+  stat_function(fun=dt, args=list(df=df)) + 
+  geom_area(data=dat[dat$x &gt; qt(.975, df=df),], aes(x=x, y=y), fill=&#39;blue&#39;) + 
+  geom_vline(xintercept=qt(.975, df=df), color=&#39;grey&#39;) + 
+  geom_vline(xintercept=obs_t_value, color=&#39;green&#39;) + 
+  geom_area(data=dat[dat$x &gt; obs_t_value,], aes(x=x, y=y), fill=&#39;green&#39;) +
+  annotate(geom=&#39;text&#39;, label=&#39;p-value&#39;, x = obs_t_value + .5, y=.001) + 
+  geom_area(data=dat[dat$x &lt; qt(.025, df=df),], aes(x=x, y=y), fill=&#39;blue&#39;) + 
+  geom_vline(xintercept=qt(.025, df=df), color=&#39;grey&#39;) + 
+  theme_void()</code></pre>
+<p><img src="/post/2018-09-03-basic-probability-and-stats_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><em>INTERPRETATION OF A P-VALUE:</em></p>
+<blockquote>
+<p>The probability of getting a test statistic as extreme or more extreme than the one you observed.</p>
+</blockquote>
+<p>Literally, the p-value is just the amount of the area to the right of your test statistic. Nothing more. It’s not the probability you reject the null hypothesis. It’s not the probability you’ll win the lottery. It’s literally just this: you got some value for <span class="math inline">\(t\)</span>, called <span class="math inline">\(t_{obs}\)</span>. Assuming <em>some</em> distribution for <span class="math inline">\(t\)</span>, how much of the curve is shaded beyond <span class="math inline">\(t_{obs}\)</span>? When doing a <em>hypothesis</em> test, you assume some <em>hypothesis</em> about <span class="math inline">\(\bar{x}\)</span>.</p>
+<p>This interpretation of a <span class="math inline">\(p\)</span>-value makes it easy to interpret in other areas. You have some distribution for your test-statistic (which in this case is <span class="math inline">\(t\)</span>), and you observed some value for <span class="math inline">\(t\)</span> because of your data. And you just want to know how <em>special</em> that value of <span class="math inline">\(t\)</span> is. How <em>rare</em> it is. How <em>likely</em> it is, given your assumption about the distribution of <span class="math inline">\(t\)</span>. If you assume all cats are 10 pounds plus or minus 5 pounds, and you come across one that’s 50, you now have an unlikely situation. You must decided if your belief about the world is sufficient. But, one outlier cat isn’t sufficient. You probably go and collect a sample of cats. And if your sample mean is really big, then</p>
+<p>When doing a one-sided t-test, you’ll put the alpha all in one tail. That makes it easier to reject the null hypothesis when you find an extreme value. Since it’s easier, people are pobably going to wonder why you chose to do a one-sided t-test in the first place. Here’s a one-sided test to the right.</p>
+<pre class="r"><code>ggplot(dat, aes(x=x)) + 
+  stat_function(fun=dt, args=list(df=df)) + 
+  geom_area(data=dat[dat$x &gt; qt(.95, df=df),], aes(x=x, y=y), fill=&#39;blue&#39;) + 
+  geom_vline(xintercept=qt(.95, df=df), color=&#39;grey&#39;) +
+  theme_void()</code></pre>
+<p><img src="/post/2018-09-03-basic-probability-and-stats_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>The blue area is literally 5% of the curve in all three instances. So if you get a test-statistic that falls in that area, you’ll reject the hypothesis. But don’t cheat: if you did a one-sided test to the right, but got a test-statistic wayyyy to the left, you can’t just flip the axis and then reject. That’s called <a href="https://projects.fivethirtyeight.com/p-hacking/">p-hacking</a>. If all you’re doing is searching for a p-value, you can always find one. More kudos to you if you get your results published and <a href="http://www.slate.com/articles/health_and_science/science/2016/01/amy_cuddy_s_power_pose_research_is_the_latest_example_of_scientific_overreach.html">widely disseminated via new channels</a>.</p>
+</div>
+</div>
+<div id="t-test-of-two-groups-two-sample-t-test" class="section level2">
+<h2>T-test of two groups (two-sample t-test)</h2>
+<p>When you want to test if the means of two populations are different.</p>
+<p><span class="math display">\[
+t = \frac{\bar{x_1} - \bar{x_2}}{s_p\sqrt{2/n}}
+\]</span> where <span class="math display">\[ 
+s_p = \sqrt{\frac{s^2_1 + s^2_2}{2}}
+\]</span> Assumptions:</p>
+<ul>
+<li>This test requires that both groups have the same sample size.</li>
+<li>Two populations have the same population variance.</li>
+</ul>
+<p>Variants on the two-sample t-test:</p>
+<div id="equal-sample-sizes-equal-population-variance." class="section level3">
+<h3>Equal sample sizes, equal population variance.</h3>
+<pre class="r"><code>t.test(x = sleep$extra[sleep$group == 2], 
+       y = sleep$extra[sleep$group == 1],
+       var.equal = TRUE)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  sleep$extra[sleep$group == 2] and sleep$extra[sleep$group == 1]
+## t = 1.8608, df = 18, p-value = 0.07919
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.203874  3.363874
+## sample estimates:
+## mean of x mean of y 
+##      2.33      0.75</code></pre>
+</div>
+<div id="possibly-unequal-sample-sizes-unequal-population-variance-welch-t-test." class="section level3">
+<h3>Possibly Unequal sample sizes, unequal population variance (Welch t-test).</h3>
+<pre class="r"><code>grp1 = sleep$extra[sleep$group == 1]
+grp2 = sleep$extra[sleep$group == 2]
+t.test(x = grp2, 
+       y = grp1,
+       var.equal = FALSE)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  grp2 and grp1
+## t = 1.8608, df = 17.776, p-value = 0.07939
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.2054832  3.3654832
+## sample estimates:
+## mean of x mean of y 
+##      2.33      0.75</code></pre>
+<p>TODO: * What are the dfs?</p>
+</div>
+</div>
+<div id="simple-linear-regression" class="section level2">
+<h2>Simple linear regression</h2>
+<p>Assumptions <a href="http://r-statistics.co/Assumptions-of-Linear-Regression.html">1</a> <a href="http://people.duke.edu/~rnau/testing.htm">2</a>:</p>
+<ul>
+<li><ol start="12" style="list-style-type: upper-alpha">
+<li>Linearity and additivity of the relationship between Y and X</li>
+</ol></li>
+<li><ol style="list-style-type: upper-roman">
+<li>Statistical independence of the errors (no autocorrelation for time series)</li>
+</ol></li>
+<li><ol start="14" style="list-style-type: upper-alpha">
+<li>Normality of the error distribution</li>
+</ol></li>
+<li><ol start="5" style="list-style-type: upper-alpha">
+<li>Homoscedasticity (equal/constant variance)</li>
+</ol></li>
+</ul>
+<p>Assumptions (I), (N), (E) are defined in this formula, saying that the errors are independently and identidically distributed as Normal with mean 0 and constant variance <span class="math inline">\(\sigma^2\)</span>:</p>
+<p><span class="math display">\[
+\epsilon \stackrel{iid}\sim N(0, \sigma^2)
+\]</span></p>
+<p>Hypothesis for <span class="math inline">\(\beta_{intercept}\)</span>:</p>
+<ul>
+<li><span class="math inline">\(H_o\)</span>: <span class="math inline">\(\beta_{intercept} \ne 0\)</span>.</li>
+</ul>
+<p>Hypothesis for <span class="math inline">\(\beta_{grp2}\)</span>:</p>
+<ul>
+<li><span class="math inline">\(H_o\)</span>: <span class="math inline">\(\beta_{grp2} = 0\)</span>, or there is no significant difference between <code>grp1</code> and <code>grp2</code>.</li>
+<li><span class="math inline">\(H_a\)</span>: <span class="math inline">\(\beta_{grp2} \ne 0\)</span>, or there is a signficant difference between <code>grp1</code> and <code>grp2</code>.</li>
+</ul>
+<p>The test:</p>
+<pre class="r"><code>summary(lm(extra ~ as.factor(group), data = sleep))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = extra ~ as.factor(group), data = sleep)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -2.430 -1.305 -0.580  1.455  3.170 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)         0.7500     0.6004   1.249   0.2276  
+## as.factor(group)2   1.5800     0.8491   1.861   0.0792 .
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.899 on 18 degrees of freedom
+## Multiple R-squared:  0.1613, Adjusted R-squared:  0.1147 
+## F-statistic: 3.463 on 1 and 18 DF,  p-value: 0.07919</code></pre>
+<p><em>Iterpretation of <span class="math inline">\(\beta_{grp1}\)</span>:</em> <a href="https://stats.stackexchange.com/questions/187859/t-test-for-intercept">Link</a></p>
+<p><span class="math display">\[
+$t_{beta} = \frac{\beta_j - 0}{SE(\beta_j)}
+\]</span></p>
+<pre class="r"><code>0.7500 / 0.6004</code></pre>
+<pre><code>## [1] 1.249167</code></pre>
+<pre class="r"><code># pop_var = sum((grp1 - mean(grp1))^2)/(length(grp1)-1)
+# .75/sqrt(pop_var/(length(grp1) -1))</code></pre>
+<p>I don’t know that there’s any other interpretation of it.</p>
+<p><em>Iterpretation of <span class="math inline">\(\beta_{grp2}\)</span>:</em></p>
+<pre class="r"><code>1.5800 / 0.8491</code></pre>
+<pre><code>## [1] 1.860794</code></pre>
+<p>Notice the t-stat for <code>group2</code> is the same as the <span class="math inline">\(t\)</span>-stat for the Welch t-test.</p>
+<p>Notice <span class="math inline">\(\beta_{grp2} = 1.58\)</span>, meaning <code>grp2</code> is greater than <code>grp1</code> by <code>1.58</code>, and where <code>mean(grp1) = E(grp1) = \beta_{intercept} = 0.75$. Therefore,</code>E(grp2) = 1.58 + 0.75 = 2.33`, which we also know from the output of the <span class="math inline">\(t\)</span>-test.</p>
+<p>What have we learned:</p>
+<ul>
+<li>The coefficient of a factor level plus the intercept is the actual mean for that factor level.</li>
+<li>The <span class="math inline">\(t\)</span>-value of a coefficient corresponds to the <span class="math inline">\(t\)</span>-test of whether the two groups are the same.</li>
+</ul>
+<p>Interpretation:</p>
+<p>TODO: * Residuals:<br />
+* Residual standard error: * Degrees of freedom: * Multiple R-squared: The percentage of variation in Y explained by the Xs. (multiple to indicate multiple regressors) * Adjusted R-squared: * F-statistic on 1 and 18 DF: Whether the fit of your model compared to the reduced (intercept-only) model is better. <a href="http://blog.minitab.com/blog/adventures-in-statistics-2/what-is-the-f-test-of-overall-significance-in-regression-analysis">link</a> * p-value:</p>
+<p>Formula for adjusted <span class="math inline">\(R^2\)</span> <a href="http://thestatsgeek.com/2013/10/28/r-squared-and-adjusted-r-squared/">link</a>: <span class="math display">\[
+R_{adj} = 1 - \frac{(1-R^2)(n-1)}{n-k-1}
+\]</span></p>
+<p>How can adding a predictor flip the correlation?</p>
+</div>
+<div id="mann-whitney-u-test" class="section level2">
+<h2>Mann-Whitney U-test</h2>
+<blockquote>
+<p>(A Wilcoxon rank sum test with two groups)</p>
+</blockquote>
+<p><a href="https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test">Wiki</a>.</p>
+<ul>
+<li>Doesn’t require the assumption that <span class="math inline">\(\bar{x}\)</span> follows a normal distribution.</li>
+<li>Non-parametric test</li>
+</ul>
+<p>How it works:</p>
+<ul>
+<li><span class="math inline">\(H_o\)</span>: Both populations follow the same distribution.</li>
+<li><span class="math inline">\(H_a\)</span>: The distributions are not equal</li>
+</ul>
+<pre class="r"><code>wilcox.test(grp1, grp2)</code></pre>
+<pre><code>## Warning in wilcox.test.default(grp1, grp2): cannot compute exact p-value
+## with ties</code></pre>
+<pre><code>## 
+##  Wilcoxon rank sum test with continuity correction
+## 
+## data:  grp1 and grp2
+## W = 25.5, p-value = 0.06933
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+<pre class="r"><code># Calculate ranks
+dat &lt;- sleep %&gt;% 
+  mutate(rank = rank(extra, ties.method = &#39;average&#39;)) %&gt;%
+  arrange(extra) 
+
+sum_rank1 &lt;- dat %&gt;% filter(group == 1) %&gt;% summarise(sum(rank)) %&gt;% pull()
+W = sum_rank1 - length(grp1)*(length(grp1) + 1)/2 
+print(W)</code></pre>
+<pre><code>## [1] 25.5</code></pre>
+<pre class="r"><code># Then get the t-value</code></pre>
+</div>
+<div id="t-test-of-two-proportions" class="section level2">
+<h2>t-test of two proportions</h2>
+<pre class="r"><code>smokers  &lt;- c( 83, 90, 129, 70 )
+patients &lt;- c( 86, 93, 136, 82 )
+prop.test(smokers, patients)</code></pre>
+<pre><code>## 
+##  4-sample test for equality of proportions without continuity
+##  correction
+## 
+## data:  smokers out of patients
+## X-squared = 12.6, df = 3, p-value = 0.005585
+## alternative hypothesis: two.sided
+## sample estimates:
+##    prop 1    prop 2    prop 3    prop 4 
+## 0.9651163 0.9677419 0.9485294 0.8536585</code></pre>
+<p>Esoph data <a href="http://sphweb.bumc.bu.edu/otlt/MPH-Modules/BS/R/R6_CategoricalDataAnalysis/R6_CategoricalDataAnalysis6.html" class="uri">http://sphweb.bumc.bu.edu/otlt/MPH-Modules/BS/R/R6_CategoricalDataAnalysis/R6_CategoricalDataAnalysis6.html</a></p>
+<pre class="r"><code>with(esoph, table(agegp, ncases))</code></pre>
+<pre><code>##        ncases
+## agegp    0  1  2  3  4  5  6  8  9 17
+##   25-34 14  1  0  0  0  0  0  0  0  0
+##   35-44 10  2  2  1  0  0  0  0  0  0
+##   45-54  3  2  2  2  3  2  2  0  0  0
+##   55-64  0  0  2  4  3  2  2  1  2  0
+##   65-74  1  4  2  2  2  2  1  0  0  1
+##   75+    1  7  3  0  0  0  0  0  0  0</code></pre>
+<pre class="r"><code>case.vector = with(esoph, tapply(ncases, agegp, sum))
+total.vector = with(esoph, tapply(ncontrols+ncases, agegp, sum))
+prop.test(case.vector, total.vector)</code></pre>
+<pre><code>## 
+##  6-sample test for equality of proportions without continuity
+##  correction
+## 
+## data:  case.vector out of total.vector
+## X-squared = 68.382, df = 5, p-value = 2.224e-13
+## alternative hypothesis: two.sided
+## sample estimates:
+##      prop 1      prop 2      prop 3      prop 4      prop 5      prop 6 
+## 0.008547009 0.043269231 0.177606178 0.238993711 0.254629630 0.228070175</code></pre>
+<pre class="r"><code>dat &lt;- prussian %&gt;% spread(key=corp, value=y)
+dat</code></pre>
+<pre><code>##    year G I II III IV IX V VI VII VIII X XI XIV XV
+## 1    75 0 0  0   0  0  0 0  0   1    1 0  0   1  0
+## 2    76 2 0  0   0  1  0 0  0   0    0 0  0   1  1
+## 3    77 2 0  0   0  0  0 0  1   1    0 1  0   2  0
+## 4    78 1 2  2   1  1  0 0  0   0    0 1  0   1  0
+## 5    79 0 0  0   1  1  0 2  2   0    1 0  2   1  0
+## 6    80 0 3  2   1  1  2 1  0   0    0 1  4   3  0
+## 7    81 1 0  0   2  1  1 0  0   1    0 0  0   0  0
+## 8    82 1 2  0   0  0  1 0  1   0    1 2  1   4  1
+## 9    83 0 0  1   2  0  1 1  2   1    0 0  3   0  0
+## 10   84 3 0  1   0  0  0 0  0   1    0 2  0   1  1
+## 11   85 0 0  0   0  0  2 0  1   0    0 0  1   0  1
+## 12   86 2 1  0   0  1  1 1  1   0    0 0  1   3  0
+## 13   87 1 1  2   1  0  1 0  3   2    1 0  1   2  0
+## 14   88 0 1  1   0  0  0 1  1   0    0 0  1   1  0
+## 15   89 0 0  1   1  0  1 1  1   0    0 2  2   0  2
+## 16   90 1 2  0   2  0  2 1  1   2    0 1  1   2  2
+## 17   91 0 0  0   1  1  0 1  0   1    1 3  3   1  0
+## 18   92 1 3  2   0  1  1 1  3   0    1 0  1   1  0
+## 19   93 0 1  0   0  0  0 1  0   2    0 1  3   0  0
+## 20   94 1 0  0   0  0  0 0  0   0    1 1  1   0  0</code></pre>
+<pre class="r"><code>sapply(dat, function(x){c(mean(x), sd(x))})</code></pre>
+<pre><code>##          year         G        I        II      III        IV        IX
+## [1,] 84.50000 0.8000000 0.800000 0.6000000 0.600000 0.4000000 0.6500000
+## [2,]  5.91608 0.8944272 1.056309 0.8207827 0.753937 0.5026247 0.7451598
+##              V        VI      VII      VIII         X       XI      XIV
+## [1,] 0.5500000 0.8500000 0.600000 0.3500000 0.7500000 1.250000 1.200000
+## [2,] 0.6048053 0.9880869 0.753937 0.4893605 0.9104655 1.208522 1.151658
+##            XV
+## [1,] 0.400000
+## [2,] 0.680557</code></pre>
+</div>
+<div id="kruskal-wallace-test" class="section level2">
+<h2>Kruskal wallace test</h2>
+</div>
+<div id="power-test" class="section level2">
+<h2>Power test</h2>
+</div>
+<div id="t-test-for-binomial-data" class="section level2">
+<h2>t-test for binomial data</h2>
+</div>
+<div id="regression-for-count-data" class="section level2">
+<h2>Regression for count data</h2>
+<p>Negative Binomial <a href="https://stats.idre.ucla.edu/r/dae/negative-binomial-regression/">ucla.edu</a></p>
+<pre class="r"><code>mod &lt;- zelig(y ~ year + as.factor(corp), data=prussian, model=&#39;negbin&#39;)</code></pre>
+<pre><code>## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace &gt; : iteration limit reached
+
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace &gt; : iteration limit reached</code></pre>
+<pre><code>## How to cite this model in Zelig:
+##   William N. Venables, and Brian D. Ripley. 2008.
+##   negbin: Negative Binomial Regression for Event Count Dependent Variables
+##   in Christine Choirat, Christopher Gandrud, James Honaker, Kosuke Imai, Gary King, and Olivia Lau,
+##   &quot;Zelig: Everyone&#39;s Statistical Software,&quot; http://zeligproject.org/</code></pre>
+<pre class="r"><code>summary(mod)</code></pre>
+<pre><code>## Model: 
+## 
+## Call:
+## z5$zelig(formula = y ~ year + as.factor(corp), data = prussian)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.6885  -1.1077  -0.8035   0.5348   2.0805  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) -1.815e+00  1.087e+00  -1.669   0.0952
+## year         1.876e-02  1.243e-02   1.509   0.1312
+## corpI       -7.385e-06  3.536e-01   0.000   1.0000
+## corpII      -2.877e-01  3.819e-01  -0.753   0.4513
+## corpIII     -2.877e-01  3.819e-01  -0.753   0.4513
+## corpIV      -6.931e-01  4.330e-01  -1.601   0.1095
+## corpIX      -2.076e-01  3.734e-01  -0.556   0.5782
+## corpV       -3.747e-01  3.917e-01  -0.957   0.3388
+## corpVI       6.062e-02  3.483e-01   0.174   0.8619
+## corpVII     -2.877e-01  3.819e-01  -0.753   0.4513
+## corpVIII    -8.267e-01  4.532e-01  -1.824   0.0681
+## corpX       -6.455e-02  3.594e-01  -0.180   0.8575
+## corpXI       4.463e-01  3.202e-01   1.394   0.1634
+## corpXIV      4.055e-01  3.228e-01   1.256   0.2091
+## corpXV      -6.932e-01  4.330e-01  -1.601   0.1094
+## 
+## (Dispersion parameter for Negative Binomial(4532.517) family taken to be 1)
+## 
+##     Null deviance: 323.18  on 279  degrees of freedom
+## Residual deviance: 294.76  on 265  degrees of freedom
+## AIC: 631.89
+## 
+## Number of Fisher Scoring iterations: 1
+## 
+## 
+##               Theta:  4533 
+##           Std. Err.:  86007 
+## Warning while fitting theta: iteration limit reached 
+## 
+##  2 x log-likelihood:  -599.886 
+## Next step: Use &#39;setx&#39; method</code></pre>
+<p>Poisson Binomial</p>
+<pre class="r"><code>mod &lt;- zelig(y ~ year + as.factor(corp), data=prussian, model=&#39;poisson&#39;)</code></pre>
+<pre><code>## How to cite this model in Zelig:
+##   R Core Team. 2007.
+##   poisson: Poisson Regression for Event Count Dependent Variables
+##   in Christine Choirat, Christopher Gandrud, James Honaker, Kosuke Imai, Gary King, and Olivia Lau,
+##   &quot;Zelig: Everyone&#39;s Statistical Software,&quot; http://zeligproject.org/</code></pre>
+<pre class="r"><code>summary(mod)</code></pre>
+<pre><code>## Model: 
+## 
+## Call:
+## z5$zelig(formula = y ~ year + as.factor(corp), data = prussian)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.6887  -1.1077  -0.8035   0.5348   2.0810  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) -1.815e+00  1.087e+00  -1.669   0.0951
+## year         1.876e-02  1.243e-02   1.510   0.1312
+## corpI        3.850e-09  3.535e-01   0.000   1.0000
+## corpII      -2.877e-01  3.819e-01  -0.753   0.4512
+## corpIII     -2.877e-01  3.819e-01  -0.753   0.4512
+## corpIV      -6.931e-01  4.330e-01  -1.601   0.1094
+## corpIX      -2.076e-01  3.734e-01  -0.556   0.5781
+## corpV       -3.747e-01  3.917e-01  -0.957   0.3387
+## corpVI       6.062e-02  3.483e-01   0.174   0.8618
+## corpVII     -2.877e-01  3.819e-01  -0.753   0.4512
+## corpVIII    -8.267e-01  4.532e-01  -1.824   0.0681
+## corpX       -6.454e-02  3.594e-01  -0.180   0.8575
+## corpXI       4.463e-01  3.202e-01   1.394   0.1633
+## corpXIV      4.055e-01  3.227e-01   1.256   0.2090
+## corpXV      -6.931e-01  4.330e-01  -1.601   0.1094
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 323.23  on 279  degrees of freedom
+## Residual deviance: 294.81  on 265  degrees of freedom
+## AIC: 629.89
+## 
+## Number of Fisher Scoring iterations: 5
+## 
+## Next step: Use &#39;setx&#39; method</code></pre>
+</div>
+<div id="one-way-anova" class="section level2">
+<h2>One-way ANOVA</h2>
+<p>To test if the means of three or more groups are different, <a href="http://blog.minitab.com/blog/adventures-in-statistics-2/understanding-analysis-of-variance-anova-and-the-f-test">F-stat minitab</a>.</p>
+<pre class="r"><code># AOV calls the linear model
+# https://www.statmethods.net/stats/anova.html
+summary(lm(y ~ corp, data=prussian))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ corp, data = prussian)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##  -1.25  -0.60  -0.35   0.45   2.80 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  8.000e-01  1.908e-01   4.193 3.76e-05 ***
+## corpI       -2.531e-15  2.699e-01   0.000   1.0000    
+## corpII      -2.000e-01  2.699e-01  -0.741   0.4593    
+## corpIII     -2.000e-01  2.699e-01  -0.741   0.4593    
+## corpIV      -4.000e-01  2.699e-01  -1.482   0.1394    
+## corpIX      -1.500e-01  2.699e-01  -0.556   0.5788    
+## corpV       -2.500e-01  2.699e-01  -0.926   0.3551    
+## corpVI       5.000e-02  2.699e-01   0.185   0.8531    
+## corpVII     -2.000e-01  2.699e-01  -0.741   0.4593    
+## corpVIII    -4.500e-01  2.699e-01  -1.668   0.0966 .  
+## corpX       -5.000e-02  2.699e-01  -0.185   0.8531    
+## corpXI       4.500e-01  2.699e-01   1.668   0.0966 .  
+## corpXIV      4.000e-01  2.699e-01   1.482   0.1394    
+## corpXV      -4.000e-01  2.699e-01  -1.482   0.1394    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.8533 on 266 degrees of freedom
+## Multiple R-squared:  0.08976,    Adjusted R-squared:  0.04527 
+## F-statistic: 2.018 on 13 and 266 DF,  p-value: 0.01967</code></pre>
+<pre class="r"><code>summary(aov(y ~ corp, data=prussian))</code></pre>
+<pre><code>##              Df Sum Sq Mean Sq F value Pr(&gt;F)  
+## corp         13   19.1  1.4692   2.018 0.0197 *
+## Residuals   266  193.7  0.7282                 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p><a href="https://www2.stat.duke.edu/courses/Spring16/sta643/slides/oneway.pdf">link1 duke</a>, <a href="https://sites.duke.edu/adhoc_boss/files/2013/03/Purpose-Assumptions-Hypotheses-One-Way.pdf">link2 duke</a>, <a href="https://www.statmethods.net/stats/anova.html">link3 statmethods</a>.</p>
+<ul>
+<li><span class="math inline">\(H_o\)</span>: Means of all groups are the same.</li>
+<li><span class="math inline">\(H_a\)</span>: Means of at least one group is different.</li>
+</ul>
+<p>Learned:</p>
+<ul>
+<li>The output of the one-way ANOVA is the same as the F-test on the regression.</li>
+</ul>
+</div>
+<div id="two-way-anova" class="section level2">
+<h2>Two-way anova</h2>
+<ul>
+<li><a href="http://personality-project.org/r/r.guide/r.anova.html#oneway">Personality Project</a></li>
+<li><a href="http://www.sthda.com/english/wiki/two-way-anova-test-in-r">stdha tooth anova</a></li>
+</ul>
+<pre class="r"><code>summary(lm(y ~ as.factor(year) + corp, data=prussian))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ as.factor(year) + corp, data = prussian)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.4357 -0.5429 -0.1714  0.4518  2.5000 
+## 
+## Coefficients:
+##                     Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)        3.143e-01  2.827e-01   1.112 0.267307    
+## as.factor(year)76  1.429e-01  3.112e-01   0.459 0.646625    
+## as.factor(year)77  2.857e-01  3.112e-01   0.918 0.359496    
+## as.factor(year)78  4.286e-01  3.112e-01   1.377 0.169743    
+## as.factor(year)79  5.000e-01  3.112e-01   1.607 0.109428    
+## as.factor(year)80  1.071e+00  3.112e-01   3.443 0.000676 ***
+## as.factor(year)81  2.143e-01  3.112e-01   0.689 0.491768    
+## as.factor(year)82  7.857e-01  3.112e-01   2.525 0.012211 *  
+## as.factor(year)83  5.714e-01  3.112e-01   1.836 0.067549 .  
+## as.factor(year)84  4.286e-01  3.112e-01   1.377 0.169743    
+## as.factor(year)85  1.429e-01  3.112e-01   0.459 0.646625    
+## as.factor(year)86  5.714e-01  3.112e-01   1.836 0.067549 .  
+## as.factor(year)87  8.571e-01  3.112e-01   2.754 0.006323 ** 
+## as.factor(year)88  2.143e-01  3.112e-01   0.689 0.491768    
+## as.factor(year)89  5.714e-01  3.112e-01   1.836 0.067549 .  
+## as.factor(year)90  1.000e+00  3.112e-01   3.213 0.001488 ** 
+## as.factor(year)91  6.429e-01  3.112e-01   2.066 0.039912 *  
+## as.factor(year)92  8.571e-01  3.112e-01   2.754 0.006323 ** 
+## as.factor(year)93  3.571e-01  3.112e-01   1.148 0.252267    
+## as.factor(year)94  7.143e-02  3.112e-01   0.230 0.818664    
+## corpI             -7.825e-16  2.604e-01   0.000 1.000000    
+## corpII            -2.000e-01  2.604e-01  -0.768 0.443172    
+## corpIII           -2.000e-01  2.604e-01  -0.768 0.443172    
+## corpIV            -4.000e-01  2.604e-01  -1.536 0.125778    
+## corpIX            -1.500e-01  2.604e-01  -0.576 0.565098    
+## corpV             -2.500e-01  2.604e-01  -0.960 0.337942    
+## corpVI             5.000e-02  2.604e-01   0.192 0.847884    
+## corpVII           -2.000e-01  2.604e-01  -0.768 0.443172    
+## corpVIII          -4.500e-01  2.604e-01  -1.728 0.085205 .  
+## corpX             -5.000e-02  2.604e-01  -0.192 0.847884    
+## corpXI             4.500e-01  2.604e-01   1.728 0.085205 .  
+## corpXIV            4.000e-01  2.604e-01   1.536 0.125778    
+## corpXV            -4.000e-01  2.604e-01  -1.536 0.125778    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.8234 on 247 degrees of freedom
+## Multiple R-squared:  0.213,  Adjusted R-squared:  0.1111 
+## F-statistic: 2.089 on 32 and 247 DF,  p-value: 0.0009569</code></pre>
+<pre class="r"><code>summary(aov(y ~ as.factor(year) + corp, data=prussian))</code></pre>
+<pre><code>##                  Df Sum Sq Mean Sq F value Pr(&gt;F)   
+## as.factor(year)  19  26.23   1.381   2.036 0.0076 **
+## corp             13  19.10   1.469   2.167 0.0115 * 
+## Residuals       247 167.47   0.678                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>summary(aov(y ~ as.factor(year), data=prussian))</code></pre>
+<pre><code>##                  Df Sum Sq Mean Sq F value Pr(&gt;F)  
+## as.factor(year)  19  26.23  1.3805   1.924 0.0129 *
+## Residuals       260 186.57  0.7176                 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Learned:</p>
+<ul>
+<li>The F-test on the two-way ANOVA isn’t the same as the lm</li>
+<li>Two-way anova interpretation: the levels of X are associated with significantly different tooth length.</li>
+</ul>
+</div>
+<div id="interactions" class="section level2">
+<h2>Interactions</h2>
+<p>Is there an interaction between two features? Does the level of the response change across different levels of another feature? If so, you should account for this in the model: the two features together combine to affect the response.</p>
+<p>Interaction plot:</p>
+<pre class="r"><code>interaction.plot(x.factor = prussian$year, 
+                 trace.factor = prussian$corp, 
+                 response = prussian$y)</code></pre>
+<p><img src="/post/2018-09-03-basic-probability-and-stats_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<pre class="r"><code># 
+interaction.plot(x.factor = ToothGrowth$supp, 
+                 trace.factor = ToothGrowth$dose,
+                 response = ToothGrowth$len)</code></pre>
+<p><img src="/post/2018-09-03-basic-probability-and-stats_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+</div>
+<div id="prussian-data" class="section level2">
+<h2>Prussian data:</h2>
+<pre class="r"><code>dat &lt;- prussian %&gt;% spread(key=corp, value=y)
+dat</code></pre>
+<pre><code>##    year G I II III IV IX V VI VII VIII X XI XIV XV
+## 1    75 0 0  0   0  0  0 0  0   1    1 0  0   1  0
+## 2    76 2 0  0   0  1  0 0  0   0    0 0  0   1  1
+## 3    77 2 0  0   0  0  0 0  1   1    0 1  0   2  0
+## 4    78 1 2  2   1  1  0 0  0   0    0 1  0   1  0
+## 5    79 0 0  0   1  1  0 2  2   0    1 0  2   1  0
+## 6    80 0 3  2   1  1  2 1  0   0    0 1  4   3  0
+## 7    81 1 0  0   2  1  1 0  0   1    0 0  0   0  0
+## 8    82 1 2  0   0  0  1 0  1   0    1 2  1   4  1
+## 9    83 0 0  1   2  0  1 1  2   1    0 0  3   0  0
+## 10   84 3 0  1   0  0  0 0  0   1    0 2  0   1  1
+## 11   85 0 0  0   0  0  2 0  1   0    0 0  1   0  1
+## 12   86 2 1  0   0  1  1 1  1   0    0 0  1   3  0
+## 13   87 1 1  2   1  0  1 0  3   2    1 0  1   2  0
+## 14   88 0 1  1   0  0  0 1  1   0    0 0  1   1  0
+## 15   89 0 0  1   1  0  1 1  1   0    0 2  2   0  2
+## 16   90 1 2  0   2  0  2 1  1   2    0 1  1   2  2
+## 17   91 0 0  0   1  1  0 1  0   1    1 3  3   1  0
+## 18   92 1 3  2   0  1  1 1  3   0    1 0  1   1  0
+## 19   93 0 1  0   0  0  0 1  0   2    0 1  3   0  0
+## 20   94 1 0  0   0  0  0 0  0   0    1 1  1   0  0</code></pre>
+<pre class="r"><code>sapply(dat, function(x){c(mean(x), sd(x))})</code></pre>
+<pre><code>##          year         G        I        II      III        IV        IX
+## [1,] 84.50000 0.8000000 0.800000 0.6000000 0.600000 0.4000000 0.6500000
+## [2,]  5.91608 0.8944272 1.056309 0.8207827 0.753937 0.5026247 0.7451598
+##              V        VI      VII      VIII         X       XI      XIV
+## [1,] 0.5500000 0.8500000 0.600000 0.3500000 0.7500000 1.250000 1.200000
+## [2,] 0.6048053 0.9880869 0.753937 0.4893605 0.9104655 1.208522 1.151658
+##            XV
+## [1,] 0.400000
+## [2,] 0.680557</code></pre>
+<p>Follow-up questions 1. How many soldiers were in each corp? 2. What are the different corps? Where were they stationed? 3. How did the various horse kick deaths happen? 4. What years was Prussia in war? (more horeskick deaths during times of war)</p>
+</div>
+<div id="learnings" class="section level1">
+<h1>Learnings:</h1>
+<ol style="list-style-type: decimal">
+<li>Zelig can do all sorts of models</li>
+<li>I don’t know if I can back-out the t-test for intercept. But the t-test for the simple linear regression coefficient is the same as a two-way t-test.</li>
+<li>Mann-whitney test ranks the two groups together, adjusts for ties by getting the average rank, and then sums the ranks for one group. Takes the difference from the total sum of ranks. That’s your test statistic. Apparently it follows a normal distribution of sorts (adjusting for ties and everything), which allows you to calculate a p-value.</li>
+<li>Assumptions of a t-test are equal variance, that <span class="math inline">\(\bar{x}\)</span> follows a normal distribution. But you can assume unequal variance and different population sizes (Welch t-test).</li>
+<li>Mann-Whitney test doesn’t require the assumption of normality, and still yields as good results.</li>
+<li>One-way ANOVA F stat is the same as a one-variable LM</li>
+<li>two-way anova tests each level, to see if it is different. This is not the same as the F-test of the similarly-parameterized linear model. The F-test of the linear model is a full-vs-reduced model comparison of all the features relative to just an intercept-only model. (TODO: how does this compare to the one-way anova? Why is the one-way anova the same?)</li>
+<li>Test for interactions in the two-way anova</li>
+<li>You can do full-vs-reduced tests to see if your linear model is a better fit.</li>
+<li>An interaction plot can be used to see if there is an interaction (go figure)</li>
+</ol>
+</div>
+<div id="probability" class="section level1">
+<h1>Probability</h1>
+<div id="checking-if-a-coin-is-fair" class="section level2">
+<h2>Checking if a coin is fair</h2>
+<p><a href="https://en.wikipedia.org/wiki/Checking_whether_a_coin_is_fair">Wiki</a>.</p>
+<ul>
+<li><span class="math inline">\(H_o\)</span>: Coin is unbiased.</li>
+<li><span class="math inline">\(H_a\)</span>: Coin is biased.</li>
+</ul>
+<div id="frequentist" class="section level3">
+<h3>Frequentist</h3>
+<p>If you flip a coin 20 times, what’s the probability of getting 17 heads?</p>
+<pre class="r"><code># The probability of 17 heads is .00108
+dbinom(x = 17, size = 20, prob = .5)</code></pre>
+<pre><code>## [1] 0.001087189</code></pre>
+<pre class="r"><code># The sum of x = 1:20 equals 1
+sum(dbinom(x = 1:20, size = 20, prob = .5))</code></pre>
+<pre><code>## [1] 0.999999</code></pre>
+<pre class="r"><code># When would you get the sense that it&#39;s biased?
+prop.test(17, 20, .5)</code></pre>
+<pre><code>## 
+##  1-sample proportions test with continuity correction
+## 
+## data:  17 out of 20, null probability 0.5
+## X-squared = 8.45, df = 1, p-value = 0.00365
+## alternative hypothesis: true p is not equal to 0.5
+## 95 percent confidence interval:
+##  0.6113749 0.9604337
+## sample estimates:
+##    p 
+## 0.85</code></pre>
+<pre class="r"><code># Since the p-value is 0.003, we reject the null hypothesis and conclude that the head is likely biased.
+
+# Let&#39;s do a power analysis:
+qplot(x = 1:20, y = sapply(1:20, function(x) prop.test(x, 20, .5)$p.value)) +
+  ylab(&#39;P-value&#39;)</code></pre>
+<p><img src="/post/2018-09-03-basic-probability-and-stats_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>Unbiased: Do a t-test of proportions. <a href="http://sphweb.bumc.bu.edu/otlt/MPH-Modules/BS/SAS/SAS6-CategoricalData/SAS6-CategoricalData2.html">boston</a></p>
+<pre class="r"><code>n = 100
+x = 48
+p = x/n
+p_0 = .5
+z_stat = function(p_hat, p_0, n){
+  stat = (p_hat - p_0)/sqrt((p_0*(1-p_0)/n))
+  return(stat)
+}
+1 - pnorm(z_stat(x/n, p_0, n))</code></pre>
+<pre><code>## [1] 0.6554217</code></pre>
+<pre class="r"><code>1 - pt(z_stat(x/n, p_0, n), df = 99)</code></pre>
+<pre><code>## [1] 0.6549909</code></pre>
+<pre class="r"><code># One-way test
+prop.test(x, n, p=p_0, correct=FALSE)</code></pre>
+<pre><code>## 
+##  1-sample proportions test without continuity correction
+## 
+## data:  x out of n, null probability p_0
+## X-squared = 0.16, df = 1, p-value = 0.6892
+## alternative hypothesis: true p is not equal to 0.5
+## 95 percent confidence interval:
+##  0.3846455 0.5768342
+## sample estimates:
+##    p 
+## 0.48</code></pre>
+<p>Notes:</p>
+<ul>
+<li></li>
+</ul>
+</div>
+<div id="bayesian" class="section level3">
+<h3>Bayesian</h3>
+<p><a href="https://stats.stackexchange.com/questions/244396/bayesian-updating-coin-tossing-example">Stack Overflow: sequential updating</a>, <a href="http://www.stats.ox.ac.uk/~steffen/teaching/bs2HT9/kalman.pdf">link2</a></p>
+<pre class="r"><code># pr_heads
+p_h = .5
+# f_h = h_f * p_f / p_h
+
+# Binomial distribution
+n = 10
+x = 1
+p0 = .5
+choose(n, x) * p0^x*(1-p0)^(n-x)</code></pre>
+<pre><code>## [1] 0.009765625</code></pre>
+<pre class="r"><code>dbinom(x, size=n, prob=p0)</code></pre>
+<pre><code>## [1] 0.009765625</code></pre>
+<pre class="r"><code>h_f = dbinom(x, size=n, prob=p0)
+
+post_prob &lt;- function(n_trial, prF=.5, prHB = 1){
+  # probability Biased
+  prB = 1 - prF
+  prHF = dbinom(x=n_trial, size=n_trial, prob = prF)
+  # probability of x heads given fair is .5^n
+  prH  = prHF * prF + (prHB)^n_trial*prB
+  prFH = prHF * prF / prH
+  return(prFH)
+}
+# One trial
+post_prob(1, prHB = 1)</code></pre>
+<pre><code>## [1] 0.3333333</code></pre>
+<pre class="r"><code># two-heads
+post_prob(2, prHB = 1)</code></pre>
+<pre><code>## [1] 0.2</code></pre>
+<pre class="r"><code>post_prob(2, prHB = .51)</code></pre>
+<pre><code>## [1] 0.4901</code></pre>
+<pre class="r"><code>post_prob(2, prHB = .51)</code></pre>
+<pre><code>## [1] 0.4901</code></pre>
+<pre class="r"><code>post_prob(50, prHB = .51)</code></pre>
+<pre><code>## [1] 0.2708861</code></pre>
+<pre class="r"><code># If probability of heads given bias = 1, then prH will always be .5. And, therefore, the probability of being fair
+
+qplot(x = 1:100, y = post_prob(1:100, prHB = .51)) + 
+  ggtitle(&#39;The probability of a fair coin given x heads&#39;, &#39;assuming prHB = .51&#39;) + 
+  xlab(&#39;Number of heads&#39;) +
+  ylab(&#39;The probability of a fair coin given all heads&#39;) </code></pre>
+<p><img src="/post/2018-09-03-basic-probability-and-stats_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<pre class="r"><code>qplot(x = 1:100, y = post_prob(1:100, prHB = .60)) + 
+  ggtitle(&#39;The probability of a fair coin given x heads&#39;, &#39;assuming prHB = .60&#39;) + 
+  xlab(&#39;Number of heads&#39;) +
+  ylab(&#39;The probability of a fair coin given all heads&#39;)</code></pre>
+<p><img src="/post/2018-09-03-basic-probability-and-stats_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
+<pre class="r"><code># TODO: create different curves
+dat &lt;- data.frame(x = 1:100)
+dat$h51 = post_prob(dat$x, prHB = .51)
+dat$h60 = post_prob(dat$x, prHB = .60)
+dat$h70 = post_prob(dat$x, prHB = .70)
+dat %&gt;% gather(key, value, -x) %&gt;%
+  ggplot(aes(x = x, y = value, color = key)) + 
+  geom_point()</code></pre>
+<p><img src="/post/2018-09-03-basic-probability-and-stats_files/figure-html/unnamed-chunk-22-3.png" width="672" /></p>
+<p>Learned:</p>
+<ul>
+<li>How to use bayes theorem</li>
+<li>How to use binomial distribution to calculate the probability of X heads given N trials and p probability of head.</li>
+<li>the posterior probability of</li>
+</ul>
+<p><a href="https://ro-che.info/articles/2016-06-14-predicting-coin-toss">bayesian network, dirac delta</a></p>
+<p>Questions:</p>
+<ul>
+<li>When do you stop?</li>
+<li>TODO: What if you have 15 coins?</li>
+<li>Probability of</li>
+</ul>
+</div>
+</div>
+<div id="learnings-1" class="section level2">
+<h2>Learnings:</h2>
+<ol style="list-style-type: decimal">
+<li>We can use the binomial distribution to calculate the probability of X heads in N tosses.</li>
+<li>We can use bayes theorem to calculate the probability that we have a fair coin given all heads. but we need to supply the prHB (the probability of a heads given a biased coin).</li>
+</ol>
+</div>
+</div>
+<div id="future-todo" class="section level1">
+<h1>future todo:</h1>
+<ul>
+<li><ol style="list-style-type: decimal">
+<li>TODO: calculate the probability of a fair coin given x heads</li>
+</ol></li>
+<li>Do a one-way bayesian t-test of proportions on the posterior probability.</li>
+<li>calculate probabilities (probability of heads, etc. biased coin)</li>
+<li>basic theorems for conditional probability</li>
+<li>power analysis for biased coin</li>
+<li>Explore the prussian data, and prop.test. Figure out what it’s doing.</li>
+<li>Hypothesis test for negative binomial coefficients (at least one is different)</li>
+</ul>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+            
+            <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2018/09/byu-football/" data-tooltip="byu football">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2018/07/addresses-and-maps/" data-tooltip="Collect, Analyze, and Map Addresses in R">
+          
+            <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=%2f2018%2f09%2fbasic-probability-and-stats%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2f2018%2f09%2fbasic-probability-and-stats%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=%2f2018%2f09%2fbasic-probability-and-stats%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+      <li class="post-action">
+        <a class="post-action-btn btn btn--default" href="#disqus_thread">
+          <i class="fa fa-comment-o"></i>
+        </a>
+      </li>
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+   
+   
+  <script>
+  $(document).ready(function () {
+    window.initializeCodeFolding("show" === "hide");
+  });
+  </script>
+  <script src="/js/codefolding.js"></script>
+
+
+    
+  <span class="copyrights">
+    &copy; 2019 Bryan Whiting. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2018/09/byu-football/" data-tooltip="byu football">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2018/07/addresses-and-maps/" data-tooltip="Collect, Analyze, and Map Addresses in R">
+          
+            <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=%2f2018%2f09%2fbasic-probability-and-stats%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2f2018%2f09%2fbasic-probability-and-stats%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=%2f2018%2f09%2fbasic-probability-and-stats%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+      <li class="post-action">
+        <a class="post-action-btn btn btn--default" href="#disqus_thread">
+          <i class="fa fa-comment-o"></i>
+        </a>
+      </li>
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <ul class="share-options">
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2f2018%2f09%2fbasic-probability-and-stats%2f">
+        <i class="fa fa-google-plus"></i><span>Share on Google Plus</span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2f2018%2f09%2fbasic-probability-and-stats%2f">
+        <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2f2018%2f09%2fbasic-probability-and-stats%2f">
+        <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/0082821b175de32596e4c5cbb525f846?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Bryan Whiting</h4>
+    
+      <div id="about-card-bio">father, innovator, data scientist</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Data Scientist
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Washington, D.C.
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/sample-size/">
+                <h3 class="media-heading">Sample Size</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">So your boss likes asking questions. Let’s find answers to a few she might ask.
+# Go and collect some car data df = read.table(&#39;ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.data-original&#39;, col.names = c(&#39;mpg&#39;, &#39;cyl&#39;, &#39;disp&#39;, &#39;hp&#39;, &#39;wt&#39;, &#39;acc&#39;, &#39;year&#39;, &#39;origin&#39;, &#39;name&#39;)) # Let&#39;s randomly shuffle the rows set.seed(1) df &lt;- df[sample(nrow(df)),] # Extract make df$make &lt;- word(df$name) df %&lt;&gt;% filter(!is.na(mpg)) %&gt;% select(name, make, everything()) One Sample T-Test  Question 1: I think Ford cars have pretty bad miles-per-gallon (MPG).</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/births-time-series-month/">
+                <h3 class="media-heading">Modeling Birth Rates Part 2: By Month</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In Part 1, I modeled births at the year level, which didn’t seem to have much seasonality. Now I’m going to try to model the monthly birth rates in the US.
+Predicting Seasonality I hit up the UN data to get seasonal birthrates, which I couldn’t find at CDC. Unfortunately, the UN data doesn’t have a long range of data.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/births-time-series-year/">
+                <h3 class="media-heading">Modeling Birth Rates Part 1: By Year</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I’m still excited to be a dad, so I’m going to try to model birth rates in the US. This will be a time series modeling exercise, and I’ll use this time to explore some modeling techniques. In Part 2 I’ll model the monthly birth rates.
+I downloaded CDC birth data from here: * https://www.cdc.gov/nchs/data-visualization/natality-trends/ * “Births and General Fertility Rates” &gt; Download CSV * Other data sets can be found here: https://www.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/10/baby-names/">
+                <h3 class="media-heading">Why does everyone I work with have the same name? A guide on how to not pick a unique baby name in America.</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I’ve taken a particular interest in names since I’m thinking of a name for my to-be-born son. I did a little digging through the Social Security Administration names database, which lists all names given to baby boys and girls in America1. I began this exercise to just get a quality list of ideas, but my curiosity got the better of me.
+Name Trends Since 1950 What was the most popular boy name since 1950?</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/09/baby-boy-names/">
+                <h3 class="media-heading">Scraping Baby Boy Name Trends</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I’m going to be a dad (again) soon. I don’t want my boy to have a common name, so I gotta do my research. I’m curious: how do names trend over time? If I pick a name today, will it be popular tomorrow?
+Step 1: The Social Security Administration reports all baby names each year in the United States, given the name occurs at least 5 times.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/04/dplyr-vs-datatable/">
+                <h3 class="media-heading">Dplyr vs Datatable</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Apr 4, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In the world of data science in R, the battle between dplyr and datatable is real. Here I compare their performance against base r commands for some common tasks. Who will be the winner on speed and simplicity?
+Make random datasets set.seed(71) size1 &lt;- 4*10^6 size2 &lt;- size1 * 0.1 df1 &lt;- data.frame(id=paste0(&quot;SERVICE_&quot;, 1:size1), value=rnorm(size1), stringsAsFactors=FALSE) df2 &lt;- data.frame(id=paste0(&quot;SERVICE_&quot;, sample(1:size1, size2)), value=rnorm(size2), stringsAsFactors=FALSE) dt1 &lt;- data.table(df1) dt2 &lt;- data.table(df2) # mtcars data M &lt;- data.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/02/rshiny-on-docker-part2/">
+                <h3 class="media-heading">Getting Custom Domain for EC2 Web App - Part 2</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">In this post, I&rsquo;ll cover how to better customize some settings so to get your own custom domain for your EC2 instance. Say, app.example.com. Anyone interested in customizing an EC2 instance can use this - not just those who build R Shiny apps. I assume you already read part 1, where it was described how to launch an R Shiny app on EC2. I assume you already have some EC2 instance running with some useful app.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/02/rshiny-on-docker-part1/">
+                <h3 class="media-heading">R Shiny on AWS Using Docker - Part 1</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Feb 2, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">I want to run R Shiny on AWS using Docker. Here&rsquo;s how to do it.
+In part 2, I&rsquo;ll demonstrate how to get a custom domain and make the URL look clean.
+Useful background reading If you&rsquo;re already comfortable with Docker, skip to the next section.
+ Great Simple tutorial on using Docker and Flask: Short and sweet. Docker for Beginners: Verbose and lengthy. Excellent introduction. Walks you through all the jargon.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/09/machine-learning-models/">
+                <h3 class="media-heading">Machine Learning Model Notes</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Here are some notes on machine learning models.
+Concepts Behind Decision Trees  Bagging (boostrap aggregation): Randomly sample with replacement, and average the results. Majority vote: The most commonly-occuring prediction. Internal node: Where the splits occur. Branches: Segments that connect the nodes. Terminal node (leafs, regions): Where the observations end up. The average of the responses (or majority vote) is the prediction for future observations. Gini index: where \(m\) is the leaf and \(k\) is the class (0 or 1 for binary classification, but can be extedned for multiple classes).</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2018/09/byu-football/">
+                <h3 class="media-heading">byu football</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Goal of this post. Answer some interesting questions about BYU football. Dive into different modeling approaches. I don’t explain my thinking below, but some of the charts might be cool.
+Some questions of interest
+ How is Kilani Sitake doing in his second season compared to past BYU coaches? More challenging: how’s he doing relative to all second-season coaches?  df_in &lt;- read.csv(file.path(fp_data, &#39;byu_seasons.csv&#39;)) %&gt;% distinct() Some basic questions: * How many years do we have data on?</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         25 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('/images/durango-blurred.JPG');"></div>
+  
+
+
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.js"></script>
+
+
+<script src="/js/script-wl33z0n6ocaypepiqrazthtivfrliqijej4rq8ek8gvrv1awftmgjuv8k4zc.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight').each(function(i, block) {
+    var code = "";
+    hljs.highlightAuto(block.innerText).value.split(/\r\n|\r|\n/).forEach(function(line) {
+      code += "<span class=\"line\">" + line + "</span><br>";
+    });
+    if (code.length > 0) {
+      block.innerHTML = code;  
+    }
+  });
+  $('pre > code').each(function(i, block) {
+    $(this).addClass('codeblock');
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2018\/09\/basic-probability-and-stats\/';
+          
+            this.page.identifier = '\/2018\/09\/basic-probability-and-stats\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'bryanwhiting1';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+
+    
+  </body>
+</html>
+

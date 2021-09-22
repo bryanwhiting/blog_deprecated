@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Byu on My take on data</title>
+    <link>/tags/byu/</link>
+    <description>Recent content in Byu on My take on data</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 07 Sep 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/byu/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>byu football</title>
+      <link>/2018/09/byu-football/</link>
+      <pubDate>Fri, 07 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/09/byu-football/</guid>
+      <description>Goal of this post. Answer some interesting questions about BYU football. Dive into different modeling approaches. I don’t explain my thinking below, but some of the charts might be cool.
+Some questions of interest
+ How is Kilani Sitake doing in his second season compared to past BYU coaches? More challenging: how’s he doing relative to all second-season coaches?  df_in &amp;lt;- read.csv(file.path(fp_data, &amp;#39;byu_seasons.csv&amp;#39;)) %&amp;gt;% distinct() Some basic questions: * How many years do we have data on?</description>
+    </item>
+    
+  </channel>
+</rss>

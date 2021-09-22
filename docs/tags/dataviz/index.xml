@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dataviz on My take on data</title>
+    <link>/tags/dataviz/</link>
+    <description>Recent content in Dataviz on My take on data</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 28 Oct 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/dataviz/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Sample Size</title>
+      <link>/2019/10/sample-size/</link>
+      <pubDate>Mon, 28 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/sample-size/</guid>
+      <description>So your boss likes asking questions. Let’s find answers to a few she might ask.
+# Go and collect some car data df = read.table(&amp;#39;ftp://ftp.ics.uci.edu/pub/machine-learning-databases/auto-mpg/auto-mpg.data-original&amp;#39;, col.names = c(&amp;#39;mpg&amp;#39;, &amp;#39;cyl&amp;#39;, &amp;#39;disp&amp;#39;, &amp;#39;hp&amp;#39;, &amp;#39;wt&amp;#39;, &amp;#39;acc&amp;#39;, &amp;#39;year&amp;#39;, &amp;#39;origin&amp;#39;, &amp;#39;name&amp;#39;)) # Let&amp;#39;s randomly shuffle the rows set.seed(1) df &amp;lt;- df[sample(nrow(df)),] # Extract make df$make &amp;lt;- word(df$name) df %&amp;lt;&amp;gt;% filter(!is.na(mpg)) %&amp;gt;% select(name, make, everything()) One Sample T-Test  Question 1: I think Ford cars have pretty bad miles-per-gallon (MPG).</description>
+    </item>
+    
+    <item>
+      <title>Why does everyone I work with have the same name? A guide on how to not pick a unique baby name in America.</title>
+      <link>/2019/10/baby-names/</link>
+      <pubDate>Sat, 05 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/baby-names/</guid>
+      <description>I’ve taken a particular interest in names since I’m thinking of a name for my to-be-born son. I did a little digging through the Social Security Administration names database, which lists all names given to baby boys and girls in America1. I began this exercise to just get a quality list of ideas, but my curiosity got the better of me.
+Name Trends Since 1950 What was the most popular boy name since 1950?</description>
+    </item>
+    
+    <item>
+      <title>Scraping Baby Boy Name Trends</title>
+      <link>/2019/09/baby-boy-names/</link>
+      <pubDate>Mon, 09 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/09/baby-boy-names/</guid>
+      <description>I’m going to be a dad (again) soon. I don’t want my boy to have a common name, so I gotta do my research. I’m curious: how do names trend over time? If I pick a name today, will it be popular tomorrow?
+Step 1: The Social Security Administration reports all baby names each year in the United States, given the name occurs at least 5 times.</description>
+    </item>
+    
+    <item>
+      <title>Collect, Analyze, and Map Addresses in R</title>
+      <link>/2018/07/addresses-and-maps/</link>
+      <pubDate>Sat, 28 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/07/addresses-and-maps/</guid>
+      <description>The goal of this tutorial is to do the following:
+Collect addresses (via Google Forms) Download to R (via googlesheets) Geocode them (via geocode) Plot them (using leaflet) Get driving distance between them (via gmapsdistance) Cluster them (kmeans) Making the leaflet plot fancy  1. Collect Perhaps in a future post I’ll explore googleformr. For now, I create forms the old-school way.</description>
+    </item>
+    
+  </channel>
+</rss>

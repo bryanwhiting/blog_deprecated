@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Productivity on My take on data</title>
+    <link>/categories/productivity/</link>
+    <description>Recent content in Productivity on My take on data</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 23 Jun 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/productivity/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Yet Another Weekly Planner</title>
+      <link>/2017/06/yet-another-weekly-planner/</link>
+      <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/06/yet-another-weekly-planner/</guid>
+      <description>I believe that each creation has four phases: dreaming, planning, acting, and reflecting. Think about it - is there anything you&amp;rsquo;ve ever made that didn&amp;rsquo;t first enter into your mind, you came up with some game plan, you carried it out, and then when you were done you could see what went well and where you improved? Isn&amp;rsquo;t this what scrums are really about?
+I wanted a scrum for my personal life, but I didn&amp;rsquo;t find it practical to use the many online resources available.</description>
+    </item>
+    
+    <item>
+      <title>Starting with Jekyll</title>
+      <link>/2016/11/starting-with-jekyll/</link>
+      <pubDate>Mon, 07 Nov 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/2016/11/starting-with-jekyll/</guid>
+      <description>Hello world.
+I wanted to start a blog. I wanted to set it up for free, use a custom URL (and not something.bloggingplatform.com), and be able to both blog and create tutorials. I didn&amp;rsquo;t mind it possibly being technical1. Enter Jekyll.
+If you want to get your blog in 10 minutes, skip to below.
+Why Blog with Jekyll? Here&amp;rsquo;s why you can and should blog with Jekyll (if you&amp;rsquo;re a data scientist):</description>
+    </item>
+    
+  </channel>
+</rss>
